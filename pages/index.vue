@@ -73,8 +73,8 @@ const fetching = ref(false);
 const fetchingScore = ref(false);
 const username = ref();
 const id = ref();
-const user1 = ref("KenZ");
-const user2 = ref("ene");
+const user1 = ref("");
+const user2 = ref("");
 
 const compare = ref(false)
 
