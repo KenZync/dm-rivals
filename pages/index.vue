@@ -2,7 +2,7 @@
     <div>
         <div v-if="fetching">Pending</div>
         <div v-else><button @click="getRanking">Download Ranking HTML</button></div>
-        <br/>
+        <br />
         <input v-model="username" placeholder="Name" />
         <div v-if="fetchingScore">Pending</div>
         <div v-else><button @click="getScore">Download Score</button> ID : {{ id }}</div>
@@ -13,9 +13,14 @@
         <input v-model="user2" placeholder="Name 2" />
         <div><button @click="getCompare">Compare</button></div>
 
+        <div v-if="compare">
+            <input type="checkbox" v-model="bothPlayed" />
+            <label> Show only both Played</label>
+        </div>
+
         <div class="row" v-if="compare">
             <div class="column">
-                <div>{{user1}}'s Win</div>
+                <div>{{ user1 }}'s Win</div>
                 <table>
                     <tr>
                         <th>{{ user1 }}'s Rank</th>
@@ -26,7 +31,7 @@
                         <th>Level</th>
                         <th>PlayTime</th>
                     </tr>
-                    <template v-for="(score, key) in compareData">
+                    <template v-for="(score, key) in filteredCompareData1">
                         <tr>
                             <td>{{ score.Rank }}</td>
                             <td>{{ score.Title }}</td>
@@ -40,7 +45,7 @@
                 </table>
             </div>
             <div class="column">
-                <div>{{user2}}'s Win</div>
+                <div>{{ user2 }}'s Win</div>
                 <table v-if="compare">
                     <tr>
                         <th>{{ user2 }}'s Rank</th>
@@ -51,7 +56,7 @@
                         <th>Level</th>
                         <th>PlayTime</th>
                     </tr>
-                    <template v-for="(score, key) in compareData2">
+                    <template v-for="(score, key) in filteredCompareData2">
                         <tr>
                             <td>{{ score.Rank }}</td>
                             <td>{{ score.Title }}</td>
@@ -78,28 +83,49 @@ const user2 = ref("");
 
 const compare = ref(false)
 
-const compareData = ref();
+const compareData1 = ref();
 const compareData2 = ref();
 
+const bothPlayed = ref(false);
+
+const filteredCompareData1 = computed(() => {
+    if (!bothPlayed.value) {
+        return compareData1.value
+    }else{
+        return compareData1.value.filter((score: { Rank: string | string[]; }) => {
+        return score.Rank.includes("|")
+    })
+    }
+});
+
+const filteredCompareData2 = computed(() => {
+    if (!bothPlayed.value) {
+        return compareData2.value
+    }else{
+        return compareData2.value.filter((score: { Rank: string | string[]; }) => {
+        return score.Rank.includes("|")
+    })
+    }
+});
 
 
 const getRanking = async () => {
     fetching.value = true;
-    const data = await $fetch(`/api/ranking`).catch(error => {alert("ERROR")});
+    const data = await $fetch(`/api/ranking`).catch(error => { alert("ERROR") });
     fetching.value = false;
 };
 
 const getScore = async () => {
     fetchingScore.value = true;
-    const data = await $fetch(`/api/score/${encodeURIComponent(username.value)}`).catch(error => {alert("ERROR")});
+    const data = await $fetch(`/api/score/${encodeURIComponent(username.value)}`).catch(error => { alert("ERROR") });
     fetchingScore.value = false;
     id.value = data
 };
 
 const getCompare = async () => {
-    const data = await $fetch(`/api/compare?user1=${encodeURIComponent(user1.value)}&user2=${encodeURIComponent(user2.value)}`).catch(error => {alert("NOT FOUND")});
+    const data = await $fetch(`/api/compare?user1=${encodeURIComponent(user1.value)}&user2=${encodeURIComponent(user2.value)}`).catch(error => { alert("NOT FOUND") });
     const data2 = await $fetch(`/api/compare?user1=${encodeURIComponent(user2.value)}&user2=${encodeURIComponent(user1.value)}`)
-    compareData.value = data
+    compareData1.value = data
     compareData2.value = data2
     compare.value = true
 };
