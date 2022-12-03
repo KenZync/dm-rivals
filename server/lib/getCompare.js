@@ -2,8 +2,8 @@ import { getID } from "../lib/getID";
 import fs from "fs";
 
 export const getCompare = async (firstName, secondName) => {
-  const id1 = getID(firstName);
-  const id2 = getID(secondName);
+  const id1 = getID(decodeURIComponent(firstName));
+  const id2 = getID(decodeURIComponent(secondName));
 
   let win1 = [];
 

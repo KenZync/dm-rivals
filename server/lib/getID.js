@@ -2,6 +2,7 @@ import fs from "fs";
 import * as cheerio from "cheerio";
 
 export const getID = (reqName) => {
+  
   const ranking = fs.readFileSync("data/ranking.html", { encoding: "utf8" });
   const $ = cheerio.load(ranking);
   const sel = "div.table-responsive-lg > table > tbody > tr";

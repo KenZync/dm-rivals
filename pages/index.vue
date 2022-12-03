@@ -91,14 +91,14 @@ const getRanking = async () => {
 
 const getScore = async () => {
     fetchingScore.value = true;
-    const data = await $fetch(`/api/score/${username.value}`).catch(error => {alert("ERROR")});
+    const data = await $fetch(`/api/score/${encodeURIComponent(username.value)}`).catch(error => {alert("ERROR")});
     fetchingScore.value = false;
     id.value = data
 };
 
 const getCompare = async () => {
-    const data = await $fetch(`/api/compare?user1=${user1.value}&user2=${user2.value}`).catch(error => {alert("NOT FOUND")});
-    const data2 = await $fetch(`/api/compare?user1=${user2.value}&user2=${user1.value}`)
+    const data = await $fetch(`/api/compare?user1=${encodeURIComponent(user1.value)}&user2=${encodeURIComponent(user2.value)}`).catch(error => {alert("NOT FOUND")});
+    const data2 = await $fetch(`/api/compare?user1=${encodeURIComponent(user2.value)}&user2=${encodeURIComponent(user1.value)}`)
     compareData.value = data
     compareData2.value = data2
     compare.value = true

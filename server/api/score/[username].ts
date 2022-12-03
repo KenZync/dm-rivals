@@ -1,6 +1,6 @@
 import { getScore } from "~~/server/lib/getScore";
 
 export default defineEventHandler(async (event) => {
-    const id = await getScore(event.context.params.username)
+    const id = await getScore(decodeURIComponent(event.context.params.username))
   return id
 });

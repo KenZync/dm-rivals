@@ -3,7 +3,8 @@ import * as cheerio from "cheerio";
 import { getID } from "../lib/getID";
 
 export const getScore = async (reqName) => {
-  const id = getID(reqName);
+  const id = getID(decodeURIComponent(reqName));
+  console.log(id)
   const url = "https://dpjam.net/player-scoreboard/" + id + "/2";
   const data = await $fetch(url);
   const $ = cheerio.load(data);
