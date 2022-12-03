@@ -1,9 +1,6 @@
-import fs from "fs";
 import * as cheerio from "cheerio";
 
-export const getID = (reqName) => {
-  
-  const ranking = fs.readFileSync("data/ranking.html", { encoding: "utf8" });
+export const getID = (ranking, reqName) => {
   const $ = cheerio.load(ranking);
   const sel = "div.table-responsive-lg > table > tbody > tr";
   let finalID = 0;
@@ -11,7 +8,7 @@ export const getID = (reqName) => {
     $(this)
       .find("a")
       .each(function (i, name) {
-        if (reqName == $(name).text()) {
+        if (decodeURIComponent(reqName) == $(name).text()) {
           const id = $(name).attr("href").match(/\d+/)[0];
           finalID = id;
           return;

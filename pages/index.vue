@@ -1,17 +1,11 @@
 <template>
     <div>
-        <div v-if="fetching">Pending</div>
-        <div v-else><button @click="getRanking">Download Ranking HTML</button></div>
-        <br />
-        <input v-model="username" placeholder="Name" />
-        <div v-if="fetchingScore">Pending</div>
-        <div v-else><button @click="getScore">Download Score</button> ID : {{ id }}</div>
-
         <div>User 1</div>
         <input v-model="user1" placeholder="Name 1" />
         <div>User 2</div>
         <input v-model="user2" placeholder="Name 2" />
-        <div><button @click="getCompare">Compare</button></div>
+        <div v-if="fetching">Loading</div>
+        <div v-else><button @click="getCompare">Compare</button></div>
 
         <div v-if="compare">
             <input type="checkbox" v-model="bothPlayed" />
@@ -80,9 +74,6 @@
 
 <script setup>
 const fetching = ref(false);
-const fetchingScore = ref(false);
-const username = ref();
-const id = ref();
 const user1 = ref("");
 const user2 = ref("");
 
@@ -134,26 +125,14 @@ const filteredCompareData2 = computed(() => {
     }
 });
 
-
-const getRanking = async () => {
-    fetching.value = true;
-    const data = await $fetch(`/api/ranking`).catch(error => { alert("ERROR") });
-    fetching.value = false;
-};
-
-const getScore = async () => {
-    fetchingScore.value = true;
-    const data = await $fetch(`/api/score/${encodeURIComponent(username.value)}`).catch(error => { alert("ERROR") });
-    fetchingScore.value = false;
-    id.value = data
-};
-
 const getCompare = async () => {
-    const data = await $fetch(`/api/compare?user1=${encodeURIComponent(user1.value)}&user2=${encodeURIComponent(user2.value)}`).catch(error => { alert("NOT FOUND") });
-    const data2 = await $fetch(`/api/compare?user1=${encodeURIComponent(user2.value)}&user2=${encodeURIComponent(user1.value)}`)
-    compareData1.value = data
-    compareData2.value = data2
+    fetching.value = true;
+    const data = await $fetch(`/api/compare?user1=${encodeURIComponent(user1.value)}&user2=${encodeURIComponent(user2.value)}`)
+    compareData1.value = data.win1
+    compareData2.value = data.win2
     compare.value = true
+    fetching.value = false;
+
 };
 </script>
 

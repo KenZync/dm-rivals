@@ -1,9 +1,6 @@
-import fs from "fs";
 import * as cheerio from "cheerio";
-import { getID } from "../lib/getID";
 
-export const getScore = async (reqName) => {
-  const id = getID(decodeURIComponent(reqName));
+export const getScore = async (id) => {
   const url = "https://dpjam.net/player-scoreboard/" + id + "/2";
   const data = await $fetch(url);
   const $ = cheerio.load(data);
@@ -37,19 +34,5 @@ export const getScore = async (reqName) => {
       });
     musics.push(musicDetails);
   });
-  fs.writeFileSync(
-    "data/" + id + ".json",
-    JSON.stringify(musics, null, 2),
-    {
-      encoding: "utf8",
-      flag: "w",
-    },
-    (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-    }
-  );
-  return id;
+  return musics;
 };
