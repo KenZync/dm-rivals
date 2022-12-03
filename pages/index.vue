@@ -18,6 +18,11 @@
             <label> Show only both Played</label>
         </div>
 
+        <button v-if="compare" @click="toggleSortTime()">
+            <span v-if="oldestFirst">Sort Oldest First</span>
+            <span v-else>Sort Newest First</span>
+        </button>
+
         <div class="row" v-if="compare">
             <div class="column">
                 <div>{{ user1 }}'s Win</div>
@@ -73,7 +78,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 const fetching = ref(false);
 const fetchingScore = ref(false);
 const username = ref();
@@ -88,23 +93,44 @@ const compareData2 = ref();
 
 const bothPlayed = ref(false);
 
+const oldestFirst = ref(false);
+
+const toggleSortTime = () => {
+    oldestFirst.value = !oldestFirst.value;
+    var order = oldestFirst.value ? 1 : -1;
+    compareData1.value.sort(function (a, b) {
+        a = new Date(a.PlayTime);
+        b = new Date(b.PlayTime);
+        var results = a > b ? -1 : a < b ? 1 : 0;
+        return results * order;
+    });
+    compareData2.value.sort(function (a, b) {
+        a = new Date(a.PlayTime);
+        b = new Date(b.PlayTime);
+        var results = a > b ? -1 : a < b ? 1 : 0;
+        return results * order;
+    });
+}
+
 const filteredCompareData1 = computed(() => {
+    let data = compareData1.value
     if (!bothPlayed.value) {
+
         return compareData1.value
-    }else{
-        return compareData1.value.filter((score: { Rank: string | string[]; }) => {
-        return score.Rank.includes("|")
-    })
+    } else {
+        return compareData1.value.filter((score) => {
+            return score.Rank.includes("|")
+        })
     }
 });
 
 const filteredCompareData2 = computed(() => {
     if (!bothPlayed.value) {
         return compareData2.value
-    }else{
-        return compareData2.value.filter((score: { Rank: string | string[]; }) => {
-        return score.Rank.includes("|")
-    })
+    } else {
+        return compareData2.value.filter((score) => {
+            return score.Rank.includes("|")
+        })
     }
 });
 
