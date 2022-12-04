@@ -125,7 +125,13 @@
                   >
                 </td>
                 <td>{{ score.Acc }}</td>
-                <td>{{ score.Progress }}</td>
+                <td>
+                  <span
+                    class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
+                    :class="progressColor(score.Progress)"
+                    >{{ score.Progress }}</span
+                  >
+                </td>
                 <td>
                   <span
                     class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
@@ -172,7 +178,13 @@
                   >
                 </td>
                 <td>{{ score.Acc }}</td>
-                <td>{{ score.Progress }}</td>
+                <td>
+                  <span
+                    class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
+                    :class="progressColor(score.Progress)"
+                    >{{ score.Progress }}</span
+                  >
+                </td>
                 <td>
                   <span
                     class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
@@ -242,6 +254,29 @@ const filteredCompareData1 = computed(() => {
   }
 });
 
+const progressColor = (rank) => {
+  switch (rank) {
+    case "P Rank":
+      return "bg-yellow-400";
+    case "SS Rank":
+      return "bg-amber-600";
+    case "S Rank":
+      return "bg-lime-500";
+    case "A Rank":
+      return "bg-cyan-900";
+    case "B Rank":
+      return "bg-blue-900";
+    case "C Rank":
+      return "bg-fuchsia-400";
+    case "D Rank":
+      return "bg-rose-900";
+    case "F Rank":
+      return "bg-neutral-400";
+    default:
+      return "";
+  }
+};
+
 const filteredCompareData2 = computed(() => {
   if (!bothPlayed.value) {
     return compareData2.value;
@@ -268,7 +303,7 @@ const getCompare = async () => {
       return;
     })
     .finally(() => (fetching.value = false));
-    
+
   if (!data) {
     return;
   }
