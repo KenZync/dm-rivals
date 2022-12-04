@@ -195,11 +195,10 @@ const filteredCompareData2 = computed(() => {
 
 const getCompare = async () => {
     fetching.value = true;
-    const data = await $fetch(`/api/compare?user1=${encodeURIComponent(user1.value)}&user2=${encodeURIComponent(user2.value)}`).catch(() => alert("ERROR TRY AGAIN"))
+    const data = await $fetch(`/api/compare?user1=${encodeURIComponent(user1.value)}&user2=${encodeURIComponent(user2.value)}`).catch(() => alert("ERROR TRY AGAIN")).then(() => fetching.value = false)
     compareData1.value = data.win1
     compareData2.value = data.win2
     compare.value = true
-    fetching.value = false;
 
     submitted1.value = user1.value
     submitted2.value = user2.value
