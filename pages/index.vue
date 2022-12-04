@@ -63,142 +63,199 @@
           </div>
         </div>
       </form>
-      <fieldset class="space-y-5" v-if="compare">
-        <legend class="sr-only">Filter</legend>
-        <div class="relative flex items-start">
-          <div class="flex h-5 items-center">
-            <input
-              id="comments"
-              aria-describedby="comments-description"
-              name="comments"
-              type="checkbox"
-              class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-              v-model="bothPlayed"
-            />
-          </div>
-          <div class="ml-3 text-sm">
-            <label for="comments" class="font-medium text-stone-200"
-              >Show only both Played</label
+
+      <div v-if="compare">
+        <SwitchGroup as="div" class="flex items-center pt-4">
+          <Switch
+            v-if="compare"
+            v-model="bothPlayed"
+            :class="[
+              bothPlayed ? 'bg-blue-600' : 'bg-gray-200',
+              'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+            ]"
+          >
+            <span class="sr-only">Use setting</span>
+            <span
+              :class="[
+                bothPlayed ? 'translate-x-5' : 'translate-x-0',
+                'pointer-events-none relative inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
+              ]"
             >
-          </div>
-        </div>
-      </fieldset>
-
-      <button
-        class="mt-4 inline-flex items-center rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        v-if="compare"
-        @click="toggleSortTime()"
-      >
-        <span v-if="oldestFirst">Sort Oldest First</span>
-        <span v-else>Sort Newest First</span>
-      </button>
-
-      <div class="flex space-x-2 overflow-auto" v-if="compare">
-        <div>
-          <div class="text-center mb-2 text-stone-200 font-medium">
-            {{ submitted1 }}'s Win
-          </div>
-          <table
-            class="min-w-full border border-gray-300 divide-y divide-gray-300 text-stone-200 table-auto"
-          >
-            <tr class="divide-x divide-gray-200 bg-gray-900">
-              <th>{{ submitted1 }}'s Rank</th>
-              <th>Title</th>
-              <th>Acc</th>
-              <th>Progress</th>
-              <th>Clear</th>
-              <th>Level</th>
-              <th>PlayTime</th>
-            </tr>
-            <tbody class="divide-y divide-gray-200">
-              <tr
-                class="text-center"
-                v-for="(score, key) in filteredCompareData1"
-                :class="key % 2 === 0 ? 'bg-zinc-900' : 'bg-zinc-800'"
+              <span
+                :class="[
+                  bothPlayed
+                    ? 'opacity-0 ease-out duration-100'
+                    : 'opacity-100 ease-in duration-200',
+                  'absolute inset-0 flex h-full w-full items-center justify-center transition-opacity',
+                ]"
+                aria-hidden="true"
               >
-                <td>{{ score.Rank }}</td>
-                <td>
-                  <a
-                    class="hover:underline hover:text-blue-500"
-                    :href="'https://dpjam.net/music-scoreboard/' + score.ID"
-                    >{{ score.Title }}</a
-                  >
-                </td>
-                <td>{{ score.Acc }}</td>
-                <td>
-                  <span
-                    class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
-                    :class="progressColor(score.Progress)"
-                    >{{ score.Progress }}</span
-                  >
-                </td>
-                <td>
-                  <span
-                    class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
-                    :class="
-                      score.Clear == 'Cleared' ? 'bg-green-800' : 'bg-red-500'
-                    "
-                    >{{ score.Clear }}</span
-                  >
-                </td>
-                <td>{{ score.Level }}</td>
-                <td>{{ score.PlayTime }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div>
-          <div class="text-center mb-2 text-stone-200 font-medium">
-            {{ submitted2 }}'s Win
-          </div>
-          <table
-            class="min-w-full border border-gray-300 divide-y divide-gray-300 text-stone-200 table-auto"
-          >
-            <tr class="divide-x divide-gray-200 bg-red-900">
-              <th>{{ submitted2 }}'s Rank</th>
-              <th>Title</th>
-              <th>Acc</th>
-              <th>Progress</th>
-              <th>Clear</th>
-              <th>Level</th>
-              <th>PlayTime</th>
-            </tr>
-            <tbody class="divide-y divide-gray-200">
-              <tr
-                class="text-center"
-                v-for="(score, key) in filteredCompareData2"
-                :class="key % 2 === 0 ? 'bg-zinc-900' : 'bg-zinc-800'"
+                <svg
+                  class="h-3 w-3 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 12 12"
+                >
+                  <path
+                    d="M4 8l2-2m0 0l2-2M6 6L4 4m2 2l2 2"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <span
+                :class="[
+                  bothPlayed
+                    ? 'opacity-100 ease-in duration-200'
+                    : 'opacity-0 ease-out duration-100',
+                  'absolute inset-0 flex h-full w-full items-center justify-center transition-opacity',
+                ]"
+                aria-hidden="true"
               >
-                <td>{{ score.Rank }}</td>
-                <td>
-                  <a
-                    class="hover:underline hover:text-blue-500"
-                    :href="'https://dpjam.net/music-scoreboard/' + score.ID"
-                    >{{ score.Title }}</a
-                  >
-                </td>
-                <td>{{ score.Acc }}</td>
-                <td>
-                  <span
-                    class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
-                    :class="progressColor(score.Progress)"
-                    >{{ score.Progress }}</span
-                  >
-                </td>
-                <td>
-                  <span
-                    class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
-                    :class="
-                      score.Clear == 'Cleared' ? 'bg-green-800' : 'bg-red-500'
-                    "
-                    >{{ score.Clear }}</span
-                  >
-                </td>
-                <td>{{ score.Level }}</td>
-                <td>{{ score.PlayTime }}</td>
+                <svg
+                  class="h-3 w-3 text-blue-600"
+                  fill="currentColor"
+                  viewBox="0 0 12 12"
+                >
+                  <path
+                    d="M3.707 5.293a1 1 0 00-1.414 1.414l1.414-1.414zM5 8l-.707.707a1 1 0 001.414 0L5 8zm4.707-3.293a1 1 0 00-1.414-1.414l1.414 1.414zm-7.414 2l2 2 1.414-1.414-2-2-1.414 1.414zm3.414 2l4-4-1.414-1.414-4 4 1.414 1.414z"
+                  />
+                </svg>
+              </span>
+            </span>
+          </Switch>
+          <SwitchLabel as="span" class="ml-3">
+            <span class="text-sm font-medium text-stone-200"
+              >Show only both Played</span
+            >
+          </SwitchLabel>
+        </SwitchGroup>
+        <div class="space-x-2">
+          <button
+            class="mt-4 inline-flex items-center rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            @click="toggleSortTime()"
+          >
+            <span v-if="oldestFirst">Sort Oldest First</span>
+            <span v-else>Sort Newest First</span>
+          </button>
+
+          <button
+            class="mt-4 inline-flex items-center rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            @click="toggleSortLevel()"
+          >
+            <span v-if="lowestFirst">Sort Lowest Level First</span>
+            <span v-else>Sort Highest Level First</span>
+          </button>
+        </div>
+
+        <div class="flex space-x-2 overflow-auto">
+          <div>
+            <div class="text-center mb-2 text-stone-200 font-medium">
+              {{ submitted1 }}'s Win
+            </div>
+            <table
+              class="min-w-full border border-gray-300 divide-y divide-gray-300 text-stone-200 table-auto"
+            >
+              <tr class="divide-x divide-gray-200 bg-gray-900">
+                <th>{{ submitted1 }}'s Rank</th>
+                <th>Title</th>
+                <th>Acc</th>
+                <th>Progress</th>
+                <th>Clear</th>
+                <th>Level</th>
+                <th>PlayTime</th>
               </tr>
-            </tbody>
-          </table>
+              <tbody class="divide-y divide-gray-200">
+                <tr
+                  class="text-center"
+                  v-for="(score, key) in filteredCompareData1"
+                  :class="key % 2 === 0 ? 'bg-zinc-900' : 'bg-zinc-800'"
+                >
+                  <td>{{ score.Rank }}</td>
+                  <td>
+                    <a
+                      class="hover:underline hover:text-blue-500"
+                      :href="'https://dpjam.net/music-scoreboard/' + score.ID"
+                      >{{ score.Title }}</a
+                    >
+                  </td>
+                  <td>{{ score.Acc }}</td>
+                  <td>
+                    <span
+                      class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
+                      :class="progressColor(score.Progress)"
+                      >{{ score.Progress }}</span
+                    >
+                  </td>
+                  <td>
+                    <span
+                      class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
+                      :class="
+                        score.Clear == 'Cleared' ? 'bg-green-800' : 'bg-red-500'
+                      "
+                      >{{ score.Clear }}</span
+                    >
+                  </td>
+                  <td>{{ score.Level }}</td>
+                  <td>{{ score.PlayTime }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <div class="text-center mb-2 text-stone-200 font-medium">
+              {{ submitted2 }}'s Win
+            </div>
+            <table
+              class="min-w-full border border-gray-300 divide-y divide-gray-300 text-stone-200 table-auto"
+            >
+              <tr class="divide-x divide-gray-200 bg-red-900">
+                <th>{{ submitted2 }}'s Rank</th>
+                <th>Title</th>
+                <th>Acc</th>
+                <th>Progress</th>
+                <th>Clear</th>
+                <th>Level</th>
+                <th>PlayTime</th>
+              </tr>
+              <tbody class="divide-y divide-gray-200">
+                <tr
+                  class="text-center"
+                  v-for="(score, key) in filteredCompareData2"
+                  :class="key % 2 === 0 ? 'bg-zinc-900' : 'bg-zinc-800'"
+                >
+                  <td>{{ score.Rank }}</td>
+                  <td>
+                    <a
+                      class="hover:underline hover:text-blue-500"
+                      :href="'https://dpjam.net/music-scoreboard/' + score.ID"
+                      >{{ score.Title }}</a
+                    >
+                  </td>
+                  <td>{{ score.Acc }}</td>
+                  <td>
+                    <span
+                      class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
+                      :class="progressColor(score.Progress)"
+                      >{{ score.Progress }}</span
+                    >
+                  </td>
+                  <td>
+                    <span
+                      class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
+                      :class="
+                        score.Clear == 'Cleared' ? 'bg-green-800' : 'bg-red-500'
+                      "
+                      >{{ score.Clear }}</span
+                    >
+                  </td>
+                  <td>{{ score.Level }}</td>
+                  <td>{{ score.PlayTime }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -206,6 +263,7 @@
 </template>
 
 <script setup>
+import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue";
 useHead({
   title: "DMJam Rival System",
   meta: [{ name: "description", content: "O2Jam score comparison" }],
@@ -225,6 +283,7 @@ const compareData2 = ref();
 const bothPlayed = ref(false);
 
 const oldestFirst = ref(false);
+const lowestFirst = ref(false);
 
 const toggleSortTime = () => {
   oldestFirst.value = !oldestFirst.value;
@@ -239,6 +298,23 @@ const toggleSortTime = () => {
     a = new Date(a.PlayTime);
     b = new Date(b.PlayTime);
     var results = a > b ? -1 : a < b ? 1 : 0;
+    return results * order;
+  });
+};
+
+const toggleSortLevel = () => {
+  lowestFirst.value = !lowestFirst.value;
+  var order = lowestFirst.value ? 1 : -1;
+  compareData1.value.sort(function (a, b) {
+    var levelA = parseInt(a.Level);
+    var levelB = parseInt(b.Level);
+    var results = levelB - levelA;
+    return results * order;
+  });
+  compareData2.value.sort(function (a, b) {
+    var levelA = parseInt(a.Level);
+    var levelB = parseInt(b.Level);
+    var results = levelB - levelA;
     return results * order;
   });
 };

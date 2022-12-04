@@ -13,6 +13,7 @@
     "nuxt": "3.0.0"
   },
   "dependencies": {
+    "@headlessui/vue": "^1.7.4",
     "cheerio": "^1.0.0-rc.12"
   }
 }
