@@ -7,7 +7,7 @@ export const getScore = async (id) => {
   const musics = [];
   const sel = "div.table-responsive-lg > table > tbody > tr";
   const keys = [
-    "Rank",
+    "ID",
     "Title",
     "Acc",
     "Progress",
