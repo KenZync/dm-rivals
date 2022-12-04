@@ -149,10 +149,10 @@
           </button>
         </div>
 
-        <div class="flex space-x-2 overflow-auto">
+        <div class="flex space-x-2 overflow-auto pt-4">
           <div>
             <div class="text-center mb-2 text-stone-200 font-medium">
-              {{ submitted1 }}'s Win
+              {{ submitted1 }}'s Win : {{compareData1.length}} scores
             </div>
             <table
               class="min-w-full border border-gray-300 divide-y divide-gray-300 text-stone-200 table-auto"
@@ -205,7 +205,7 @@
           </div>
           <div>
             <div class="text-center mb-2 text-stone-200 font-medium">
-              {{ submitted2 }}'s Win
+              {{ submitted2 }}'s Win : {{compareData2.length}} scores
             </div>
             <table
               class="min-w-full border border-gray-300 divide-y divide-gray-300 text-stone-200 table-auto"
