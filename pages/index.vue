@@ -5,7 +5,7 @@
         DMJam Rival System
       </div>
       <form>
-        <div class="flex space-x-2">
+        <div class="md:flex md:space-x-2">
           <div>
             <label for="compare1" class="text-md font-medium text-stone-200"
               >User 1</label
@@ -93,7 +93,7 @@
         <span v-else>Sort Newest First</span>
       </button>
 
-      <div class="flex space-x-2" v-if="compare">
+      <div class="flex space-x-2 overflow-auto" v-if="compare">
         <div>
           <div class="text-center mb-2 text-stone-200 font-medium">
             {{ submitted1 }}'s Win
@@ -114,7 +114,7 @@
               <tr
                 class="text-center"
                 v-for="(score, key) in filteredCompareData1"
-                :class="key % 2 === 0 ? undefined : 'bg-zinc-800'"
+                :class="key % 2 === 0 ? 'bg-zinc-900' : 'bg-zinc-800'"
               >
                 <td>{{ score.Rank }}</td>
                 <td>
@@ -167,7 +167,7 @@
               <tr
                 class="text-center"
                 v-for="(score, key) in filteredCompareData2"
-                :class="key % 2 === 0 ? undefined : 'bg-zinc-800'"
+                :class="key % 2 === 0 ? 'bg-zinc-900' : 'bg-zinc-800'"
               >
                 <td>{{ score.Rank }}</td>
                 <td>
