@@ -1,8 +1,9 @@
 <template>
   <div class="min-h-screen bg-zinc-900">
     <div class="container mx-auto">
-      <div class="pt-8 text-center text-5xl text-stone-200">
-        DMJam Rival System
+      <div class="pt-8 text-center text-stone-200">
+        <span class="text-5xl">DMJam Rival System</span>
+        <span class="pl-2 text-sm">by KenZ</span>
       </div>
       <form>
         <div class="md:flex md:space-x-2">
