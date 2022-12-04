@@ -259,8 +259,19 @@ const getCompare = async () => {
       user1.value
     )}&user2=${encodeURIComponent(user2.value)}`
   )
-    .catch(() => alert("ERROR TRY AGAIN"))
+    .catch((error) => {
+      if (error.status === 404) {
+        alert("User not found. One of users is typed incorrectly.");
+      } else {
+        alert("ERROR TRY AGAIN");
+      }
+      return;
+    })
     .finally(() => (fetching.value = false));
+    
+  if (!data) {
+    return;
+  }
 
   compareData1.value = data.win1;
   compareData2.value = data.win2;
