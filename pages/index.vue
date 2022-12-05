@@ -19,7 +19,7 @@
                 name="compare2"
                 placeholder="Name 1"
                 autofocus
-                class="text-stone-200 bg-zinc-800 rounded-md border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                class="text-stone-200 bg-zinc-700 rounded-md border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               />
             </div>
           </div>
@@ -34,7 +34,7 @@
                 id="compare2"
                 name="compare2"
                 placeholder="Name 2"
-                class="text-stone-200 bg-zinc-800 rounded-md border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                class="text-stone-200 bg-zinc-700 rounded-md border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               />
             </div>
           </div>
@@ -133,6 +133,20 @@
           </SwitchLabel>
         </SwitchGroup>
         <div class="space-x-2">
+          <div class="inline-flex mt-1 rounded-md shadow-sm">
+            <span
+              class="inline-flex items-center rounded-l-md border border-r-0 border-gray-600 bg-zinc-800 px-3 text-stone-200 sm:text-sm"
+              >Search</span
+            >
+            <input
+              v-model="search"
+              type="text"
+              name="search"
+              id="search"
+              class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-600 px-3 py-2 text-stone-200 focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-zinc-700"
+              placeholder="Songe Title"
+            />
+          </div>
           <button
             class="mt-4 inline-flex items-center rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             @click="toggleSortTime()"
@@ -150,10 +164,10 @@
           </button>
         </div>
 
-        <div class="flex space-x-2 overflow-auto pt-4">
+        <div class="flex space-x-2 overflow-auto pt-4 ">
           <div>
             <div class="text-center mb-2 text-stone-200 font-medium">
-              {{ submitted1 }}'s Win : {{filteredCompareData1.length}} scores
+              {{ submitted1 }}'s Win : {{ filteredCompareData1.length }} scores
             </div>
             <table
               class="min-w-full border border-gray-300 divide-y divide-gray-300 text-stone-200 table-auto"
@@ -206,7 +220,7 @@
           </div>
           <div>
             <div class="text-center mb-2 text-stone-200 font-medium">
-              {{ submitted2 }}'s Win : {{filteredCompareData2.length}} scores
+              {{ submitted2 }}'s Win : {{ filteredCompareData2.length }} scores
             </div>
             <table
               class="min-w-full border border-gray-300 divide-y divide-gray-300 text-stone-200 table-auto"
@@ -286,6 +300,8 @@ const bothPlayed = ref(false);
 const oldestFirst = ref(false);
 const lowestFirst = ref(false);
 
+const search = ref("");
+
 const toggleSortTime = () => {
   oldestFirst.value = !oldestFirst.value;
   var order = oldestFirst.value ? 1 : -1;
@@ -321,15 +337,26 @@ const toggleSortLevel = () => {
 };
 
 const filteredCompareData1 = computed(() => {
-  let data = compareData1.value;
+  return filter(compareData1.value)
+});
+
+const filteredCompareData2 = computed(() => {
+  return filter(compareData2.value)
+});
+
+const filter = (data) => {
+  var searched = data.filter(({ Title }) =>
+    [Title].some((val) => val.toLowerCase().includes(search.value.toLowerCase()))
+  );
+
   if (!bothPlayed.value) {
-    return compareData1.value;
+    return searched;
   } else {
-    return compareData1.value.filter((score) => {
+    return searched.filter((score) => {
       return score.Rank.includes("|");
     });
   }
-});
+}
 
 const progressColor = (rank) => {
   switch (rank) {
@@ -353,16 +380,6 @@ const progressColor = (rank) => {
       return "";
   }
 };
-
-const filteredCompareData2 = computed(() => {
-  if (!bothPlayed.value) {
-    return compareData2.value;
-  } else {
-    return compareData2.value.filter((score) => {
-      return score.Rank.includes("|");
-    });
-  }
-});
 
 const getCompare = async () => {
   fetching.value = true;
