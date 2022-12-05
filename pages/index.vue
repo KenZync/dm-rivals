@@ -337,14 +337,14 @@ const toggleSortLevel = () => {
 };
 
 const filteredCompareData1 = computed(() => {
-  return filter(compareData1.value)
+  return filterData(compareData1.value)
 });
 
 const filteredCompareData2 = computed(() => {
-  return filter(compareData2.value)
+  return filterData(compareData2.value)
 });
 
-const filter = (data) => {
+const filterData = (data) => {
   var searched = data.filter(({ Title }) =>
     [Title].some((val) => val.toLowerCase().includes(search.value.toLowerCase()))
   );
