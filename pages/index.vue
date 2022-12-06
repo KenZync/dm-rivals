@@ -164,114 +164,12 @@
           </button>
         </div>
 
-        <div class="flex space-x-2 overflow-auto pt-4 ">
-          <div>
-            <div class="text-center mb-2 text-stone-200 font-medium">
-              {{ submitted1 }}'s Win : {{ filteredCompareData1.length }} scores
-            </div>
-            <table
-              class="min-w-full border border-gray-300 divide-y divide-gray-300 text-stone-200 table-auto"
-            >
-              <tr class="divide-x divide-gray-200 bg-gray-900">
-                <th>{{ submitted1 }}'s Rank</th>
-                <th>Title</th>
-                <th>Acc</th>
-                <th>Progress</th>
-                <th>Clear</th>
-                <th>Level</th>
-                <th>PlayTime</th>
-              </tr>
-              <tbody class="divide-y divide-gray-200">
-                <tr
-                  class="text-center"
-                  v-for="(score, key) in filteredCompareData1"
-                  :class="key % 2 === 0 ? 'bg-zinc-900' : 'bg-zinc-800'"
-                >
-                  <td>{{ score.Rank }}</td>
-                  <td>
-                    <a
-                      class="hover:underline hover:text-blue-500"
-                      :href="'https://dpjam.net/music-scoreboard/' + score.ID"
-                      >{{ score.Title }}</a
-                    >
-                  </td>
-                  <td>{{ score.Acc }}</td>
-                  <td>
-                    <span
-                      class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
-                      :class="progressColor(score.Progress)"
-                      >{{ score.Progress }}</span
-                    >
-                  </td>
-                  <td>
-                    <span
-                      class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
-                      :class="
-                        score.Clear == 'Cleared' ? 'bg-green-800' : 'bg-red-500'
-                      "
-                      >{{ score.Clear }}</span
-                    >
-                  </td>
-                  <td>{{ score.Level }}</td>
-                  <td>{{ score.PlayTime }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div>
-            <div class="text-center mb-2 text-stone-200 font-medium">
-              {{ submitted2 }}'s Win : {{ filteredCompareData2.length }} scores
-            </div>
-            <table
-              class="min-w-full border border-gray-300 divide-y divide-gray-300 text-stone-200 table-auto"
-            >
-              <tr class="divide-x divide-gray-200 bg-red-900">
-                <th>{{ submitted2 }}'s Rank</th>
-                <th>Title</th>
-                <th>Acc</th>
-                <th>Progress</th>
-                <th>Clear</th>
-                <th>Level</th>
-                <th>PlayTime</th>
-              </tr>
-              <tbody class="divide-y divide-gray-200">
-                <tr
-                  class="text-center"
-                  v-for="(score, key) in filteredCompareData2"
-                  :class="key % 2 === 0 ? 'bg-zinc-900' : 'bg-zinc-800'"
-                >
-                  <td>{{ score.Rank }}</td>
-                  <td>
-                    <a
-                      class="hover:underline hover:text-blue-500"
-                      :href="'https://dpjam.net/music-scoreboard/' + score.ID"
-                      >{{ score.Title }}</a
-                    >
-                  </td>
-                  <td>{{ score.Acc }}</td>
-                  <td>
-                    <span
-                      class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
-                      :class="progressColor(score.Progress)"
-                      >{{ score.Progress }}</span
-                    >
-                  </td>
-                  <td>
-                    <span
-                      class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
-                      :class="
-                        score.Clear == 'Cleared' ? 'bg-green-800' : 'bg-red-500'
-                      "
-                      >{{ score.Clear }}</span
-                    >
-                  </td>
-                  <td>{{ score.Level }}</td>
-                  <td>{{ score.PlayTime }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <LazyCompare
+          :submitted1="submitted1"
+          :submitted2="submitted2"
+          :filteredCompareData1="filteredCompareData1"
+          :filteredCompareData2="filteredCompareData2"
+        ></LazyCompare>
       </div>
     </div>
   </div>
@@ -337,47 +235,28 @@ const toggleSortLevel = () => {
 };
 
 const filteredCompareData1 = computed(() => {
-  return filterData(compareData1.value)
+  return filterData(compareData1.value);
 });
 
 const filteredCompareData2 = computed(() => {
-  return filterData(compareData2.value)
+  return filterData(compareData2.value);
 });
 
 const filterData = (data) => {
-  var searched = data.filter(({ Title }) =>
-    [Title].some((val) => val.toLowerCase().includes(search.value.toLowerCase()))
-  );
+  if (data) {
+    var searched = data.filter(({ Title }) =>
+      [Title].some((val) =>
+        val.toLowerCase().includes(search.value.toLowerCase())
+      )
+    );
 
-  if (!bothPlayed.value) {
-    return searched;
-  } else {
-    return searched.filter((score) => {
-      return score.Rank.includes("|");
-    });
-  }
-}
-
-const progressColor = (rank) => {
-  switch (rank) {
-    case "P Rank":
-      return "bg-yellow-400";
-    case "SS Rank":
-      return "bg-amber-600";
-    case "S Rank":
-      return "bg-lime-500";
-    case "A Rank":
-      return "bg-cyan-900";
-    case "B Rank":
-      return "bg-blue-900";
-    case "C Rank":
-      return "bg-fuchsia-400";
-    case "D Rank":
-      return "bg-rose-900";
-    case "F Rank":
-      return "bg-neutral-400";
-    default:
-      return "";
+    if (!bothPlayed.value) {
+      return searched;
+    } else {
+      return searched.filter((score) => {
+        return score.Rank.includes("|");
+      });
+    }
   }
 };
 
