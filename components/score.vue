@@ -1,12 +1,12 @@
 <template>
-  <div v-if="(submitted)">
+  <div v-if="submitted">
     <div class="text-center mb-2 text-stone-200 font-medium">
       {{ submitted }}'s Win : {{ filteredCompareData.length }} scores
     </div>
     <table
       class="min-w-full border border-gray-300 divide-y divide-gray-300 text-stone-200 table-auto"
     >
-      <tr class="divide-x divide-gray-200" :class="color">
+      <tr :class="color">
         <th>{{ submitted }}'s Rank</th>
         <th>Title</th>
         <th>Acc</th>
@@ -53,11 +53,10 @@
 </template>
 
 <script setup>
-
 const props = defineProps({
   submitted: String,
   filteredCompareData: Object,
-  color: String
+  color: String,
 });
 
 const progressColor = (rank) => {
@@ -82,7 +81,6 @@ const progressColor = (rank) => {
       return "";
   }
 };
-
 </script>
 
 <style lang="scss" scoped></style>
