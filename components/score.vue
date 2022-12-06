@@ -15,7 +15,7 @@
         <th>Level</th>
         <th>PlayTime</th>
       </tr>
-      <tbody class="divide-y divide-gray-200">
+      <tbody>
         <tr
           class="text-center"
           v-for="(score, key) in filteredCompareData"
