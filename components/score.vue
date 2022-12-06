@@ -40,7 +40,7 @@
           <td>
             <span
               class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
-              :class="score.Clear == 'Cleared' ? 'bg-green-800' : 'bg-red-500'"
+              :class="score.Clear == 'Cleared' ? 'bg-green-800' : 'bg-red-800'"
               >{{ score.Clear }}</span
             >
           </td>
