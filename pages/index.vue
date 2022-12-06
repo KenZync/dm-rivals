@@ -203,36 +203,46 @@ const search = ref("");
 const toggleSortTime = () => {
   oldestFirst.value = !oldestFirst.value;
   var order = oldestFirst.value ? 1 : -1;
-  compareData1.value.sort(function (a, b) {
-    a = new Date(a.PlayTime);
-    b = new Date(b.PlayTime);
-    var results = a > b ? -1 : a < b ? 1 : 0;
-    return results * order;
-  });
-  compareData2.value.sort(function (a, b) {
-    a = new Date(a.PlayTime);
-    b = new Date(b.PlayTime);
-    var results = a > b ? -1 : a < b ? 1 : 0;
-    return results * order;
-  });
+  if (compareData1.value) {
+    compareData1.value.sort(function (a, b) {
+      a = new Date(a.PlayTime);
+      b = new Date(b.PlayTime);
+      var results = a > b ? -1 : a < b ? 1 : 0;
+      return results * order;
+    });
+  }
+
+  if (compareData2.value) {
+    compareData2.value.sort(function (a, b) {
+      a = new Date(a.PlayTime);
+      b = new Date(b.PlayTime);
+      var results = a > b ? -1 : a < b ? 1 : 0;
+      return results * order;
+    });
+  }
 };
 
 const toggleSortLevel = () => {
   lowestFirst.value = !lowestFirst.value;
   var order = lowestFirst.value ? 1 : -1;
-  compareData1.value.sort(function (a, b) {
-    var levelA = parseInt(a.Level);
-    var levelB = parseInt(b.Level);
-    var results = levelB - levelA;
-    return results * order;
-  });
-  compareData2.value.sort(function (a, b) {
-    var levelA = parseInt(a.Level);
-    var levelB = parseInt(b.Level);
-    var results = levelB - levelA;
-    return results * order;
-  });
+  if (compareData1.value) {
+    compareData1.value.sort(function (a, b) {
+      var levelA = parseInt(a.Level);
+      var levelB = parseInt(b.Level);
+      var results = levelB - levelA;
+      return results * order;
+    });
+  }
+  if (compareData2.value) {
+    compareData2.value.sort(function (a, b) {
+      var levelA = parseInt(a.Level);
+      var levelB = parseInt(b.Level);
+      var results = levelB - levelA;
+      return results * order;
+    });
+  }
 };
+
 
 const filteredCompareData1 = computed(() => {
   return filterData(compareData1.value);
