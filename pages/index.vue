@@ -284,7 +284,7 @@ const getCompare = async () => {
   )
     .catch((error) => {
       if (error.status === 404) {
-        alert("User not found. One of users is typed incorrectly.");
+        alert(error.data.statusMessage);
       } else {
         alert("ERROR TRY AGAIN");
       }

@@ -23,11 +23,15 @@ export default defineEventHandler(async (event) =>{
   if(id1 && id2){
     const data = await getCompare(score1,score2, id1, id2)
     return data
-  }else if(id1){
+  }else if(id1 && !query.user2){
     return {win1:score1, id1}
-  }else if(id2){
+  }else if(id2 && !query.user1){
     return {win2:score2, id2}
+  }else if(!id1 && query.user1){
+    throw createError({ statusCode: 404, statusMessage: 'User 1 Not Found. Please Type Correctly' })
+  }else if(!id2 && query.user2){
+    throw createError({ statusCode: 404, statusMessage: 'User 2 Not Found. Please Type Correctly' })
   }else{
-      throw createError({ statusCode: 404, statusMessage: 'Eror No ID Found' })
+      throw createError({ statusCode: 404, statusMessage: 'Both Users Not Found. Please Type Correctly' })
   }
 })
