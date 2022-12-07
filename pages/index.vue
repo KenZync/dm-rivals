@@ -9,7 +9,7 @@
         <div class="md:flex md:space-x-2">
           <div>
             <label for="compare1" class="text-md font-medium text-stone-200"
-              >User 1</label
+              >Player 1</label
             >
             <div class="mt-1">
               <input
@@ -17,7 +17,7 @@
                 v-model="user1"
                 id="compare1"
                 name="compare2"
-                placeholder="Name 1"
+                placeholder="Name"
                 autofocus
                 class="text-stone-200 bg-zinc-700 rounded-md border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               />
@@ -25,7 +25,7 @@
           </div>
           <div>
             <label for="compare2" class="text-md font-medium text-stone-200"
-              >User 2</label
+              >Player 2</label
             >
             <div class="mt-1">
               <input
@@ -33,7 +33,7 @@
                 v-model="user2"
                 id="compare2"
                 name="compare2"
-                placeholder="Name 2"
+                placeholder="Name"
                 class="text-stone-200 bg-zinc-700 rounded-md border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               />
             </div>
