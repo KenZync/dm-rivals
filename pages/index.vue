@@ -187,7 +187,6 @@ useHead({
 const router = useRouter();
 const route = useRoute()
 
-const fetching = ref(false);
 const user1 = ref(route.query.user1 || '');
 const user2 = ref(route.query.user2 || '');
 
@@ -198,13 +197,14 @@ onMounted(()=>{
   }
 })
 
+const fetching = ref(false);
+const compare = ref(false);
+
 const submitted1 = ref("");
 const submitted2 = ref("");
 
 const id1 = ref("");
 const id2 = ref("");
-
-const compare = ref(false);
 
 const compareData1 = ref();
 const compareData2 = ref();
