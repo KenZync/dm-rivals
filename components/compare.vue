@@ -1,5 +1,5 @@
 <template>
-  <div class="flex space-x-2 overflow-auto pt-4 justify-center">
+  <div class="flex space-x-2 overflow-auto pt-4">
     <score
       :submitted="submitted1"
       :filtered-compare-data="filteredCompareData1"
