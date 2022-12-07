@@ -181,6 +181,7 @@ useHead({
   title: "DMJam Rival System",
   meta: [{ name: "description", content: "O2Jam score comparison" }],
 });
+
 const fetching = ref(false);
 const user1 = ref("");
 const user2 = ref("");
@@ -242,7 +243,6 @@ const toggleSortLevel = () => {
     });
   }
 };
-
 
 const filteredCompareData1 = computed(() => {
   return filterData(compareData1.value);

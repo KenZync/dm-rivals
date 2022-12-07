@@ -4,7 +4,7 @@
       {{ submitted }}'s Win : {{ filteredCompareData.length }} scores
     </div>
     <table
-      class="min-w-full border border-gray-300 divide-y divide-gray-300 text-stone-200 table-auto"
+      class="border border-gray-300 divide-y divide-gray-300 text-stone-200"
     >
       <tr :class="color">
         <th>{{ submitted }}'s Rank</th>
@@ -13,13 +13,12 @@
         <th>Progress</th>
         <th>Clear</th>
         <th>Level</th>
-        <th>PlayTime</th>
+        <th class="px-6">PlayTime</th>
       </tr>
       <tbody>
         <tr
-          class="text-center"
-          v-for="(score, key) in filteredCompareData"
-          :class="key % 2 === 0 ? 'bg-zinc-900' : 'bg-zinc-800'"
+          class="text-center even:bg-zinc-800 odd:bg-zinc-900"
+          v-for="score in filteredCompareData"
         >
           <td class="py-3">{{ score.Rank }}</td>
           <td>
@@ -45,7 +44,27 @@
             >
           </td>
           <td>{{ score.Level }}</td>
-          <td>{{ score.PlayTime }}</td>
+          <td :class="score.PlayTime2 ? 'flex flex-col' : ''">
+            <span
+              class="group relative inline-block text-blue-200 hover:text-blue-500 duration-300"
+            >
+              {{ convertTimeFromNow(score.PlayTime) }}
+              <span
+                class="absolute hidden group-hover:flex -left-5 -top-2 -translate-y-full w-32 px-2 py-1 bg-gray-700 rounded-lg text-center text-white after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700"
+                >{{ convertTime(score.PlayTime) }}</span
+              >
+            </span>
+            <span
+              class="group relative inline-block text-red-200 hover:text-red-500 duration-300"
+              v-if="score.PlayTime2"
+            >
+              {{ convertTimeFromNow(score.PlayTime2) }}
+              <span
+                class="absolute hidden group-hover:flex -left-5 -top-2 -translate-y-full w-32 px-2 py-1 bg-gray-700 rounded-lg text-center text-white after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700"
+                >{{ convertTime(score.PlayTime2) }}</span
+              >
+            </span>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -58,6 +77,14 @@ const props = defineProps({
   filteredCompareData: Object,
   color: String,
 });
+
+const convertTime = (time) => {
+  return $dayjs.tz(time, "Asia/Seoul").local().format("D MMM YYYY HH:mm:ss");
+};
+
+const convertTimeFromNow = (time) => {
+  return $dayjs.tz(time, "Asia/Seoul").local().fromNow();
+};
 
 const progressColor = (rank) => {
   switch (rank) {
