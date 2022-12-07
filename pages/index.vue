@@ -184,9 +184,19 @@ useHead({
   meta: [{ name: "description", content: "O2Jam score comparison" }],
 });
 
+
+const route = useRoute()
+
 const fetching = ref(false);
-const user1 = ref("");
-const user2 = ref("");
+const user1 = ref(route.query.user1 || '');
+const user2 = ref(route.query.user2 || '');
+
+
+onMounted(()=>{
+  if(user1 || user2){
+    getCompare();
+  }
+})
 
 const submitted1 = ref("");
 const submitted2 = ref("");
@@ -205,6 +215,9 @@ const oldestFirst = ref(false);
 const lowestFirst = ref(false);
 
 const search = ref("");
+
+// console.log(route.query.user1)
+// console.log(route.query.user2)
 
 const toggleSortTime = () => {
   oldestFirst.value = !oldestFirst.value;
