@@ -1,4 +1,4 @@
-export const getCompare = async (scoreSet1, scoreSet2) => {
+export const getCompare = async (scoreSet1, scoreSet2, id1, id2) => {
 
   let win1 = [];
   let win2 = [];
@@ -39,7 +39,7 @@ export const getCompare = async (scoreSet1, scoreSet2) => {
     }
   });
 
-  const data = { win1 , win2 }
+  const data = { win1 , win2, id1, id2 }
 
   return data;
 };

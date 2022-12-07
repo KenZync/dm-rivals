@@ -21,12 +21,12 @@ export default defineEventHandler(async (event) =>{
   }
 
   if(id1 && id2){
-    const data = await getCompare(score1,score2)
+    const data = await getCompare(score1,score2, id1, id2)
     return data
   }else if(id1){
-    return {win1:score1}
+    return {win1:score1, id1}
   }else if(id2){
-    return {win2:score2}
+    return {win2:score2, id2}
   }else{
       throw createError({ statusCode: 404, statusMessage: 'Eror No ID Found' })
   }

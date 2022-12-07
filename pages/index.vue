@@ -165,6 +165,8 @@
         </div>
 
         <LazyCompare
+          :id1="id1"
+          :id2="id2"
           :submitted1="submitted1"
           :submitted2="submitted2"
           :filteredCompareData1="filteredCompareData1"
@@ -188,6 +190,9 @@ const user2 = ref("");
 
 const submitted1 = ref("");
 const submitted2 = ref("");
+
+const id1 = ref("");
+const id2 = ref("");
 
 const compare = ref(false);
 
@@ -297,5 +302,8 @@ const getCompare = async () => {
 
   submitted1.value = user1.value;
   submitted2.value = user2.value;
+
+  id1.value = data.id1;
+  id2.value = data.id2;
 };
 </script>

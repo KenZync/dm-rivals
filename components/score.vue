@@ -1,7 +1,11 @@
 <template>
   <div v-if="submitted">
     <div class="text-center mb-2 text-stone-200 font-medium">
-      {{ submitted }}'s Win : {{ filteredCompareData.length }} scores
+      <a
+        class="hover:underline hover:text-blue-500"
+        :href="'https://dpjam.net/player-scoreboard/' + userID + '/2'"
+        >{{ submitted }}</a
+      >'s Win : {{ filteredCompareData.length }} scores
     </div>
     <table
       class="border border-gray-300 divide-y divide-gray-300 text-stone-200"
@@ -73,6 +77,7 @@
 
 <script setup>
 const props = defineProps({
+  userID:String,
   submitted: String,
   filteredCompareData: Object,
   color: String,
