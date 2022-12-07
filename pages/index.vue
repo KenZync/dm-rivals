@@ -184,7 +184,7 @@ useHead({
   meta: [{ name: "description", content: "O2Jam score comparison" }],
 });
 
-
+const router = useRouter();
 const route = useRoute()
 
 const fetching = ref(false);
@@ -193,7 +193,7 @@ const user2 = ref(route.query.user2 || '');
 
 
 onMounted(()=>{
-  if(user1 || user2){
+  if(user1.value || user2.value){
     getCompare();
   }
 })
@@ -216,8 +216,6 @@ const lowestFirst = ref(false);
 
 const search = ref("");
 
-// console.log(route.query.user1)
-// console.log(route.query.user2)
 
 const toggleSortTime = () => {
   oldestFirst.value = !oldestFirst.value;
@@ -289,6 +287,8 @@ const filterData = (data) => {
 };
 
 const getCompare = async () => {
+  router.replace({query: { user1: user1.value, user2: user2.value }})
+
   fetching.value = true;
   const data = await $fetch(
     `/api/compare?user1=${encodeURIComponent(
@@ -318,5 +318,7 @@ const getCompare = async () => {
 
   id1.value = data.id1;
   id2.value = data.id2;
+
+
 };
 </script>
