@@ -193,7 +193,7 @@ const user2 = ref(route.query.user2 || '');
 
 
 onMounted(()=>{
-  if(user1.value || user2.value){
+  if(user1.value.length || user2.value.length){
     getCompare();
   }
 })
