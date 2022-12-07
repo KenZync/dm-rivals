@@ -36,7 +36,7 @@
             <span
               class="hover:underline hover:text-blue-500 cursor-pointer"
               :class="fetching ? 'cursor-wait' : 'cursor-pointer'"
-              @click="getScore(userID, score.ID, score.Title)"
+              @click="fetching ? null : getScore(userID, score.ID, score.Title)"
               >{{ score.Acc }}</span
             >
           </td>
