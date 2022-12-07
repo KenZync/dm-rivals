@@ -9,7 +9,7 @@
       <tr :class="color">
         <th>{{ submitted }}'s Rank</th>
         <th>Title</th>
-        <th>Acc</th>
+        <th>Accuracy</th>
         <th>Progress</th>
         <th>Clear</th>
         <th>Level</th>
