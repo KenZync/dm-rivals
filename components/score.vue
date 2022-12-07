@@ -32,7 +32,14 @@
               >{{ score.Title }}</a
             >
           </td>
-          <td>{{ score.Acc }}</td>
+          <td>
+            <span
+              class="hover:underline hover:text-blue-500 cursor-pointer"
+              :class="fetching ? 'cursor-wait' : 'cursor-pointer'"
+              @click="getScore(userID, score.ID, score.Title)"
+              >{{ score.Acc }}</span
+            >
+          </td>
           <td>
             <span
               class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
@@ -77,11 +84,13 @@
 
 <script setup>
 const props = defineProps({
-  userID:String,
+  userID: String,
   submitted: String,
   filteredCompareData: Object,
   color: String,
 });
+
+const fetching = ref(false);
 
 const convertTime = (time) => {
   return $dayjs.tz(time, "Asia/Seoul").local().format("D MMM YYYY HH:mm:ss");
@@ -113,6 +122,56 @@ const progressColor = (rank) => {
       return "";
   }
 };
-</script>
 
-<style lang="scss" scoped></style>
+const getScore = async (userID, songID, songTitle) => {
+  fetching.value = true;
+
+  const data = await $fetch(
+    `/api/score?userID=${encodeURIComponent(
+      userID
+    )}&songID=${encodeURIComponent(songID)}`
+  )
+    .catch((error) => {
+      if (error.status === 404) {
+        alert(error.data.statusMessage);
+      } else {
+        alert("ERROR TRY AGAIN");
+      }
+      return;
+    })
+    .finally(() => (fetching.value = false));
+
+  if (!data) {
+    return;
+  }
+
+  alert(
+    // "Rank : " +
+    //   data.Rank + " PlayTime : " + data.PlayTime +
+    //   "\n" +
+    "Song : " +
+      songTitle +
+      "\nPlayer : " +
+      data.Name +
+      "\nCool : " +
+      data.Cool +
+      "\nGood : " +
+      data.Good +
+      "\nBad : " +
+      data.Bad +
+      "\nMiss : " +
+      data.Miss +
+      "\nMaxCombo : " +
+      data.MaxCombo
+    // "\n" +
+    // "Acc : " +
+    // data.Acc +
+    // "\n" +
+    // "Progress : " +
+    // data.Progress +
+    // "\n" +
+    // "Clear : " +
+    // data.Clear
+  );
+};
+</script>

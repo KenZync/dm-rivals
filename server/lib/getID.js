@@ -11,7 +11,7 @@ export const getID = (ranking, reqName) => {
         if (decodeURIComponent(reqName) == $(name).text()) {
           const id = $(name).attr("href").match(/\d+/)[0];
           finalID = id;
-          return;
+          return false;
         }
       });
   });
