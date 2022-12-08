@@ -10,7 +10,7 @@
     <table
       class="border border-gray-300 divide-y divide-gray-300 text-stone-200"
     >
-      <tr :class="(color == 'blue' ? 'bg-blue-900' : 'bg-red-900')">
+      <tr :class="color == 'blue' ? 'bg-blue-900' : 'bg-red-900'">
         <th>{{ submitted }}'s Rank</th>
         <th>Title</th>
         <th>Accuracy</th>
@@ -32,12 +32,31 @@
               >{{ score.Title }}</a
             >
           </td>
-          <td>
+          <td :class="score.AccRival ? 'flex flex-col' : ''">
             <span
-              class="hover:underline hover:text-blue-500 cursor-pointer"
-              :class="fetching ? 'cursor-wait' : 'cursor-pointer'"
+              class="hover:underline"
+              :class="[
+                fetching ? 'cursor-wait' : 'cursor-pointer',
+                color == 'blue'
+                  ? 'text-blue-200 hover:text-blue-500'
+                  : 'text-red-200 hover:text-red-500',
+              ]"
               @click="fetching ? null : getScore(userID, score.ID, score.Title)"
               >{{ score.Acc }}</span
+            >
+            <span
+              v-if="score.AccRival"
+              class="hover:underline"
+              :class="[
+                fetching ? 'cursor-wait' : 'cursor-pointer',
+                color == 'red'
+                  ? 'text-blue-200 hover:text-blue-500'
+                  : 'text-red-200 hover:text-red-500',
+              ]"
+              @click="
+                fetching ? null : getScore(rivalID, score.ID, score.Title)
+              "
+              >{{ score.AccRival }}</span
             >
           </td>
           <td>
@@ -57,8 +76,12 @@
           <td>{{ score.Level }}</td>
           <td :class="score.PlayTime2 ? 'flex flex-col' : ''">
             <span
-              class="group relative inline-block  duration-300"
-              :class="(color == 'blue' ? 'text-blue-200 hover:text-blue-500' : 'text-red-200 hover:text-red-500')"
+              class="group relative inline-block duration-300"
+              :class="
+                color == 'blue'
+                  ? 'text-blue-200 hover:text-blue-500'
+                  : 'text-red-200 hover:text-red-500'
+              "
             >
               {{ convertTimeFromNow(score.PlayTime) }}
               <span
@@ -68,7 +91,11 @@
             </span>
             <span
               class="group relative inline-block duration-300"
-              :class="(color == 'red' ? 'text-blue-200 hover:text-blue-500' : 'text-red-200 hover:text-red-500')"
+              :class="
+                color == 'red'
+                  ? 'text-blue-200 hover:text-blue-500'
+                  : 'text-red-200 hover:text-red-500'
+              "
               v-if="score.PlayTime2"
             >
               {{ convertTimeFromNow(score.PlayTime2) }}
@@ -87,6 +114,7 @@
 <script setup>
 const props = defineProps({
   userID: String,
+  rivalID: String,
   submitted: String,
   filteredCompareData: Object,
   color: String,
@@ -148,9 +176,10 @@ const getScore = async (userID, songID, songTitle) => {
   }
 
   alert(
-    // "Rank : " +
-    //   data.Rank + " PlayTime : " + data.PlayTime +
-    //   "\n" +
+    "Rank : " +
+      data.Rank + 
+      // " PlayTime : " + data.PlayTime +
+      "\n" +
     "Song : " +
       songTitle +
       "\nPlayer : " +

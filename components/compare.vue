@@ -2,12 +2,14 @@
   <div class="flex space-x-2 overflow-auto pt-4">
     <score
       :userID="id1"
+      :rivalID="id2"
       :submitted="submitted1"
       :filtered-compare-data="filteredCompareData1"
       color="blue"
     ></score>
     <score
       :userID="id2"
+      :rivalID="id1"
       :submitted="submitted2"
       :filtered-compare-data="filteredCompareData2"
       color="red"
