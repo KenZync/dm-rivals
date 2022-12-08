@@ -10,7 +10,7 @@
     <table
       class="border border-gray-300 divide-y divide-gray-300 text-stone-200"
     >
-      <tr :class="(color == 'blue' ? 'bg-gray-900' : 'bg-red-900')">
+      <tr :class="(color == 'blue' ? 'bg-blue-900' : 'bg-red-900')">
         <th>{{ submitted }}'s Rank</th>
         <th>Title</th>
         <th>Accuracy</th>
