@@ -4,13 +4,13 @@
       :userID="id1"
       :submitted="submitted1"
       :filtered-compare-data="filteredCompareData1"
-      color="bg-gray-900"
+      color="blue"
     ></score>
     <score
       :userID="id2"
       :submitted="submitted2"
       :filtered-compare-data="filteredCompareData2"
-      color="bg-red-900"
+      color="red"
     ></score>
   </div>
 </template>

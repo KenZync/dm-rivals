@@ -10,7 +10,7 @@
     <table
       class="border border-gray-300 divide-y divide-gray-300 text-stone-200"
     >
-      <tr :class="color">
+      <tr :class="(color == 'blue' ? 'bg-gray-900' : 'bg-red-900')">
         <th>{{ submitted }}'s Rank</th>
         <th>Title</th>
         <th>Accuracy</th>
@@ -57,7 +57,8 @@
           <td>{{ score.Level }}</td>
           <td :class="score.PlayTime2 ? 'flex flex-col' : ''">
             <span
-              class="group relative inline-block text-blue-200 hover:text-blue-500 duration-300"
+              class="group relative inline-block  duration-300"
+              :class="(color == 'blue' ? 'text-blue-200 hover:text-blue-500' : 'text-red-200 hover:text-red-500')"
             >
               {{ convertTimeFromNow(score.PlayTime) }}
               <span
@@ -66,7 +67,8 @@
               >
             </span>
             <span
-              class="group relative inline-block text-red-200 hover:text-red-500 duration-300"
+              class="group relative inline-block duration-300"
+              :class="(color == 'red' ? 'text-blue-200 hover:text-blue-500' : 'text-red-200 hover:text-red-500')"
               v-if="score.PlayTime2"
             >
               {{ convertTimeFromNow(score.PlayTime2) }}
