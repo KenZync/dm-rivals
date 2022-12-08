@@ -28,7 +28,7 @@ export const getCompare = async (scoreSet1, scoreSet2, id1, id2) => {
         found = true;
         if (parseInt(score2.Rank) < parseInt(score1.Rank)) {
           score2.Rank = score2.Rank + "|" + score1.Rank;
-          score1.AccRival = score1.Acc
+          score2.AccRival = score1.Acc
           score2.PlayTime2 = score1.PlayTime;
           win2.push(score2);
         }
