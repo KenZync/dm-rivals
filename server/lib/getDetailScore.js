@@ -5,7 +5,7 @@ export const getDetailScore = async (userID, songID) => {
   const data = await $fetch(url);
   const $ = cheerio.load(data);
   let score;
-  const sel = "div.table-responsive-lg > table > tbody > tr";
+  const sel = "table > tbody > tr";
 
   $(sel).each((index, element) => {
     const tds = $(element).find("td");

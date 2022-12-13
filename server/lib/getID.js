@@ -2,7 +2,7 @@ import * as cheerio from "cheerio";
 
 export const getID = (ranking, reqName) => {
   const $ = cheerio.load(ranking);
-  const sel = "div.table-responsive-lg > table > tbody > tr";
+  const sel = "table > tbody > tr";
   let finalID = 0;
   $(sel).each(function () {
     $(this)

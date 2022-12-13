@@ -5,7 +5,7 @@ export const getScore = async (id) => {
   const data = await $fetch(url);
   const $ = cheerio.load(data);
   const musics = [];
-  const sel = "div.table-responsive-lg > table > tbody > tr";
+  const sel = "table > tbody > tr";
   const keys = [
     "ID",
     "Title",

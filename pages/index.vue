@@ -66,7 +66,7 @@
       </form>
 
       <div v-if="compare">
-        <SwitchGroup as="div" class="flex items-center pt-4">
+        <SwitchGroup as="div" class="flex items-center pt-4" v-if="submitted1 && submitted2">
           <Switch
             v-if="compare"
             v-model="bothPlayed"
