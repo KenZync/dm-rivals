@@ -10,14 +10,49 @@
     <table
       class="border border-gray-300 divide-y divide-gray-300 text-stone-200"
     >
-      <tr :class="color == 'blue' ? 'bg-blue-900' : 'bg-red-900'">
-        <th>{{ submitted }}'s Rank</th>
-        <th>Title</th>
-        <th>Accuracy</th>
-        <th>Progress</th>
-        <th>Clear</th>
-        <th>Level</th>
-        <th class="px-6">PlayTime</th>
+      <tr>
+        <th
+          class="sticky top-0 z-10"
+          :class="color == 'blue' ? 'bg-blue-900' : 'bg-red-900'"
+        >
+          {{ submitted }}'s Rank
+        </th>
+        <th
+          class="sticky top-0 z-10"
+          :class="color == 'blue' ? 'bg-blue-900' : 'bg-red-900'"
+        >
+          Title
+        </th>
+        <th
+          class="sticky top-0 z-10"
+          :class="color == 'blue' ? 'bg-blue-900' : 'bg-red-900'"
+        >
+          Accuracy
+        </th>
+        <th
+          class="sticky top-0 z-10"
+          :class="color == 'blue' ? 'bg-blue-900' : 'bg-red-900'"
+        >
+          Progress
+        </th>
+        <th
+          class="sticky top-0 z-10"
+          :class="color == 'blue' ? 'bg-blue-900' : 'bg-red-900'"
+        >
+          Clear
+        </th>
+        <th
+          class="sticky top-0 z-10"
+          :class="color == 'blue' ? 'bg-blue-900' : 'bg-red-900'"
+        >
+          Level
+        </th>
+        <th
+          class="sticky top-0 px-6 z-10"
+          :class="color == 'blue' ? 'bg-blue-900' : 'bg-red-900'"
+        >
+          PlayTime
+        </th>
       </tr>
       <tbody>
         <tr
@@ -177,10 +212,10 @@ const getScore = async (userID, songID, songTitle) => {
 
   alert(
     "Rank : " +
-      data.Rank + 
+      data.Rank +
       // " PlayTime : " + data.PlayTime +
       "\n" +
-    "Song : " +
+      "Song : " +
       songTitle +
       "\nPlayer : " +
       data.Name +
