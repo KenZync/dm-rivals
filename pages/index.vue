@@ -3,7 +3,8 @@
     <div class="container mx-auto">
       <div class="pt-8 text-center text-stone-200">
         <span class="text-5xl">DMJam Rival System</span>
-        <span class="pl-2 text-sm">by KenZ</span>
+        <span class="pl-2 text-sm">
+          <NuxtLink to="/o2jam-viewer">by KenZ</NuxtLink></span>
       </div>
       <form>
         <div class="md:flex md:space-x-2">
