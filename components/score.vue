@@ -25,93 +25,95 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          class="text-center even:bg-zinc-800 odd:bg-zinc-900"
-          v-for="score in filteredCompareData"
-        >
-          <td class="py-4">{{ score.Rank }}</td>
-          <td>
-            <a
-              class="hover:underline hover:text-blue-500"
-              :href="'https://dpjam.net/music-scoreboard/' + score.ID"
-              >{{ score.Title }}</a
-            >
-          </td>
-          <td :class="score.AccRival ? 'flex flex-col' : ''">
-            <span
-              class="hover:underline"
-              :class="[
-                fetching ? 'cursor-wait' : 'cursor-pointer',
-                color == 'blue'
-                  ? 'text-blue-200 hover:text-blue-500'
-                  : 'text-red-200 hover:text-red-500',
-              ]"
-              @click="fetching ? null : getScore(userID, score.ID, score.Title)"
-              >{{ score.Acc }}</span
-            >
-            <span
-              v-if="score.AccRival"
-              class="hover:underline"
-              :class="[
-                fetching ? 'cursor-wait' : 'cursor-pointer',
-                color == 'red'
-                  ? 'text-blue-200 hover:text-blue-500'
-                  : 'text-red-200 hover:text-red-500',
-              ]"
-              @click="
-                fetching ? null : getScore(rivalID, score.ID, score.Title)
-              "
-              >{{ score.AccRival }}</span
-            >
-          </td>
-          <td>
-            <span
-              class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
-              :class="progressColor(score.Progress)"
-              >{{ score.Progress }}</span
-            >
-          </td>
-          <td>
-            <span
-              class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
-              :class="clearColor(score.Clear)"
-              >{{ score.Clear }}</span
-            >
-          </td>
-          <td>{{ score.Level }}</td>
-          <td :class="score.PlayTime2 ? 'flex flex-col' : ''">
-            <span
-              class="group relative inline-block duration-300"
-              :class="
-                color == 'blue'
-                  ? 'text-blue-200 hover:text-blue-500'
-                  : 'text-red-200 hover:text-red-500'
-              "
-              v-if="score.Clear != '-----'"
-            >
-              {{ convertTimeFromNow(score.PlayTime) }}
-              <span
-                class="absolute hidden group-hover:flex -left-5 -top-2 -translate-y-full w-32 px-2 py-1 bg-gray-700 rounded-lg text-center text-white after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700 z-20"
-                >{{ convertTime(score.PlayTime) }}</span
+        <template v-for="score in filteredCompareData">
+          <tr class="text-center " :class="score.Win ? 'bg-green-800':'even:bg-zinc-800 odd:bg-zinc-900'">
+            <td class="py-4">{{ score.Rank }}</td>
+            <td>
+              <a
+                class="hover:underline hover:text-blue-500"
+                :href="'https://dpjam.net/music-scoreboard/' + score.ID"
+                >{{ score.Title }}</a
               >
-            </span>
-            <span
-              class="group relative inline-block duration-300"
-              :class="
-                color == 'red'
-                  ? 'text-blue-200 hover:text-blue-500'
-                  : 'text-red-200 hover:text-red-500'
-              "
-              v-if="score.PlayTime2"
-            >
-              {{ convertTimeFromNow(score.PlayTime2) }}
+            </td>
+            <td :class="score.AccRival ? 'flex flex-col' : ''">
               <span
-                class="absolute hidden group-hover:flex -left-5 -top-2 -translate-y-full w-32 px-2 py-1 bg-gray-700 rounded-lg text-center text-white after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700 z-20"
-                >{{ convertTime(score.PlayTime2) }}</span
+                class="hover:underline"
+                :class="[
+                  fetching ? 'cursor-wait' : 'cursor-pointer',
+                  color == 'blue'
+                    ? 'text-blue-200 hover:text-blue-500'
+                    : 'text-red-200 hover:text-red-500',
+                ]"
+                @click="
+                  fetching ? null : getScore(userID, score.ID, score.Title)
+                "
+                >{{ score.Acc }}</span
               >
-            </span>
-          </td>
-        </tr>
+              <span
+                v-if="score.AccRival"
+                class="hover:underline"
+                :class="[
+                  fetching ? 'cursor-wait' : 'cursor-pointer',
+                  color == 'red'
+                    ? 'text-blue-200 hover:text-blue-500'
+                    : 'text-red-200 hover:text-red-500',
+                ]"
+                @click="
+                  fetching ? null : getScore(rivalID, score.ID, score.Title)
+                "
+                >{{ score.AccRival }}</span
+              >
+            </td>
+            <td>
+              <span
+                class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
+                :class="progressColor(score.Progress)"
+                >{{ score.Progress }}</span
+              >
+            </td>
+            <td>
+              <span
+                class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
+                :class="clearColor(score.Clear)"
+                >{{ score.Clear }}</span
+              >
+            </td>
+            <td>{{ score.Level }}</td>
+            <td :class="score.PlayTime2 ? 'flex flex-col' : ''">
+              <span
+                class="group relative inline-block duration-300"
+                :class="
+                  color == 'blue'
+                    ? 'text-blue-200 hover:text-blue-500'
+                    : 'text-red-200 hover:text-red-500'
+                "
+                v-if="score.Clear != '-----'"
+              >
+                {{ convertTimeFromNow(score.PlayTime) }}
+                <span
+                  class="absolute hidden group-hover:flex -left-5 -top-2 -translate-y-full w-32 px-2 py-1 bg-gray-700 rounded-lg text-center text-white after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700 z-20"
+                  >{{ convertTime(score.PlayTime) }}</span
+                >
+              </span>
+              <span
+                class="group relative inline-block duration-300"
+                :class="
+                  color == 'red'
+                    ? 'text-blue-200 hover:text-blue-500'
+                    : 'text-red-200 hover:text-red-500'
+                "
+                v-if="score.PlayTime2"
+              >
+                {{ convertTimeFromNow(score.PlayTime2) }}
+                <span
+                  class="absolute hidden group-hover:flex -left-5 -top-2 -translate-y-full w-32 px-2 py-1 bg-gray-700 rounded-lg text-center text-white after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700 z-20"
+                  >{{ convertTime(score.PlayTime2) }}</span
+                >
+              </span>
+            </td>
+          </tr>
+        </template>
+
       </tbody>
     </table>
   </div>
@@ -166,12 +168,11 @@ const clearColor = (clear) => {
     case "Failed":
       return "bg-red-800";
     case "-----":
-    return "bg-gray-600";
+      return "bg-gray-600";
     default:
       return "";
   }
 };
-
 
 const getScore = async (userID, songID, songTitle) => {
   fetching.value = true;

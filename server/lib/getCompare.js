@@ -8,8 +8,8 @@ export const getCompare = async (scoreSet1, scoreSet2, id1, id2, songLists) => {
 
   let data = {};
   if (id1 && id2) {
-    let win1 = compareScores(scoreSet1, scoreSet2);
-    let win2 = compareScores(scoreSet2, scoreSet1);
+    let win1 = compareScores(scoreSet1, scoreSet2, songLists);
+    let win2 = compareScores(scoreSet2, scoreSet1, songLists);
 
     if (songLists) {
       win1 = addAllSongs(win1, songLists);
@@ -34,45 +34,49 @@ export const getCompare = async (scoreSet1, scoreSet2, id1, id2, songLists) => {
   return data;
 };
 
-function compareScores(scoreSet1, scoreSet2) {
+function compareScores(scoreSet1, scoreSet2,songLists) {
   let win = [];
 
-  scoreSet1.forEach((score1) => {
-    let found = false;
-    scoreSet2.forEach((score2) => {
-      if (score1.ID === score2.ID) {
-        found = true;
-        if (parseInt(score1.Rank) < parseInt(score2.Rank)) {
-          score1.Rank = score1.Rank + "|" + score2.Rank;
-          score1.AccRival = score2.Acc;
-          score1.PlayTime2 = score2.PlayTime;
-          win.push(score1);
-        }
-      }
-    });
-    if (!found) {
-      win.push(score1);
-    }
-  });
-
-  // // Create a hash map of the scores in scoreSet2
-  // const scores2Map = new Map();
-  // scoreSet2.forEach((score2) => {
-  //   scores2Map.set(score2.ID, score2);
-  // });
-
-  // // Iterate through the scores in scoreSet1 and compare them to the scores in scoreSet2
   // scoreSet1.forEach((score1) => {
-  //   const score2 = scores2Map.get(score1.ID);
-  //   if (score2 && parseInt(score1.Rank) < parseInt(score2.Rank)) {
-  //     score1.Rank = score1.Rank + "|" + score2.Rank;
-  //     score1.AccRival = score2.Acc;
-  //     score1.PlayTime2 = score2.PlayTime;
-  //     win.push(score1);
-  //   } else {
+  //   let found = false;
+  //   scoreSet2.forEach((score2) => {
+  //     if (score1.ID === score2.ID) {
+  //       found = true;
+  //       if (parseInt(score1.Rank) < parseInt(score2.Rank)) {
+  //         score1.Rank = score1.Rank + "|" + score2.Rank;
+  //         score1.AccRival = score2.Acc;
+  //         score1.PlayTime2 = score2.PlayTime;
+  //         win.push(score1);
+  //       }
+  //     }
+  //   });
+  //   if (!found) {
   //     win.push(score1);
   //   }
   // });
+
+  // Create a hash map of the scores in scoreSet2
+  const scores2Map = new Map();
+  scoreSet2.forEach((score2) => {
+    scores2Map.set(score2.ID, score2);
+  });
+
+  // Iterate through the scores in scoreSet1 and compare them to the scores in scoreSet2
+  scoreSet1.forEach((score1) => {
+    const score2 = scores2Map.get(score1.ID);
+    if (score2 && parseInt(score1.Rank) < parseInt(score2.Rank)) {
+      if(songLists){
+        score1.Win = true
+      }else{
+        score1.Rank = score1.Rank + "|" + score2.Rank;
+        score1.AccRival = score2.Acc;
+        score1.PlayTime2 = score2.PlayTime;
+      }
+      win.push(score1);
+    } else {
+      win.push(score1);
+    }
+  });
 
   // if (songLists) {
   //   const result = songLists.map((music) => {
