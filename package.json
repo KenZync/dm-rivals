@@ -13,7 +13,7 @@
     "nuxt": "3.0.0"
   },
   "dependencies": {
-    "@headlessui/vue": "^1.7.4",
+    "@headlessui/vue": "^1.7.6",
     "blob-to-buffer": "^1.2.9",
     "cheerio": "^1.0.0-rc.12",
     "dayjs": "^1.11.7",
