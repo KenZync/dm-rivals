@@ -1,5 +1,5 @@
 <template>
-  <div class="flex space-x-2 pt-4">
+  <div class="flex space-x-2 pt-4 overflow-auto h-screen">
     <score
       :userID="id1"
       :rivalID="id2"
