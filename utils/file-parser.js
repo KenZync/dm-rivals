@@ -1,6 +1,6 @@
 // import OsuParser from '../plugins/osu-parser'
-import OJNParser from "../plugins/ojn-parser";
-import OJMParser from "../plugins/ojm-parser";
+import OJNParser from "./ojn-parser";
+import OJMParser from "./ojm-parser";
 // import BeatmaniaParser from '../plugins/beatmania-parser'
 // import StepmaniaParser from '../plugins/stepmania-parser'
 // import * as fflate from 'fflate';

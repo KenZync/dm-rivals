@@ -77,7 +77,7 @@
 
 <script setup>
 import _ from "struct-fu";
-import FileParser from "../plugins/file-parser";
+import FileParser from "../utils/file-parser";
 
 useHead({
   title: "OJN/OJM Viewer",
