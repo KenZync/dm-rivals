@@ -133,7 +133,7 @@
             >
           </SwitchLabel>
         </SwitchGroup>
-        <div class="space-x-2">
+        <div class="space-x-2 mb-4">
           <div class="inline-flex mt-1 rounded-md shadow-sm">
             <span
               class="inline-flex items-center rounded-l-md border border-r-0 border-gray-600 bg-zinc-800 px-3 text-stone-200 sm:text-sm"
