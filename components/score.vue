@@ -29,7 +29,7 @@
           class="text-center even:bg-zinc-800 odd:bg-zinc-900"
           v-for="score in filteredCompareData"
         >
-          <td class="py-3">{{ score.Rank }}</td>
+          <td class="py-4">{{ score.Rank }}</td>
           <td>
             <a
               class="hover:underline hover:text-blue-500"
@@ -74,7 +74,7 @@
           <td>
             <span
               class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
-              :class="score.Clear == 'Cleared' ? 'bg-green-800' : 'bg-red-800'"
+              :class="clearColor(score.Clear)"
               >{{ score.Clear }}</span
             >
           </td>
@@ -87,6 +87,7 @@
                   ? 'text-blue-200 hover:text-blue-500'
                   : 'text-red-200 hover:text-red-500'
               "
+              v-if="score.Clear != '-----'"
             >
               {{ convertTimeFromNow(score.PlayTime) }}
               <span
@@ -157,6 +158,20 @@ const progressColor = (rank) => {
       return "";
   }
 };
+
+const clearColor = (clear) => {
+  switch (clear) {
+    case "Cleared":
+      return "bg-green-800";
+    case "Failed":
+      return "bg-red-800";
+    case "-----":
+    return "bg-gray-600";
+    default:
+      return "";
+  }
+};
+
 
 const getScore = async (userID, songID, songTitle) => {
   fetching.value = true;

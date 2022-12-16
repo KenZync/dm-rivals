@@ -59,10 +59,79 @@
                 @click="getCompare"
                 class="mt-1 inline-flex items-center rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               >
-                Compare
+                Search / Compare
               </button>
             </div>
           </div>
+
+          <SwitchGroup as="div" class="flex items-center pt-6" >
+
+            <Switch
+            v-model="allSongs"
+            :class="[
+              allSongs ? 'bg-blue-600' : 'bg-gray-200',
+              'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+            ]"
+          >
+            <span class="sr-only">All Song Settings</span>
+            <span
+              :class="[
+                allSongs ? 'translate-x-5' : 'translate-x-0',
+                'pointer-events-none relative inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
+              ]"
+            >
+              <span
+                :class="[
+                  allSongs
+                    ? 'opacity-0 ease-out duration-100'
+                    : 'opacity-100 ease-in duration-200',
+                  'absolute inset-0 flex h-full w-full items-center justify-center transition-opacity',
+                ]"
+                aria-hidden="true"
+              >
+                <svg
+                  class="h-3 w-3 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 12 12"
+                >
+                  <path
+                    d="M4 8l2-2m0 0l2-2M6 6L4 4m2 2l2 2"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <span
+                :class="[
+                  allSongs
+                    ? 'opacity-100 ease-in duration-200'
+                    : 'opacity-0 ease-out duration-100',
+                  'absolute inset-0 flex h-full w-full items-center justify-center transition-opacity',
+                ]"
+                aria-hidden="true"
+              >
+                <svg
+                  class="h-3 w-3 text-blue-600"
+                  fill="currentColor"
+                  viewBox="0 0 12 12"
+                >
+                  <path
+                    d="M3.707 5.293a1 1 0 00-1.414 1.414l1.414-1.414zM5 8l-.707.707a1 1 0 001.414 0L5 8zm4.707-3.293a1 1 0 00-1.414-1.414l1.414 1.414zm-7.414 2l2 2 1.414-1.414-2-2-1.414 1.414zm3.414 2l4-4-1.414-1.414-4 4 1.414 1.414z"
+                  />
+                </svg>
+              </span>
+            </span>
+          </Switch>
+          <SwitchLabel as="span" class="ml-3">
+            <span class="text-sm font-medium text-stone-200"
+              >Show All Songs</span
+            >
+          </SwitchLabel>
+          </SwitchGroup>
+
+
         </div>
       </form>
 
@@ -190,6 +259,7 @@ const route = useRoute()
 
 const user1 = ref(route.query.user1 || '');
 const user2 = ref(route.query.user2 || '');
+const allSongs = ref(JSON.parse(route.query.allSongs || false));
 
 
 onMounted(()=>{
@@ -216,6 +286,7 @@ const oldestFirst = ref(false);
 const lowestFirst = ref(false);
 
 const search = ref("");
+
 
 
 const toggleSortTime = () => {
@@ -288,13 +359,13 @@ const filterData = (data) => {
 };
 
 const getCompare = async () => {
-  router.replace({query: { user1: user1.value, user2: user2.value }})
+  router.replace({query: { user1: user1.value, user2: user2.value, allSongs: allSongs.value}})
 
   fetching.value = true;
   const data = await $fetch(
     `/api/compare?user1=${encodeURIComponent(
       user1.value
-    )}&user2=${encodeURIComponent(user2.value)}`
+    )}&user2=${encodeURIComponent(user2.value)}&allSongs=${allSongs.value}`
   )
     .catch((error) => {
       if (error.status === 404) {
