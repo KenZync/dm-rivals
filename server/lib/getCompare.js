@@ -1,11 +1,4 @@
 export const getCompare = async (scoreSet1, scoreSet2, id1, id2, songLists) => {
-  // const result1 = songLists.map(music => {
-  //   const score = userScores.find(s => s.ID === music.ID);
-  //   return score
-  //     ? { score }
-  //     : { ID: music.ID, Title: music.Title, Acc: 0,  Progress:"-", Clear:"-----", Rank: 0, Level:music.Level, PlayTime:"-"};
-  // });
-
   let data = {};
   if (id1 && id2) {
     let win1 = compareScores(scoreSet1, scoreSet2, songLists);
@@ -59,6 +52,7 @@ function compareScores(scoreSet1, scoreSet2,songLists) {
     }
   });
 
+  // Chat GPT WRONG
   // // Create a hash map of the scores in scoreSet2
   // const scores2Map = new Map();
   // scoreSet2.forEach((score2) => {
@@ -81,26 +75,6 @@ function compareScores(scoreSet1, scoreSet2,songLists) {
   //     win.push(score1);
   //   }
   // });
-
-  // if (songLists) {
-  //   const result = songLists.map((music) => {
-  //     const score = scoreSet1.find((s) => s.ID === music.ID);
-  //     return score
-  //       ? score
-  //       : {
-  //           ID: music.ID,
-  //           Title: music.Title,
-  //           Acc: "-",
-  //           Progress: "-",
-  //           Clear: "-----",
-  //           Rank: "-",
-  //           Level: music.Level,
-  //           PlayTime: 0,
-  //         };
-  //   });
-  //   return result;
-  // }
-
   return win;
 }
 
