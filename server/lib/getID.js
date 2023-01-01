@@ -7,7 +7,7 @@ export const getID = (ranking, reqName) => {
   $(sel)
     .find("a")
     .each(function (i, name) {
-      if (decodeURIComponent(reqName) == $(name).text()) {
+      if (decodeURIComponent(reqName).toLowerCase() == $(name).text().toLowerCase()) {
         const id = $(name).attr("href").split("/").pop();
         finalID = id;
         return false;
