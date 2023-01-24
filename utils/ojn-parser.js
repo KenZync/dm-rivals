@@ -342,6 +342,8 @@ function OJNParser(hitSounds) {
     data.header.coverOffset = dataview.getInt32(cursor, true);
     cursor += 4
 
+    console.log(data)
+
     // cursor = data.header.coverOffset
     // data.image = 'data:image/png;base64,' + Buffer.from(buffer.slice(cursor, cursor + data.header.coverSize)).toString('base64')
     

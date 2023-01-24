@@ -3,7 +3,7 @@
     <div class="text-center mb-2 text-stone-200 font-medium">
       <a
         class="hover:underline hover:text-blue-500"
-        :href="'https://dpjam.net/player-scoreboard/' + userID + '/2'"
+        :href="'https://dmjam.net/player-scoreboard/' + userID + '/2'"
         >{{ submitted }}</a
       >'s Win : {{ filteredCompareData.length }} scores
     </div>
@@ -31,7 +31,7 @@
             <td>
               <a
                 class="hover:underline hover:text-blue-500"
-                :href="'https://dpjam.net/music-scoreboard/' + score.ID"
+                :href="'https://dmjam.net/music-scoreboard/' + score.ID"
                 >{{ score.Title }}</a
               >
             </td>

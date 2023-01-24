@@ -1,7 +1,7 @@
 import * as cheerio from "cheerio";
 
 export const getDetailScore = async (userID, songID) => {
-  const url = "https://dpjam.net/music-scoreboard/" + songID;
+  const url = "https://dmjam.net/music-scoreboard/" + songID;
   const data = await $fetch(url);
   const $ = cheerio.load(data);
   let score;

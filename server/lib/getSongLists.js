@@ -1,7 +1,7 @@
 import * as cheerio from "cheerio";
 
 export const getSongLists = async () => {
-  const data = await $fetch(`https://dpjam.net/music?keyword=&option=0&level-min=&level-max=`);
+  const data = await $fetch(`https://dmjam.net/music?keyword=&option=0&level-min=&level-max=`);
 
   const $ = cheerio.load(data);
   const musics = [];
