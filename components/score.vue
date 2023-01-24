@@ -67,15 +67,15 @@
             <td>
               <span
                 class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
-                :class="progressColor(score.Progress)"
-                >{{ score.Progress }}</span
+                :class="progressColor(score.Clear)"
+                >{{ score.Clear }}</span
               >
             </td>
             <td>
               <span
                 class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
-                :class="clearColor(score.Clear)"
-                >{{ score.Clear }}</span
+                :class="clearColor(score.Progress)"
+                >{{ score.Progress }}</span
               >
             </td>
             <td>{{ score.Level }}</td>
