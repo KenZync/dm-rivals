@@ -10,10 +10,11 @@
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.2.0",
     "@tailwindcss/forms": "^0.5.3",
-    "nuxt": "3.1.0"
+    "nuxt": "^3.3.3"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.7",
+    "@nuxtjs/supabase": "^0.3.5",
     "blob-to-buffer": "^1.2.9",
     "cheerio": "^1.0.0-rc.12",
     "dayjs": "^1.11.7",

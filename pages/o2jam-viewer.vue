@@ -6,7 +6,7 @@
           <div class="pt-8 text-center text-stone-200">
             <span class="text-5xl">O2Jam OJN/OJM Viewer</span>
             <span class="pl-2 text-sm">
-              <NuxtLink to="/">go back</NuxtLink></span
+              <NuxtLink to="/compare">go back</NuxtLink></span
             >
           </div>
           <label
