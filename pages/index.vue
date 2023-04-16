@@ -4,7 +4,8 @@
       <div class="pt-8 text-center text-stone-200">
         <span class="text-5xl">DMJam Rival System</span>
         <span class="pl-2 text-sm">
-          <NuxtLink to="/o2jam-viewer">by KenZ</NuxtLink></span>
+          <NuxtLink to="/o2jam-viewer">by KenZ</NuxtLink></span
+        >
       </div>
       <form>
         <div class="md:flex md:space-x-2">
@@ -64,79 +65,80 @@
             </div>
           </div>
 
-          <SwitchGroup as="div" class="flex items-center pt-6" >
-
+          <SwitchGroup as="div" class="flex items-center pt-6">
             <Switch
-            v-model="allSongs"
-            :class="[
-              allSongs ? 'bg-blue-600' : 'bg-gray-200',
-              'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
-            ]"
-          >
-            <span class="sr-only">All Song Settings</span>
-            <span
+              v-model="allSongs"
               :class="[
-                allSongs ? 'translate-x-5' : 'translate-x-0',
-                'pointer-events-none relative inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
+                allSongs ? 'bg-blue-600' : 'bg-gray-200',
+                'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
               ]"
             >
+              <span class="sr-only">All Song Settings</span>
               <span
                 :class="[
-                  allSongs
-                    ? 'opacity-0 ease-out duration-100'
-                    : 'opacity-100 ease-in duration-200',
-                  'absolute inset-0 flex h-full w-full items-center justify-center transition-opacity',
+                  allSongs ? 'translate-x-5' : 'translate-x-0',
+                  'pointer-events-none relative inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
                 ]"
-                aria-hidden="true"
               >
-                <svg
-                  class="h-3 w-3 text-gray-400"
-                  fill="none"
-                  viewBox="0 0 12 12"
+                <span
+                  :class="[
+                    allSongs
+                      ? 'opacity-0 ease-out duration-100'
+                      : 'opacity-100 ease-in duration-200',
+                    'absolute inset-0 flex h-full w-full items-center justify-center transition-opacity',
+                  ]"
+                  aria-hidden="true"
                 >
-                  <path
-                    d="M4 8l2-2m0 0l2-2M6 6L4 4m2 2l2 2"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
+                  <svg
+                    class="h-3 w-3 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 12 12"
+                  >
+                    <path
+                      d="M4 8l2-2m0 0l2-2M6 6L4 4m2 2l2 2"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+                <span
+                  :class="[
+                    allSongs
+                      ? 'opacity-100 ease-in duration-200'
+                      : 'opacity-0 ease-out duration-100',
+                    'absolute inset-0 flex h-full w-full items-center justify-center transition-opacity',
+                  ]"
+                  aria-hidden="true"
+                >
+                  <svg
+                    class="h-3 w-3 text-blue-600"
+                    fill="currentColor"
+                    viewBox="0 0 12 12"
+                  >
+                    <path
+                      d="M3.707 5.293a1 1 0 00-1.414 1.414l1.414-1.414zM5 8l-.707.707a1 1 0 001.414 0L5 8zm4.707-3.293a1 1 0 00-1.414-1.414l1.414 1.414zm-7.414 2l2 2 1.414-1.414-2-2-1.414 1.414zm3.414 2l4-4-1.414-1.414-4 4 1.414 1.414z"
+                    />
+                  </svg>
+                </span>
               </span>
-              <span
-                :class="[
-                  allSongs
-                    ? 'opacity-100 ease-in duration-200'
-                    : 'opacity-0 ease-out duration-100',
-                  'absolute inset-0 flex h-full w-full items-center justify-center transition-opacity',
-                ]"
-                aria-hidden="true"
+            </Switch>
+            <SwitchLabel as="span" class="ml-3">
+              <span class="text-sm font-medium text-stone-200"
+                >Show All Songs</span
               >
-                <svg
-                  class="h-3 w-3 text-blue-600"
-                  fill="currentColor"
-                  viewBox="0 0 12 12"
-                >
-                  <path
-                    d="M3.707 5.293a1 1 0 00-1.414 1.414l1.414-1.414zM5 8l-.707.707a1 1 0 001.414 0L5 8zm4.707-3.293a1 1 0 00-1.414-1.414l1.414 1.414zm-7.414 2l2 2 1.414-1.414-2-2-1.414 1.414zm3.414 2l4-4-1.414-1.414-4 4 1.414 1.414z"
-                  />
-                </svg>
-              </span>
-            </span>
-          </Switch>
-          <SwitchLabel as="span" class="ml-3">
-            <span class="text-sm font-medium text-stone-200"
-              >Show All Songs</span
-            >
-          </SwitchLabel>
+            </SwitchLabel>
           </SwitchGroup>
-
-
         </div>
       </form>
 
       <div v-if="compare">
-        <SwitchGroup as="div" class="flex items-center pt-4" v-if="submitted1 && submitted2">
+        <SwitchGroup
+          as="div"
+          class="flex items-center pt-4"
+          v-if="submitted1 && submitted2"
+        >
           <Switch
             v-if="compare"
             v-model="bothPlayed"
@@ -252,21 +254,28 @@ import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue";
 useHead({
   title: "DMJam Rival System",
   meta: [{ name: "description", content: "O2Jam score comparison" }],
+  script: [
+    {
+      hid: "adsense",
+      src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9393835297385779",
+      async: true,
+      crossorigin: "anonymous",
+    },
+  ],
 });
 
 const router = useRouter();
-const route = useRoute()
+const route = useRoute();
 
-const user1 = ref(route.query.user1 || '');
-const user2 = ref(route.query.user2 || '');
+const user1 = ref(route.query.user1 || "");
+const user2 = ref(route.query.user2 || "");
 const allSongs = ref(JSON.parse(route.query.allSongs || false));
 
-
-onMounted(()=>{
-  if(user1.value.length || user2.value.length){
+onMounted(() => {
+  if (user1.value.length || user2.value.length) {
     getCompare();
   }
-})
+});
 
 const fetching = ref(false);
 const compare = ref(false);
@@ -286,8 +295,6 @@ const oldestFirst = ref(false);
 const lowestFirst = ref(false);
 
 const search = ref("");
-
-
 
 const toggleSortTime = () => {
   oldestFirst.value = !oldestFirst.value;
@@ -359,7 +366,9 @@ const filterData = (data) => {
 };
 
 const getCompare = async () => {
-  router.replace({query: { user1: user1.value, user2: user2.value, allSongs: allSongs.value}})
+  router.replace({
+    query: { user1: user1.value, user2: user2.value, allSongs: allSongs.value },
+  });
 
   fetching.value = true;
   const data = await $fetch(
@@ -390,7 +399,5 @@ const getCompare = async () => {
 
   id1.value = data.id1;
   id2.value = data.id2;
-
-
 };
 </script>
