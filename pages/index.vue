@@ -1,8 +1,8 @@
 <template>
-  <div class="min-h-screen bg-zinc-900">
+  <div class="bg-zinc-900">
     <div class="container mx-auto">
       <div class="pt-8 text-center text-stone-200">
-        <div v-if="user">Welcome {{ user.user_metadata.name }}</div>
+        <!-- <div v-if="user">Welcome {{ user.user_metadata.name }}</div>
         <div v-else>Welcome to DMJam Rival System by KenZ</div>
         <button
           v-if="!user"
@@ -23,20 +23,20 @@
           class="mt-4 inline-flex items-center rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         >
           Signout
-        </button>
+        </button> -->
         <div class="mt-4 flex flex-col justify-center items-center">
-          <div class="flex space-x-4">
-          <NuxtLink
-            to="/vote"
-            class="rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >Vote Chart Level</NuxtLink
-          >
-          <NuxtLink
-            to="/compare"
-            class="rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >Rival System</NuxtLink
-          >
-        </div>
+          <!-- <div class="flex space-x-4">
+            <NuxtLink
+              to="/compare"
+              class="rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >Rival System</NuxtLink
+            >
+            <NuxtLink
+              to="/vote"
+              class="rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >Vote Chart Level</NuxtLink
+            >
+          </div>
           <div v-if="player">
             <div class="mt-4">DMJam Account Linked</div>
             ID: {{ player.dmjam_id }} Name: {{ player.dmjam_name }}
@@ -99,6 +99,24 @@
                 </button>
               </div>
             </div>
+          </div> -->
+
+          <div class="mt-4">Set Player Name : {{ playerUser }}</div>
+          <div class="flex mt-4 space-x-4">
+            <input
+              v-model="playerUser"
+              type="text"
+              name="search"
+              id="search"
+              class="flex rounded-md border-gray-600 px-3 py-2 text-stone-200 focus:border-blue-500 focus:ring-blue-500 text-sm bg-zinc-700"
+              placeholder="Player"
+            />
+            <button
+              @click="setPlayer"
+              class="rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            >
+              Set
+            </button>
           </div>
         </div>
       </div>
@@ -107,16 +125,22 @@
 </template>
 <script setup lang="ts">
 import { Database } from "../types/supabase";
-
-useHead({
-  title: "DMJam Rival System",
-  meta: [{ name: "description", content: "O2Jam score comparison" }],
-});
 const user = useSupabaseUser();
 const client = useSupabaseClient<Database>();
 const search = ref();
 const fetching = ref(false);
 const playerData = ref();
+const playerUser = ref();
+
+onMounted(() => {
+  if (localStorage.getItem("player")) {
+    try {
+      playerUser.value = localStorage.getItem("player");
+    } catch (e) {
+      localStorage.removeItem("player");
+    }
+  }
+});
 
 const signInWithDiscord = async () => {
   const { data, error } = await client.auth.signInWithOAuth({
@@ -124,8 +148,20 @@ const signInWithDiscord = async () => {
   });
 };
 
+watch(
+  () => user.value,
+  () => {
+    refresh();
+  }
+);
+
 const signout = async () => {
+  player.value = null;
   const { error } = await client.auth.signOut();
+};
+
+const setPlayer = () => {
+  localStorage.setItem("player", playerUser.value);
 };
 
 const getPlayer = async () => {
@@ -157,8 +193,12 @@ const linking = async () => {
     dmjam_id: playerData.value.id,
     dmjam_name: playerData.value.name,
   };
-
   const { error } = await client.from("linking").insert(newProfile);
+  if (!error) {
+    playerUser.value = playerData.value.name;
+    setPlayer();
+  }
+  refresh();
 };
 
 const refresh = () => refreshNuxtData("linking");

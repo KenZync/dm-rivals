@@ -8,7 +8,7 @@
       >'s Win : {{ filteredCompareData.length }} scores
     </div>
     <table
-      class="border border-gray-300 divide-y divide-gray-300 text-stone-200 border-collapse"
+      class="border border-gray-300 divide-y divide-gray-300 text-stone-200 border-separate border-spacing-0"
     >
       <thead
         :class="color == 'blue' ? 'bg-blue-900' : 'bg-red-900'"
@@ -26,8 +26,13 @@
       </thead>
       <tbody>
         <template v-for="score in filteredCompareData">
-          <tr class="text-center " :class="score.Win ? 'bg-green-800':'even:bg-zinc-800 odd:bg-zinc-900'">
-            <td class="py-4">{{ score.Rank }}</td>
+          <tr
+            class="text-center"
+            :class="
+              score.Win ? 'bg-green-800' : 'even:bg-zinc-800 odd:bg-zinc-900'
+            "
+          >
+            <td class="py-3">{{ score.Rank }}</td>
             <td>
               <a
                 class="hover:underline hover:text-blue-500"
@@ -113,7 +118,6 @@
             </td>
           </tr>
         </template>
-
       </tbody>
     </table>
   </div>
@@ -130,6 +134,15 @@ const props = defineProps({
 
 const fetching = ref(false);
 
+const headers = [
+  "rank",
+  "title",
+  "accuracy",
+  "progress",
+  "clear",
+  "level",
+  "playtime",
+];
 const convertTime = (time) => {
   return $dayjs.tz(time, "Asia/Seoul").local().format("D MMM YYYY HH:mm:ss");
 };
