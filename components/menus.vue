@@ -44,7 +44,7 @@
           <span class="sr-only">Your profile</span>
           
           <span v-if="playerUser" aria-hidden="true">{{playerUser}}</span>
-          <span v-else>Please Set Username</span>
+          <span v-else>Click to Set Player Name</span>
         </NuxtLink>
       </li>
     </ul>
