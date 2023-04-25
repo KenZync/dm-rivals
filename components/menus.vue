@@ -28,7 +28,7 @@
         </ul>
       </li>
       <li>
-        <Rivals :player="player" />
+        <Rivals :player="playerUser" />
       </li>
       <li class="-mx-6 mt-auto">
         <NuxtLink

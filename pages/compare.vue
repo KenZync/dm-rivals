@@ -11,7 +11,7 @@
               type="text"
               v-model="user1"
               id="compare1"
-              name="compare2"
+              name="compare1"
               placeholder="Name"
               autofocus
               class="text-stone-200 bg-zinc-700 rounded-md border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
