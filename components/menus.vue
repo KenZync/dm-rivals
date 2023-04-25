@@ -43,7 +43,7 @@
           >
           <span class="sr-only">Your profile</span>
           
-          <span v-if="player" aria-hidden="true">{{player}}</span>
+          <span v-if="playerUser" aria-hidden="true">{{playerUser}}</span>
           <span v-else>Please Set Username</span>
         </NuxtLink>
       </li>
@@ -59,18 +59,7 @@ import {
 
 import { UserIcon } from "@heroicons/vue/20/solid";
 const route = useRoute();
-
-const player = ref();
-
-onMounted(() => {
-  if (localStorage.getItem("player")) {
-    try {
-        player.value = localStorage.getItem("player")
-    } catch (e) {
-      localStorage.removeItem("player");
-    }
-  }
-});
+const playerUser = usePlayer();
 
 
 const navigation = [

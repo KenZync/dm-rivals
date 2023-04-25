@@ -123,4 +123,16 @@ import { XMarkIcon } from "@heroicons/vue/24/outline";
 import { Bars3Icon, MagnifyingGlassIcon } from "@heroicons/vue/20/solid";
 
 const sidebarOpen = ref(false);
+const playerUser = usePlayer();
+onMounted(() => {
+  if (localStorage.getItem("player")) {
+    try {
+      playerUser.value = localStorage.getItem("player") || '';
+      // playerUser.value = localStorage.getItem("player");
+      // playerInput.value = playerUser.value
+    } catch (e) {
+      localStorage.removeItem("player");
+    }
+  }
+});
 </script>

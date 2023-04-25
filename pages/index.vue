@@ -137,18 +137,7 @@
 // const fetching = ref(false);
 // const playerData = ref();
 const playerInput = ref();
-const playerUser = ref();
-
-onMounted(() => {
-  if (localStorage.getItem("player")) {
-    try {
-      playerUser.value = localStorage.getItem("player");
-      playerInput.value = playerUser.value
-    } catch (e) {
-      localStorage.removeItem("player");
-    }
-  }
-});
+const playerUser = usePlayer();
 
 // const signInWithDiscord = async () => {
 //   const { data, error } = await client.auth.signInWithOAuth({

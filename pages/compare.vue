@@ -192,9 +192,7 @@
           </span>
         </Switch>
         <SwitchLabel as="span" class="ml-3">
-          <span class="text-sm font-medium text-stone-200"
-            >Show only both Played</span
-          >
+          <span class="text-sm font-medium text-stone-200">Both Played</span>
         </SwitchLabel>
       </SwitchGroup>
       <div class="space-x-2 mb-4">
@@ -355,12 +353,11 @@ const filterData = (data) => {
     }
   }
 };
-const replaceUrl = () =>{
+const replaceUrl = () => {
   router.replace({
     query: { user1: user1.value, user2: user2.value, allSongs: allSongs.value },
   });
-
-}
+};
 
 const getCompare = async () => {
   fetching.value = true;
