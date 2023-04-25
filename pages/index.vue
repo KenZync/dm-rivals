@@ -101,133 +101,149 @@
             </div>
           </div> -->
 
-          <div class="mt-4">Set Player Name : {{ playerUser }}</div>
-          <div class="flex mt-4 space-x-4">
-            <input
-              v-model="playerUser"
-              type="text"
-              name="search"
-              id="search"
-              class="flex rounded-md border-gray-600 px-3 py-2 text-stone-200 focus:border-blue-500 focus:ring-blue-500 text-sm bg-zinc-700"
-              placeholder="Player"
-            />
-            <button
-              @click="setPlayer"
-              class="rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              Set
-            </button>
-          </div>
+            <div class="mt-4">Set Player Name : {{ playerUser }}</div>
+            <div class="flex mt-4 space-x-4">
+              <input
+                v-model="playerInput"
+                type="text"
+                class="flex rounded-md border-gray-600 px-3 py-2 text-stone-200 focus:border-blue-500 focus:ring-blue-500 text-sm bg-zinc-700"
+                placeholder="Player"
+                autofocus
+              />
+              <button
+                @click="setPlayer"
+                class="rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Set
+              </button>
+              <button
+                v-if="playerUser"
+                @click="delPlayer"
+                class="rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Remove
+              </button>
+            </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { Database } from "../types/supabase";
-const user = useSupabaseUser();
-const client = useSupabaseClient<Database>();
-const search = ref();
-const fetching = ref(false);
-const playerData = ref();
+// import { Database } from "../types/supabase";
+// const user = useSupabaseUser();
+// const client = useSupabaseClient<Database>();
+// const search = ref();
+// const fetching = ref(false);
+// const playerData = ref();
+const playerInput = ref();
 const playerUser = ref();
 
 onMounted(() => {
   if (localStorage.getItem("player")) {
     try {
       playerUser.value = localStorage.getItem("player");
+      playerInput.value = playerUser.value
     } catch (e) {
       localStorage.removeItem("player");
     }
   }
 });
 
-const signInWithDiscord = async () => {
-  const { data, error } = await client.auth.signInWithOAuth({
-    provider: "discord",
-  });
-};
+// const signInWithDiscord = async () => {
+//   const { data, error } = await client.auth.signInWithOAuth({
+//     provider: "discord",
+//   });
+// };
 
-watch(
-  () => user.value,
-  () => {
-    refresh();
-  }
-);
+// watch(
+//   () => user.value,
+//   () => {
+//     refresh();
+//   }
+// );
 
-const signout = async () => {
-  player.value = null;
-  const { error } = await client.auth.signOut();
-};
+// const signout = async () => {
+//   player.value = null;
+//   const { error } = await client.auth.signOut();
+// };
 
 const setPlayer = () => {
-  localStorage.setItem("player", playerUser.value);
+  localStorage.setItem("player", playerInput.value);
+  playerUser.value = playerInput.value;
 };
 
-const getPlayer = async () => {
-  fetching.value = true;
-  const data = await $fetch(
-    `/api/player?user=${encodeURIComponent(search.value)}`
-  )
-    .catch((error) => {
-      if (error.status === 404) {
-        alert(error.data.statusMessage);
-      } else {
-        alert("ERROR TRY AGAIN");
-      }
-      return;
-    })
-    .finally(() => (fetching.value = false));
-
-  if (!data) {
-    return;
-  }
-
-  playerData.value = data;
-  refreshLinkPlayer();
+const delPlayer = () => {
+  localStorage.removeItem("player");
+  playerUser.value = "";
+  playerInput.value = "";
 };
 
-const linking = async () => {
-  const newProfile = {
-    uuid: user.value?.id,
-    dmjam_id: playerData.value.id,
-    dmjam_name: playerData.value.name,
-  };
-  const { error } = await client.from("linking").insert(newProfile);
-  if (!error) {
-    playerUser.value = playerData.value.name;
-    setPlayer();
-  }
-  refresh();
-};
 
-const refresh = () => refreshNuxtData("linking");
-const refreshLinkPlayer = () => refreshNuxtData("linkPlayer");
+// const getPlayer = async () => {
+//   fetching.value = true;
+//   const data = await $fetch(
+//     `/api/player?user=${encodeURIComponent(search.value)}`
+//   )
+//     .catch((error) => {
+//       if (error.status === 404) {
+//         alert(error.data.statusMessage);
+//       } else {
+//         alert("ERROR TRY AGAIN");
+//       }
+//       return;
+//     })
+//     .finally(() => (fetching.value = false));
 
-const { data: player } = await useAsyncData("linking", async () => {
-  playerData.value = null;
-  const { data } = await client
-    .from("linking")
-    .select("*")
-    .eq("uuid", user.value?.id)
-    .single();
-  return data;
-});
+//   if (!data) {
+//     return;
+//   }
 
-const { data: linkPlayer } = await useAsyncData("linkPlayer", async () => {
-  const { data } = await client
-    .from("linking")
-    .select("*")
-    .eq("dmjam_id", playerData.value.id)
-    .single();
-  return data;
-});
+//   playerData.value = data;
+//   refreshLinkPlayer();
+// };
 
-const unlink = async () => {
-  const { error } = await client
-    .from("linking")
-    .delete()
-    .eq("uuid", user.value?.id);
-  refresh();
-};
+// const linking = async () => {
+//   const newProfile = {
+//     uuid: user.value?.id,
+//     dmjam_id: playerData.value.id,
+//     dmjam_name: playerData.value.name,
+//   };
+//   const { error } = await client.from("linking").insert(newProfile);
+//   if (!error) {
+//     playerUser.value = playerData.value.name;
+//     setPlayer();
+//   }
+//   refresh();
+// };
+
+// const refresh = () => refreshNuxtData("linking");
+// const refreshLinkPlayer = () => refreshNuxtData("linkPlayer");
+
+// const { data: player } = await useAsyncData("linking", async () => {
+//   playerData.value = null;
+//   const { data } = await client
+//     .from("linking")
+//     .select("*")
+//     .eq("uuid", user.value?.id)
+//     .single();
+//   return data;
+// });
+
+// const { data: linkPlayer } = await useAsyncData("linkPlayer", async () => {
+//   const { data } = await client
+//     .from("linking")
+//     .select("*")
+//     .eq("dmjam_id", playerData.value.id)
+//     .single();
+//   return data;
+// });
+
+// const unlink = async () => {
+//   const { error } = await client
+//     .from("linking")
+//     .delete()
+//     .eq("uuid", user.value?.id);
+//   refresh();
+// };
 </script>
