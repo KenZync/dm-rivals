@@ -187,9 +187,35 @@
             </span>
           </span>
         </Switch>
-        <SwitchLabel as="span" class="ml-3">
+        <SwitchLabel as="span" class="ml3">
           <span class="text-sm font-medium text-stone-200">Both Played</span>
         </SwitchLabel>
+        <div class="pl-2 inline-flex rounded-md shadow-sm">
+          <span
+            class="inline-flex items-center rounded-l-md border border-r-0 border-gray-600 bg-zinc-800 px-3 text-stone-200 text-sm"
+            >Min Lv.</span
+          >
+          <input
+            v-model="min"
+            type="text"
+            id="search"
+            class="w-14 flex-1 rounded-none rounded-r-md border-gray-600 px-3 py-2 text-stone-200 focus:border-blue-500 focus:ring-blue-500 text-sm bg-zinc-700"
+            placeholder="Min"
+          />
+        </div>
+        <div class="pl-2 inline-flex rounded-md shadow-sm">
+          <span
+            class="inline-flex items-center rounded-l-md border border-r-0 border-gray-600 bg-zinc-800 px-3 text-stone-200 text-sm"
+            >Max Lv.</span
+          >
+          <input
+            v-model="max"
+            type="text"
+            id="search"
+            class="w-14 flex-1 rounded-none rounded-r-md border-gray-600 px-3 py-2 text-stone-200 focus:border-blue-500 focus:ring-blue-500 text-sm bg-zinc-700"
+            placeholder="Max"
+          />
+        </div>
       </SwitchGroup>
       <div class="space-x-2 mb-4">
         <div class="inline-flex mt-1 rounded-md shadow-sm">
@@ -222,7 +248,6 @@
           <span v-else>Sort Highest Level First</span>
         </button>
       </div>
-
       <LazyCompare
         :id1="id1"
         :id2="id2"
@@ -326,6 +351,9 @@ const lowestFirst = ref(false);
 
 const search = ref("");
 
+const min = ref(1);
+const max = ref(200);
+
 const toggleSortTime = () => {
   oldestFirst.value = !oldestFirst.value;
   var order = oldestFirst.value ? 1 : -1;
@@ -379,10 +407,10 @@ const filteredCompareData2 = computed(() => {
 
 const filterData = (data) => {
   if (data) {
-    var searched = data.filter(({ Title }) =>
+    var searched = data.filter(({ Title, Level }) =>
       [Title].some((val) =>
         val.toLowerCase().includes(search.value.toLowerCase())
-      )
+      ) && parseInt(Level) >= min.value && parseInt(Level) <= max.value
     );
 
     if (!bothPlayed.value) {
