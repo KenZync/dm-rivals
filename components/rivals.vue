@@ -46,7 +46,7 @@
           v-model="rivalInput"
         />
         <button
-          @click="submitRival"
+          @click.prevent="submitRival"
           class="flex-grow text-right text-stone-200 hover:text-green-500 hover:bg-zinc-800 p-2 rounded-lg active:bg-zinc-500"
         >
           <CheckIcon class="h-6 w-6 shrink-0" aria-hidden="true" />
@@ -122,7 +122,6 @@ const deleteRival = (x) => {
 };
 
 const submitRival = () => {
-  console.log("Submit Rival");
   addingRival.value = false;
   // ensure they actually typed something
   if (!rivalInput.value) {
