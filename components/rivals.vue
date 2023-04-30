@@ -18,6 +18,7 @@
           <span class="truncate">{{ rival }}</span>
         </NuxtLink>
         <button
+        v-if="user1 === props.player && user2 === rival"
           @click="deleteRival(index)"
           class="flex-grow text-right text-stone-200 hover:text-red-500 hover:bg-zinc-800 p-2 rounded-lg"
         >
