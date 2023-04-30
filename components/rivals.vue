@@ -4,7 +4,7 @@
     <li v-for="(rival, index) in rivals" :key="index">
       <div class="flex space-x-2">
         <NuxtLink
-          :to="{path: 'compare', query: { user1 : props.player, user2:rival, allSongs:false } }"
+          :to="{path: '/', query: { user1 : props.player, user2:rival, allSongs:false } }"
           :class="[
             false
               ? 'bg-zinc-900 text-white'

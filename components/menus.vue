@@ -32,18 +32,24 @@
       </li>
       <li class="-mx-6 mt-auto">
         <NuxtLink
-          to="/"
+          :to="
+            playerUser
+              ? {
+                  path: '/',
+                  query: { user1: playerUser, user2: rival, allSongs: false },
+                }
+              : '/setting'
+          "
           class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-zinc-800"
         >
           <span
             class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-zinc-900 text-[0.625rem] font-medium text-stone-200 group-hover:text-white"
-            >
-            <UserIcon></UserIcon>
-            </span
           >
+            <UserIcon></UserIcon>
+          </span>
           <span class="sr-only">Your profile</span>
-          
-          <span v-if="playerUser" aria-hidden="true">{{playerUser}}</span>
+
+          <span v-if="playerUser" aria-hidden="true">{{ playerUser }}</span>
           <span v-else>Click to Set Player Name</span>
         </NuxtLink>
       </li>
@@ -61,15 +67,14 @@ import { UserIcon } from "@heroicons/vue/20/solid";
 const route = useRoute();
 const playerUser = usePlayer();
 
-
 const navigation = [
-  { name: "Compare Scores", href: "/compare", icon: MusicalNoteIcon },
-//   {
-//     name: "Vote and Comment",
-//     href: "/vote",
-//     icon: ChatBubbleOvalLeftEllipsisIcon,
-//     current: false,
-//   },
-  { name: "Settings", href: "/", icon: Cog6ToothIcon },
+  { name: "Compare Scores", href: "/", icon: MusicalNoteIcon },
+  //   {
+  //     name: "Vote and Comment",
+  //     href: "/vote",
+  //     icon: ChatBubbleOvalLeftEllipsisIcon,
+  //     current: false,
+  //   },
+  { name: "Setting", href: "/setting", icon: Cog6ToothIcon },
 ];
 </script>
