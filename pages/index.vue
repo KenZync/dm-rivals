@@ -292,10 +292,18 @@ watch(
 );
 
 const getCompare = () => {
-  router.push({
-    path: "/",
-    query: { user1: user1.value, user2: user2.value, allSongs: allSongs.value },
-  });
+  if (user1.value == route.query.user1 && user2.value == route.query.user2) {
+    fetch();
+  } else {
+    router.push({
+      path: "/",
+      query: {
+        user1: user1.value,
+        user2: user2.value,
+        allSongs: allSongs.value,
+      },
+    });
+  }
 };
 
 const compare = ref(false);

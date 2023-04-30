@@ -10,6 +10,18 @@ export default defineEventHandler(async (event) =>{
   const id1 = getID(ranking,query.user1)
   const id2 = getID(ranking,query.user2)
 
+  if(!id1 && !id2){
+    throw createError({ statusCode: 404, statusMessage: 'Both Users Not Found. Please Type Correctly' });
+  }
+
+  if(id2 && !id1 && query.user1){
+    throw createError({ statusCode: 404, statusMessage: 'User 1 Not Found. Please Type Correctly' });
+  }
+
+  if(id1 && !id2 && query.user2){
+    throw createError({ statusCode: 404, statusMessage: 'User 2 Not Found. Please Type Correctly' });
+  }
+
   let score1;
   let score2;
 
@@ -27,14 +39,6 @@ export default defineEventHandler(async (event) =>{
     songLists = await getSongLists();
   }
 
-  if (id1 || id2) {
-    const data = await getCompare(score1, score2, id1, id2, songLists);
-    return data;
-  } else if (query.user1) {
-    throw createError({ statusCode: 404, statusMessage: 'User 1 Not Found. Please Type Correctly' });
-  } else if (query.user2) {
-    throw createError({ statusCode: 404, statusMessage: 'User 2 Not Found. Please Type Correctly' });
-  } else {
-    throw createError({ statusCode: 404, statusMessage: 'Both Users Not Found. Please Type Correctly' });
-  }
+  const data = await getCompare(score1, score2, id1, id2, songLists);
+  return data;
 })
