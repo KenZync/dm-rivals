@@ -4,13 +4,12 @@
     <li v-for="(rival, index) in rivals" :key="index">
       <div class="flex space-x-2">
         <NuxtLink
-          :to="{path: '/', query: { user1 : props.player, user2:rival, allSongs:false } }"
-          :class="[
-            false
-              ? 'bg-zinc-900 text-white'
-              : 'text-stone-200 hover:text-white hover:bg-zinc-800',
-            'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full',
-          ]"
+          :to="{
+            path: '/',
+            query: { user1: props.player, user2: rival, allSongs: false },
+          }"
+          :class="(user1 === props.player && user2 === rival)? 'bg-zinc-800' :''"
+          class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full text-stone-200 hover:text-white hover:bg-zinc-800"
         >
           <span
             class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-zinc-900 text-[0.625rem] font-medium text-stone-200 group-hover:text-white"
@@ -84,6 +83,18 @@ const iframeUpdate = ref(true);
 const rivalInput = ref(null);
 const rivals = ref([]);
 
+const route = useRoute();
+const user1 = ref(route.query.user1);
+const user2 = ref(route.query.user2);
+
+watch(
+  () => route.query,
+  () => {
+    user1.value = route.query.user1;
+    user2.value = route.query.user2;
+  }
+);
+
 onMounted(() => {
   if (localStorage.getItem("rivals")) {
     try {
@@ -93,10 +104,6 @@ onMounted(() => {
     }
   }
 });
-
-const rivalClick = (team) => {
-  console.log("Rival", team);
-};
 
 const rivalAdd = () => {
   addingRival.value = true;

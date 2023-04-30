@@ -36,11 +36,12 @@
             playerUser
               ? {
                   path: '/',
-                  query: { user1: playerUser, user2: rival, allSongs: false },
+                  query: { user1: playerUser, allSongs: false },
                 }
               : '/setting'
           "
           class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-zinc-800"
+          :class="(user1 === playerUser && !user2) ? 'bg-zinc-800' : ''"
         >
           <span
             class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-zinc-900 text-[0.625rem] font-medium text-stone-200 group-hover:text-white"
@@ -66,6 +67,19 @@ import {
 import { UserIcon } from "@heroicons/vue/20/solid";
 const route = useRoute();
 const playerUser = usePlayer();
+
+const user1 = ref(route.query.user1);
+const user2 = ref(route.query.user2);
+watch(
+  () => route.query,
+  () => {
+    user1.value = route.query.user1;
+    user2.value = route.query.user2;
+  }
+);
+
+// console.log(user1.value)
+// console.log(user2.value)
 
 const navigation = [
   { name: "Compare Scores", href: "/", icon: MusicalNoteIcon },
