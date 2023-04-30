@@ -187,7 +187,7 @@
             </span>
           </span>
         </Switch>
-        <SwitchLabel as="span" class="ml3">
+        <SwitchLabel as="span" class="ml-3">
           <span class="text-sm font-medium text-stone-200">Both Played</span>
         </SwitchLabel>
         <div class="pl-2 inline-flex rounded-md shadow-sm">
