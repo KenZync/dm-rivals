@@ -249,9 +249,11 @@ const allSongs = ref(JSON.parse(route.query.allSongs || false));
 const fetch = async () => {
   fetching.value = true;
   const data = await $fetch(
-    `/api/compare?user1=${encodeURIComponent(
-      user1.value
-    )}&user2=${encodeURIComponent(user2.value)}&allSongs=${allSongs.value}`
+    `/api/compare?${
+      user1.value ? "user1=" + encodeURIComponent(user1.value) : ""
+    }${
+      user2.value ? "&user2=" + encodeURIComponent(user2.value) : ""
+    }&allSongs=${allSongs.value}`
   )
     .catch((error) => {
       if (error.status === 404) {
