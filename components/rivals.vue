@@ -8,7 +8,9 @@
             path: '/',
             query: { user1: props.player, user2: rival, allSongs: false },
           }"
-          :class="(user1 === props.player && user2 === rival)? 'bg-zinc-800' :''"
+          :class="
+            user1 === props.player && user2 === rival ? 'bg-zinc-800' : ''
+          "
           class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full text-stone-200 hover:text-white hover:bg-zinc-800"
         >
           <span
@@ -18,7 +20,7 @@
           <span class="truncate">{{ rival }}</span>
         </NuxtLink>
         <button
-        v-if="user1 === props.player && user2 === rival"
+          v-if="user1 === props.player && user2 === rival"
           @click="deleteRival(index)"
           class="flex-grow text-right text-stone-200 hover:text-red-500 hover:bg-zinc-800 p-2 rounded-lg"
         >
