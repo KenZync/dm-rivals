@@ -8,5 +8,11 @@ export default defineNuxtConfig({
         id: "ca-pub-9393835297385779",
       },
     ],
+    [
+      "@nuxtjs/google-adsense",
+      {
+        id: "ca-pub-9393835297385779",
+      },
+    ],
   ],
 });

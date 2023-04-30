@@ -1,72 +1,61 @@
 <template>
-  <div class="min-h-screen bg-zinc-900">
-    <div class="container mx-auto">
-      <div class="pt-8 text-center text-stone-200">
-        <span class="text-5xl">DMJam Rival System</span>
-        <span class="pl-2 text-sm">
-          <NuxtLink to="/o2jam-viewer">by KenZ</NuxtLink></span>
-      </div>
-      <form>
-        <div class="md:flex md:space-x-2">
-          <div>
-            <label for="compare1" class="text-md font-medium text-stone-200"
-              >Player 1</label
-            >
-            <div class="mt-1">
-              <input
-                type="text"
-                v-model="user1"
-                id="compare1"
-                name="compare2"
-                placeholder="Name"
-                autofocus
-                class="text-stone-200 bg-zinc-700 rounded-md border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              />
-            </div>
+  <div class="container mx-auto">
+    <form>
+      <div class="md:flex md:space-x-2">
+        <div>
+          <label for="compare1" class="text-md font-medium text-stone-200"
+            >Player 1</label
+          >
+          <div class="mt-1">
+            <input
+              type="text"
+              v-model="user1"
+              placeholder="Name"
+              autofocus
+              class="text-stone-200 bg-zinc-700 rounded-md border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+            />
           </div>
-          <div>
-            <label for="compare2" class="text-md font-medium text-stone-200"
-              >Player 2</label
-            >
-            <div class="mt-1">
-              <input
-                type="text"
-                v-model="user2"
-                id="compare2"
-                name="compare2"
-                placeholder="Name"
-                class="text-stone-200 bg-zinc-700 rounded-md border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              />
-            </div>
+        </div>
+        <div>
+          <label for="compare2" class="text-md font-medium text-stone-200"
+            >Player 2</label
+          >
+          <div class="mt-1">
+            <input
+              type="text"
+              v-model="user2"
+              placeholder="Name"
+              class="text-stone-200 bg-zinc-700 rounded-md border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+            />
           </div>
-          <div>
-            <div class="text-md font-medium text-stone-200">Press Enter</div>
+        </div>
+        <div>
+          <div class="text-md font-medium text-stone-200">Press Enter</div>
+          <div
+            v-if="fetching"
+            class="mt-1 inline-flex items-center rounded-md border border-gray-300 bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm"
+          >
             <div
-              v-if="fetching"
-              class="mt-1 inline-flex items-center rounded-md border border-gray-300 bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm"
+              class="animate-spin inline-block w-5 h-5 border-[3px] border-current border-t-transparent text-blue-600 rounded-full"
+              role="status"
+              aria-label="loading"
             >
-              <div
-                class="animate-spin inline-block w-5 h-5 border-[3px] border-current border-t-transparent text-blue-600 rounded-full"
-                role="status"
-                aria-label="loading"
-              >
-                <span class="sr-only">Loading...</span>
-              </div>
-              <div class="pl-2">Loading</div>
+              <span class="sr-only">Loading...</span>
             </div>
-            <div v-else>
-              <button
-                @click="getCompare"
-                class="mt-1 inline-flex items-center rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                Search / Compare
-              </button>
-            </div>
+            <div class="pl-2">Loading</div>
           </div>
+          <div v-else>
+            <button
+              @click.prevent="getCompare"
+              class="mt-1 inline-flex items-center rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            >
+              Search / Compare
+            </button>
+          </div>
+        </div>
 
-          <SwitchGroup as="div" class="flex items-center pt-6" >
-
-            <Switch
+        <SwitchGroup as="div" class="flex items-center pt-6">
+          <Switch
             v-model="allSongs"
             :class="[
               allSongs ? 'bg-blue-600' : 'bg-gray-200',
@@ -129,146 +118,221 @@
               >Show All Songs</span
             >
           </SwitchLabel>
-          </SwitchGroup>
+        </SwitchGroup>
+      </div>
+    </form>
 
-
-        </div>
-      </form>
-
-      <div v-if="compare">
-        <SwitchGroup as="div" class="flex items-center pt-4" v-if="submitted1 && submitted2">
-          <Switch
-            v-if="compare"
-            v-model="bothPlayed"
+    <div v-if="compare">
+      <SwitchGroup
+        as="div"
+        class="flex items-center pt-4"
+        v-if="submitted1 && submitted2"
+      >
+        <Switch
+          v-if="compare"
+          v-model="bothPlayed"
+          :class="[
+            bothPlayed ? 'bg-blue-600' : 'bg-gray-200',
+            'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+          ]"
+        >
+          <span class="sr-only">Use setting</span>
+          <span
             :class="[
-              bothPlayed ? 'bg-blue-600' : 'bg-gray-200',
-              'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+              bothPlayed ? 'translate-x-5' : 'translate-x-0',
+              'pointer-events-none relative inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
             ]"
           >
-            <span class="sr-only">Use setting</span>
             <span
               :class="[
-                bothPlayed ? 'translate-x-5' : 'translate-x-0',
-                'pointer-events-none relative inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
+                bothPlayed
+                  ? 'opacity-0 ease-out duration-100'
+                  : 'opacity-100 ease-in duration-200',
+                'absolute inset-0 flex h-full w-full items-center justify-center transition-opacity',
               ]"
+              aria-hidden="true"
             >
-              <span
-                :class="[
-                  bothPlayed
-                    ? 'opacity-0 ease-out duration-100'
-                    : 'opacity-100 ease-in duration-200',
-                  'absolute inset-0 flex h-full w-full items-center justify-center transition-opacity',
-                ]"
-                aria-hidden="true"
+              <svg
+                class="h-3 w-3 text-gray-400"
+                fill="none"
+                viewBox="0 0 12 12"
               >
-                <svg
-                  class="h-3 w-3 text-gray-400"
-                  fill="none"
-                  viewBox="0 0 12 12"
-                >
-                  <path
-                    d="M4 8l2-2m0 0l2-2M6 6L4 4m2 2l2 2"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-              <span
-                :class="[
-                  bothPlayed
-                    ? 'opacity-100 ease-in duration-200'
-                    : 'opacity-0 ease-out duration-100',
-                  'absolute inset-0 flex h-full w-full items-center justify-center transition-opacity',
-                ]"
-                aria-hidden="true"
-              >
-                <svg
-                  class="h-3 w-3 text-blue-600"
-                  fill="currentColor"
-                  viewBox="0 0 12 12"
-                >
-                  <path
-                    d="M3.707 5.293a1 1 0 00-1.414 1.414l1.414-1.414zM5 8l-.707.707a1 1 0 001.414 0L5 8zm4.707-3.293a1 1 0 00-1.414-1.414l1.414 1.414zm-7.414 2l2 2 1.414-1.414-2-2-1.414 1.414zm3.414 2l4-4-1.414-1.414-4 4 1.414 1.414z"
-                  />
-                </svg>
-              </span>
+                <path
+                  d="M4 8l2-2m0 0l2-2M6 6L4 4m2 2l2 2"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </span>
-          </Switch>
-          <SwitchLabel as="span" class="ml-3">
-            <span class="text-sm font-medium text-stone-200"
-              >Show only both Played</span
-            >
-          </SwitchLabel>
-        </SwitchGroup>
-        <div class="space-x-2 mb-4">
-          <div class="inline-flex mt-1 rounded-md shadow-sm">
             <span
-              class="inline-flex items-center rounded-l-md border border-r-0 border-gray-600 bg-zinc-800 px-3 text-stone-200 sm:text-sm"
-              >Search</span
+              :class="[
+                bothPlayed
+                  ? 'opacity-100 ease-in duration-200'
+                  : 'opacity-0 ease-out duration-100',
+                'absolute inset-0 flex h-full w-full items-center justify-center transition-opacity',
+              ]"
+              aria-hidden="true"
             >
-            <input
-              v-model="search"
-              type="text"
-              name="search"
-              id="search"
-              class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-600 px-3 py-2 text-stone-200 focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-zinc-700"
-              placeholder="Songe Title"
-            />
-          </div>
-          <button
-            class="mt-4 inline-flex items-center rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            @click="toggleSortTime()"
+              <svg
+                class="h-3 w-3 text-blue-600"
+                fill="currentColor"
+                viewBox="0 0 12 12"
+              >
+                <path
+                  d="M3.707 5.293a1 1 0 00-1.414 1.414l1.414-1.414zM5 8l-.707.707a1 1 0 001.414 0L5 8zm4.707-3.293a1 1 0 00-1.414-1.414l1.414 1.414zm-7.414 2l2 2 1.414-1.414-2-2-1.414 1.414zm3.414 2l4-4-1.414-1.414-4 4 1.414 1.414z"
+                />
+              </svg>
+            </span>
+          </span>
+        </Switch>
+        <SwitchLabel as="span" class="ml-3">
+          <span class="text-sm font-medium text-stone-200">Both Played</span>
+        </SwitchLabel>
+        <div class="pl-2 inline-flex rounded-md shadow-sm">
+          <span
+            class="inline-flex items-center rounded-l-md border border-r-0 border-gray-600 bg-zinc-800 px-3 text-stone-200 text-sm"
+            >Min Lv.</span
           >
-            <span v-if="oldestFirst">Sort Oldest First</span>
-            <span v-else>Sort Newest First</span>
-          </button>
-
-          <button
-            class="mt-4 inline-flex items-center rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            @click="toggleSortLevel()"
-          >
-            <span v-if="lowestFirst">Sort Lowest Level First</span>
-            <span v-else>Sort Highest Level First</span>
-          </button>
+          <input
+            v-model="min"
+            type="text"
+            id="search"
+            class="w-14 flex-1 rounded-none rounded-r-md border-gray-600 px-3 py-2 text-stone-200 focus:border-blue-500 focus:ring-blue-500 text-sm bg-zinc-700"
+            placeholder="Min"
+          />
         </div>
+        <div class="pl-2 inline-flex rounded-md shadow-sm">
+          <span
+            class="inline-flex items-center rounded-l-md border border-r-0 border-gray-600 bg-zinc-800 px-3 text-stone-200 text-sm"
+            >Max Lv.</span
+          >
+          <input
+            v-model="max"
+            type="text"
+            id="search"
+            class="w-14 flex-1 rounded-none rounded-r-md border-gray-600 px-3 py-2 text-stone-200 focus:border-blue-500 focus:ring-blue-500 text-sm bg-zinc-700"
+            placeholder="Max"
+          />
+        </div>
+      </SwitchGroup>
+      <div class="space-x-2 mb-4">
+        <div class="inline-flex mt-1 rounded-md shadow-sm">
+          <span
+            class="inline-flex items-center rounded-l-md border border-r-0 border-gray-600 bg-zinc-800 px-3 text-stone-200 text-sm"
+            >Search</span
+          >
+          <input
+            v-model="search"
+            type="text"
+            name="search"
+            id="search"
+            class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-600 px-3 py-2 text-stone-200 focus:border-blue-500 focus:ring-blue-500 text-sm bg-zinc-700"
+            placeholder="Songe Title"
+          />
+        </div>
+        <button
+          class="mt-4 inline-flex items-center rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          @click="toggleSortTime()"
+        >
+          <span v-if="oldestFirst">Sort Oldest First</span>
+          <span v-else>Sort Newest First</span>
+        </button>
 
-        <LazyCompare
-          :id1="id1"
-          :id2="id2"
-          :submitted1="submitted1"
-          :submitted2="submitted2"
-          :filteredCompareData1="filteredCompareData1"
-          :filteredCompareData2="filteredCompareData2"
-        ></LazyCompare>
+        <button
+          class="mt-4 inline-flex items-center rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          @click="toggleSortLevel()"
+        >
+          <span v-if="lowestFirst">Sort Lowest Level First</span>
+          <span v-else>Sort Highest Level First</span>
+        </button>
       </div>
+      <LazyCompare
+        :id1="id1"
+        :id2="id2"
+        :submitted1="submitted1"
+        :submitted2="submitted2"
+        :filteredCompareData1="filteredCompareData1"
+        :filteredCompareData2="filteredCompareData2"
+      ></LazyCompare>
     </div>
   </div>
 </template>
 
 <script setup>
 import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue";
-useHead({
-  title: "DMJam Rival System",
-  meta: [{ name: "description", content: "O2Jam score comparison" }],
-});
-
 const router = useRouter();
-const route = useRoute()
-
-const user1 = ref(route.query.user1 || '');
-const user2 = ref(route.query.user2 || '');
-const allSongs = ref(JSON.parse(route.query.allSongs || false));
-
-
-onMounted(()=>{
-  if(user1.value.length || user2.value.length){
-    getCompare();
-  }
-})
+const route = useRoute();
 
 const fetching = ref(false);
+
+const user1 = ref(route.query.user1 || "");
+const user2 = ref(route.query.user2 || "");
+const allSongs = ref(JSON.parse(route.query.allSongs || false));
+
+const fetch = async () => {
+  fetching.value = true;
+  const data = await $fetch(
+    `/api/compare?${
+      user1.value ? "user1=" + encodeURIComponent(user1.value) : ""
+    }${
+      user2.value ? "&user2=" + encodeURIComponent(user2.value) : ""
+    }&allSongs=${allSongs.value}`
+  )
+    .catch((error) => {
+      if (error.status === 404) {
+        alert(error.data.statusMessage);
+      } else {
+        alert("ERROR TRY AGAIN");
+      }
+      return;
+    })
+    .finally(() => (fetching.value = false));
+
+  if (!data) {
+    return;
+  }
+
+  compareData1.value = data.win1;
+  compareData2.value = data.win2;
+  compare.value = true;
+
+  submitted1.value = user1.value;
+  submitted2.value = user2.value;
+
+  id1.value = data.id1;
+  id2.value = data.id2;
+};
+
+watch(
+  () => route.query,
+  () => {
+    user1.value = route.query.user1;
+    user2.value = route.query.user2;
+    allSongs.value = JSON.parse(route.query.allSongs || false);
+    if (user1.value || user2.value) {
+      fetch();
+    }
+  },
+  { immediate: true }
+);
+
+const getCompare = () => {
+  if (user1.value == route.query.user1 && user2.value == route.query.user2) {
+    fetch();
+  } else {
+    router.push({
+      path: "/",
+      query: {
+        user1: user1.value,
+        user2: user2.value,
+        allSongs: allSongs.value,
+      },
+    });
+  }
+};
+
 const compare = ref(false);
 
 const submitted1 = ref("");
@@ -287,7 +351,8 @@ const lowestFirst = ref(false);
 
 const search = ref("");
 
-
+const min = ref(1);
+const max = ref(200);
 
 const toggleSortTime = () => {
   oldestFirst.value = !oldestFirst.value;
@@ -342,10 +407,10 @@ const filteredCompareData2 = computed(() => {
 
 const filterData = (data) => {
   if (data) {
-    var searched = data.filter(({ Title }) =>
+    var searched = data.filter(({ Title, Level }) =>
       [Title].some((val) =>
         val.toLowerCase().includes(search.value.toLowerCase())
-      )
+      ) && parseInt(Level) >= min.value && parseInt(Level) <= max.value
     );
 
     if (!bothPlayed.value) {
@@ -356,41 +421,5 @@ const filterData = (data) => {
       });
     }
   }
-};
-
-const getCompare = async () => {
-  router.replace({query: { user1: user1.value, user2: user2.value, allSongs: allSongs.value}})
-
-  fetching.value = true;
-  const data = await $fetch(
-    `/api/compare?user1=${encodeURIComponent(
-      user1.value
-    )}&user2=${encodeURIComponent(user2.value)}&allSongs=${allSongs.value}`
-  )
-    .catch((error) => {
-      if (error.status === 404) {
-        alert(error.data.statusMessage);
-      } else {
-        alert("ERROR TRY AGAIN");
-      }
-      return;
-    })
-    .finally(() => (fetching.value = false));
-
-  if (!data) {
-    return;
-  }
-
-  compareData1.value = data.win1;
-  compareData2.value = data.win2;
-  compare.value = true;
-
-  submitted1.value = user1.value;
-  submitted2.value = user2.value;
-
-  id1.value = data.id1;
-  id2.value = data.id2;
-
-
 };
 </script>
