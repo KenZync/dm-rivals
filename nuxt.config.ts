@@ -2,17 +2,5 @@
 export default defineNuxtConfig({
   modules: [
     "@nuxtjs/tailwindcss",
-    [
-      "@nuxtjs/google-adsense",
-      {
-        id: "ca-pub-9393835297385779",
-      },
-    ],
-    [
-      "@nuxtjs/google-adsense",
-      {
-        id: "ca-pub-9393835297385779",
-      },
-    ],
   ],
 });
