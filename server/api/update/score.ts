@@ -55,27 +55,6 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusMessage: updateScoresError.message });
   }
 
-  // const convertedMusics = songLists.map((song) => {
-  //   return {
-  //     title: song.Title,
-  //     artist: song.Artist,
-  //     bpm: parseFloat(song.BPM),
-  //     id: parseInt(song.ID),
-  //     level: parseInt(song.Level),
-  //     note_charter: song.NoteCharter,
-  //     updated_at: new Date().toISOString(),
-  //   };
-  // });
-
-  // const { data, error } = await client
-  //   .from("musics")
-  //   .upsert(convertedMusics)
-  //   .select();
-
-  // if (error) {
-  //   throw createError({ statusMessage: error.message });
-  // }
-
   const { data: updateVariable, error: updateVariableError } = await client
     .from("variable")
     .upsert({ id: 1, update_index: next });
