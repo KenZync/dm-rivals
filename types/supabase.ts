@@ -9,6 +9,21 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      grade: {
+        Row: {
+          grade: string
+          id: number
+        }
+        Insert: {
+          grade: string
+          id?: number
+        }
+        Update: {
+          grade?: string
+          id?: number
+        }
+        Relationships: []
+      }
       linking: {
         Row: {
           created_at: string | null
@@ -121,6 +136,12 @@ export interface Database {
         }
         Relationships: [
           {
+            foreignKeyName: "scores_progress_fkey"
+            columns: ["progress"]
+            referencedRelation: "grade"
+            referencedColumns: ["grade"]
+          },
+          {
             foreignKeyName: "scores_song_id_fkey"
             columns: ["song_id"]
             referencedRelation: "musics"
@@ -210,7 +231,26 @@ export interface Database {
       }
     }
     Functions: {
-      [_ in never]: never
+      get_user_stats: {
+        Args: {
+          input_user_id: number
+        }
+        Returns: {
+          level: number
+          song_count: number
+          clear_count: number
+          fail_count: number
+          no_play_count: number
+          grade_p: number
+          grade_ss: number
+          grade_s: number
+          grade_a: number
+          grade_b: number
+          grade_c: number
+          grade_d: number
+          grade_f: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

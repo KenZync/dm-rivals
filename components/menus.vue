@@ -11,7 +11,7 @@
             <NuxtLink
               :to="item.href"
               :class="[
-                (route.path === item.href ? true : false)
+                (route.path === item.href || route.name === item.alias ? true : false)
                   ? 'bg-zinc-800 text-white'
                   : 'text-stone-200 hover:text-white hover:bg-zinc-800 active:bg-zinc-500',
                 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold ',
@@ -63,7 +63,8 @@ import {
   ChatBubbleOvalLeftEllipsisIcon,
   Cog6ToothIcon,
   PresentationChartBarIcon,
-  ListBulletIcon
+  ListBulletIcon,
+  TrophyIcon
 } from "@heroicons/vue/24/outline";
 
 import { UserIcon } from "@heroicons/vue/20/solid";
@@ -95,5 +96,6 @@ const navigation = [
 
   { name: "Ranking", href: "/ranking", icon:PresentationChartBarIcon },
   { name: "Musics", href: "/musics", icon:ListBulletIcon },
+  { name: "Players", href: "/players", icon:TrophyIcon, alias: 'players-id'},
 ];
 </script>
