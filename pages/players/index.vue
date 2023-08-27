@@ -12,7 +12,7 @@
             name="search"
             id="search"
             class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-600 px-3 py-2 text-stone-200 focus:border-blue-500 focus:ring-blue-500 text-sm bg-zinc-700"
-            placeholder="Level, Title, Artist, NoteCharter, BPM"
+            placeholder="User ID, Nickname, Tier, Clear"
           />
         </div>
         <e-data-table
