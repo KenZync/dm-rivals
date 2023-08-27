@@ -1,7 +1,10 @@
 <template>
   <div class="container mx-auto text-white">
     <div class="flex flex-col justify-center items-center">
+      <div class="pt-4">Lv.{{ user?.clear }} {{ user?.nickname }} <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">{{ user?.tier }}</span></div>
       <div class="space-x-4">
+        <span>Mode: {{ mode }}</span>
+
         <button
           @click="clear"
           class="mt-4 rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2"
@@ -20,7 +23,7 @@
           <div class="grow">
             <apexchart
               class="flex justify-center"
-              v-if="mode === `clear`"
+              v-if="mode === `Clear`"
               :options="clearOptions"
               :series="clearData"
               width="100%"
@@ -29,7 +32,7 @@
             />
             <apexchart
               class="flex justify-center"
-              v-if="mode === `grade`"
+              v-if="mode === `Grade`"
               :options="gradeOptions"
               :series="gradeData"
               width="100%"
@@ -58,15 +61,20 @@ const { data: profile } = await useAsyncData("profile", async () => {
   return data;
 });
 
+const { data: user } = await useAsyncData("user", async () => {
+  const { data, error } = await client.from('users').select("*").eq('user_id',user_id).single();
+  return data;
+});
+
 const clear = () => {
-  mode.value = "clear";
+  mode.value = "Clear";
 };
 
 const grade = () => {
-  mode.value = "grade";
+  mode.value = "Grade";
 };
 
-const mode = ref("clear");
+const mode = ref("Clear");
 
 const clearData = computed(() => {
   if (!profile.value) {
@@ -189,13 +197,22 @@ const clearOptions = {
   legend: {
     position: "top",
   },
-//   tooltip: {
-//   custom: function({series, seriesIndex, dataPointIndex, w}: any) {
-//     return '<div class="bg-black p-5">' +
-//       '<span>' + series[seriesIndex][dataPointIndex] + '</span>' +
-//       '</div>'
-//   }
-// },
+  tooltip: {
+    // custom: function({series, seriesIndex, dataPointIndex, w}: any) {
+    //   return '<div class="bg-black p-5">' +
+    //     '<span>' + series[seriesIndex][dataPointIndex] + '</span>' +
+    //     '</div>'
+    // }
+    // custom: function ({ series, seriesIndex, dataPointIndex, w }: any) {
+    //   return seriesIndex
+    // let title = w.globals.tooltip.tooltipTitle.outerHTML;
+    // let items = "";
+    // w.globals.tooltip.ttItems.forEach((x) => {
+    //   items = items + x.outerHTML;
+    // });
+    // return title + items + "ASDF";
+    // },
+  },
   theme: {
     mode: "dark",
   },
