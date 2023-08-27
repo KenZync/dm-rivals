@@ -41,6 +41,7 @@ const failedLists = computed(() => {
 });
 
 const chartOptions = {
+    colors:['#FF0000', '#32CD32'],
   chart: {
     type: "bar",
     height: 350,
@@ -95,7 +96,7 @@ const series = [
   },
   {
     name: "Cleared",
-    data: playedLists.value,
+    data: clearedLists.value,
   },
 ];
 </script>
