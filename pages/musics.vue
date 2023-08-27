@@ -45,7 +45,6 @@ const { data: musics } = await useAsyncData("musics", async () => {
 });
 
 const searchField = [
-  "id",
   "title",
   "artist",
   "note_charter",
