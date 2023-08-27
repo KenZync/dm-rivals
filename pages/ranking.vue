@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { Database } from "~/types/supabase";
-import type { Header, Item } from "vue3-easy-data-table";
+import type { Header } from "vue3-easy-data-table";
 
 const client = useSupabaseClient<Database>();
 
@@ -128,11 +128,5 @@ const headers: Header[] = [
   { text: "Total", value: "played", sortable: true },
   { text: "Cleared", value: "clears", sortable: true },
   { text: "Failed", value: "fails", sortable: true },
-];
-
-const items: Item[] = [
-  { name: "Curry", height: 178, weight: 77, age: 20 },
-  { name: "James", height: 180, weight: 75, age: 21 },
-  { name: "Jordan", height: 181, weight: 73, age: 22 },
 ];
 </script>
