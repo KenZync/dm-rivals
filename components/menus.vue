@@ -62,7 +62,8 @@ import {
   MusicalNoteIcon,
   ChatBubbleOvalLeftEllipsisIcon,
   Cog6ToothIcon,
-  PresentationChartBarIcon
+  PresentationChartBarIcon,
+  ListBulletIcon
 } from "@heroicons/vue/24/outline";
 
 import { UserIcon } from "@heroicons/vue/20/solid";
@@ -93,5 +94,6 @@ const navigation = [
   { name: "Setting", href: "/setting", icon: Cog6ToothIcon },
 
   { name: "Ranking", href: "/ranking", icon:PresentationChartBarIcon },
+  { name: "Musics", href: "/musics", icon:ListBulletIcon },
 ];
 </script>

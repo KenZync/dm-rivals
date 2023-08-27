@@ -1,6 +1,5 @@
 <template>
   <div class="container mx-auto text-white">
-    <!-- {{ musics }} -->
     <div class="flex justify-center">
       <ClientOnly>
         <apexchart
@@ -10,7 +9,6 @@
           :series="series"
         ></apexchart>
       </ClientOnly>
-      <!-- {{ musics }} -->
     </div>
   </div>
 </template>
@@ -46,40 +44,45 @@ const chartOptions = {
   chart: {
     type: "bar",
     height: 350,
-  },
-  plotOptions: {
-    bar: {
-      horizontal: false,
-      columnWidth: "55%",
-      endingShape: "rounded",
+    zoom: {
+      enabled: true,
     },
+    stacked: true,
   },
+//   plotOptions: {
+//     bar: {
+//       dataLabels: {
+//         total: {
+//           enabled: true,
+//           offsetX: 0,
+//           style: {
+//             fontSize: "13px",
+//             fontWeight: 700,
+//             color: "#FFFFFF",
+//           },
+//         },
+//       },
+//     },
+//   },
   dataLabels: {
     enabled: false,
   },
-  stroke: {
-    show: true,
-    width: 2,
-    colors: ["transparent"],
-  },
-  xaxis: {
-    categories: levelLists.value,
-  },
   yaxis: {
     title: {
-      text: "Clear (Count)",
+      text: "Unique Play (Count)",
     },
   },
-  fill: {
-    opacity: 1,
+  xaxis: {
+    type: "categories",
+    categories: levelLists.value,
+    tickPlacement: "on",
+    tickAmount: 40,
+    decimalsInFloat: 0,
   },
-  // tooltip: {
-  //   y: {
-  //     formatter: function (val) {
-  //       return "$ " + val + " thousands"
-  //     }
-  //   }
-  // }
+  legend: {
+    position: "right",
+    offsetY: 40,
+  },
   theme: {
     mode: "dark",
   },
@@ -87,16 +90,12 @@ const chartOptions = {
 
 const series = [
   {
-    name: "Played",
-    data: clearedLists.value,
+    name: "Failed",
+    data: failedLists.value,
   },
   {
     name: "Cleared",
-    data:  playedLists.value,
-  },
-  {
-    name: "Failed",
-    data:  failedLists.value,
+    data: playedLists.value,
   },
 ];
 </script>

@@ -73,5 +73,5 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusMessage: updateVariableError.message });
   }
 
-  return musics[variable.update_index].id + " updated";
+  return {data: "id:" + musics[variable.update_index].id + " updated " + variable.update_index + "/"+ last};
 });
