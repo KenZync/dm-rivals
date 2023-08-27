@@ -1,20 +1,37 @@
 <template>
   <div class="container mx-auto text-white">
-    <div class="flex justify-center">
-      <ClientOnly>
-        <apexchart
-          width="1200"
-          type="bar"
-          :options="chartOptions"
-          :series="series"
-        ></apexchart>
-      </ClientOnly>
+    <div class="flex flex-col justify-center items-center">
+      <button
+        class="mt-4 rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2"
+      >
+        Cleared/Failed
+      </button>
+      <div class="flex w-full pt-4 flex-col md:flex-row">
+        <div class="grow">
+          <ClientOnly>
+            <apexchart
+              class="flex justify-center"
+              width="90%"
+              :options="chartOptions"
+              :series="series"
+            ></apexchart>
+          </ClientOnly>
+        </div>
+        <div class="w-80">
+          <e-data-table
+            :headers="headers"
+            :items="musics"
+            :rows-per-page="15"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Database } from "~/types/supabase";
+import type { Header, Item } from "vue3-easy-data-table";
 
 const client = useSupabaseClient<Database>();
 
@@ -41,30 +58,29 @@ const failedLists = computed(() => {
 });
 
 const chartOptions = {
-    colors:['#FF0000', '#32CD32'],
+  colors: ["#FF0000", "#32CD32"],
   chart: {
     type: "bar",
-    height: 350,
     zoom: {
       enabled: true,
     },
     stacked: true,
   },
-//   plotOptions: {
-//     bar: {
-//       dataLabels: {
-//         total: {
-//           enabled: true,
-//           offsetX: 0,
-//           style: {
-//             fontSize: "13px",
-//             fontWeight: 700,
-//             color: "#FFFFFF",
-//           },
-//         },
-//       },
-//     },
-//   },
+  //   plotOptions: {
+  //     bar: {
+  //       dataLabels: {
+  //         total: {
+  //           enabled: true,
+  //           offsetX: 0,
+  //           style: {
+  //             fontSize: "13px",
+  //             fontWeight: 700,
+  //             color: "#FFFFFF",
+  //           },
+  //         },
+  //       },
+  //     },
+  //   },
   dataLabels: {
     enabled: false,
   },
@@ -79,6 +95,13 @@ const chartOptions = {
     tickPlacement: "on",
     tickAmount: 40,
     decimalsInFloat: 0,
+    title: {
+      text: "Level of Charts",
+      offsetY: -10,
+    },
+  },
+  title: {
+    text: "Unique Play Counts Per Level Charts",
   },
   legend: {
     position: "right",
@@ -99,6 +122,17 @@ const series = [
     data: clearedLists.value,
   },
 ];
-</script>
 
-<style scoped></style>
+const headers: Header[] = [
+  { text: "Level", value: "level", sortable: true },
+  { text: "Total", value: "played", sortable: true },
+  { text: "Cleared", value: "clears", sortable: true },
+  { text: "Failed", value: "fails", sortable: true },
+];
+
+const items: Item[] = [
+  { name: "Curry", height: 178, weight: 77, age: 20 },
+  { name: "James", height: 180, weight: 75, age: 21 },
+  { name: "Jordan", height: 181, weight: 73, age: 22 },
+];
+</script>
