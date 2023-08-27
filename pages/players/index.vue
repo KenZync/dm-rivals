@@ -23,10 +23,10 @@
           :search-value="searchValue"
         >
             <template #item-user_id="{ user_id }">
-            <NuxtLink :to="`players/${user_id}`" class="font-bold">{{ user_id }}</NuxtLink>
+            <div @click="navigateTo(`players/${user_id}`)" class="font-bold cursor-pointer">{{ user_id }}</div>
           </template>
           <template #item-nickname="{ nickname, user_id }">
-            <NuxtLink :to="`players/${user_id}`" class="font-bold">{{ nickname }}</NuxtLink>
+            <div @click="navigateTo(`players/${user_id}`)" class="font-bold cursor-pointer">{{ nickname }}</div>
           </template>
         </e-data-table>
       </div>

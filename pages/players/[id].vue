@@ -18,12 +18,6 @@
       <div class="flex w-full pt-4 flex-col md:flex-row">
         <ClientOnly>
           <div class="grow">
-            <!-- <apexchart
-              class="flex justify-center"
-              width="100%"
-              :options="chartOptions"
-              :series="series"
-            ></apexchart> -->
             <apexchart
               class="flex justify-center"
               v-if="mode === `clear`"
@@ -44,24 +38,6 @@
             />
           </div>
         </ClientOnly>
-        <!-- {{ route.param }} -->
-        <!-- <div class="grow">
-          <ClientOnly>
-            <apexchart
-              class="flex justify-center"
-              width="90%"
-              :options="chartOptions"
-              :series="series"
-            ></apexchart>
-          </ClientOnly>
-        </div>
-        <div class="w-80">
-          <e-data-table
-            :headers="headers"
-            :items="musics"
-            :rows-per-page="15"
-          />
-        </div> -->
       </div>
     </div>
   </div>
@@ -69,7 +45,6 @@
 
 <script setup lang="ts">
 import { Database } from "~/types/supabase";
-import type { Header } from "vue3-easy-data-table";
 
 const route = useRoute();
 const client = useSupabaseClient<Database>();
@@ -92,28 +67,6 @@ const grade = () => {
 };
 
 const mode = ref("clear");
-
-// const { data: musics } = await useAsyncData("musics", async () => {
-//   const { data } = await client.from("song_play_count").select();
-
-//   return data;
-// });
-
-// const levelLists = computed(() => {
-//   if (musics.value) return musics.value.map((item) => item.level);
-// });
-
-// const playedLists = computed(() => {
-//   if (musics.value) return musics.value.map((item) => item.played);
-// });
-
-// const clearedLists = computed(() => {
-//   if (musics.value) return musics.value.map((item) => item.clears);
-// });
-
-// const failedLists = computed(() => {
-//   if (musics.value) return musics.value.map((item) => item.fails);
-// });
 
 const clearData = computed(() => {
   if (!profile.value) {
@@ -203,28 +156,6 @@ const gradeData = computed(() => {
   ];
 });
 
-//   if (mode.value === "clear") {
-//     return profile.value.map((item) => ({
-//       name: `Level ${item.level}`,
-//       data: [item.clear_count, item.fail_count],
-//     }));
-//   } else if (mode.value === "grade") {
-//     return profile.value.map((item) => ({
-//       name: `Level ${item.level}`,
-//       data: [
-//         item.grade_p,
-//         item.grade_ss,
-//         item.grade_s,
-//         item.grade_a,
-//         item.grade_b,
-//         item.grade_c,
-//         item.grade_d,
-//         item.grade_f,
-//       ],
-//     }));
-//   }
-// });
-
 const clearOptions = {
   colors: ["#32CD32", "#FF0000", "#D3D3D3"],
   chart: {
@@ -258,6 +189,13 @@ const clearOptions = {
   legend: {
     position: "top",
   },
+//   tooltip: {
+//   custom: function({series, seriesIndex, dataPointIndex, w}: any) {
+//     return '<div class="bg-black p-5">' +
+//       '<span>' + series[seriesIndex][dataPointIndex] + '</span>' +
+//       '</div>'
+//   }
+// },
   theme: {
     mode: "dark",
   },
@@ -311,77 +249,4 @@ const gradeOptions = {
     mode: "dark",
   },
 };
-
-// const chartOptions = {
-//   colors: ["#FF0000", "#32CD32"],
-//   chart: {
-//     type: "bar",
-//     zoom: {
-//       enabled: true,
-//     },
-//     stacked: true,
-//   },
-//   //   plotOptions: {
-//   //     bar: {
-//   //       dataLabels: {
-//   //         total: {
-//   //           enabled: true,
-//   //           offsetX: 0,
-//   //           style: {
-//   //             fontSize: "13px",
-//   //             fontWeight: 700,
-//   //             color: "#FFFFFF",
-//   //           },
-//   //         },
-//   //       },
-//   //     },
-//   //   },
-//   dataLabels: {
-//     enabled: false,
-//   },
-//   yaxis: {
-//     title: {
-//       text: "Unique Play (Count)",
-//     },
-//   },
-//   xaxis: {
-//     type: "categories",
-//     categories: levelLists.value,
-//     tickPlacement: "on",
-//     tickAmount: 40,
-//     decimalsInFloat: 0,
-//     title: {
-//       text: "Level of Charts",
-//       offsetY: -10,
-//     },
-//   },
-//   title: {
-//     text: "Unique Play Counts Per Level Charts",
-//   },
-//   legend: {
-//     position: "right",
-//     offsetY: 40,
-//   },
-//   theme: {
-//     mode: "dark",
-//   },
-// };
-
-// const series = [
-//   {
-//     name: "Failed",
-//     data: failedLists.value,
-//   },
-//   {
-//     name: "Cleared",
-//     data: clearedLists.value,
-//   },
-// ];
-
-// const headers: Header[] = [
-//   { text: "Level", value: "level", sortable: true },
-//   { text: "Total", value: "played", sortable: true },
-//   { text: "Cleared", value: "clears", sortable: true },
-//   { text: "Failed", value: "fails", sortable: true },
-// ];
 </script>
