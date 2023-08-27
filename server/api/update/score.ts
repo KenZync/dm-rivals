@@ -47,9 +47,20 @@ export default defineEventHandler(async (event) => {
     };
   });
 
+  const uniqueConvertedScores: any[] = [];
+  const seenCombinations = new Set();
+
+  convertedScores.forEach((score) => {
+    const combination = `${score.user_id}_${score.song_id}`;
+    if (!seenCombinations.has(combination)) {
+      seenCombinations.add(combination);
+      uniqueConvertedScores.push(score);
+    }
+  });
+
   const { data: updateScores, error: updateScoresError } = await client
     .from("scores")
-    .upsert(convertedScores,{onConflict:'song_id,user_id'})
+    .upsert(uniqueConvertedScores, { onConflict: "song_id,user_id" })
     .select();
   if (updateScoresError) {
     throw createError({ statusMessage: updateScoresError.message });

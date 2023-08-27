@@ -36,7 +36,7 @@
             playerUser
               ? {
                   path: '/',
-                  query: { user1: playerUser, allSongs: false },
+                  query: { user1: playerUser, allSongs: 'false' },
                 }
               : '/setting'
           "
@@ -62,6 +62,7 @@ import {
   MusicalNoteIcon,
   ChatBubbleOvalLeftEllipsisIcon,
   Cog6ToothIcon,
+  PresentationChartBarIcon
 } from "@heroicons/vue/24/outline";
 
 import { UserIcon } from "@heroicons/vue/20/solid";
@@ -90,5 +91,7 @@ const navigation = [
   //     current: false,
   //   },
   { name: "Setting", href: "/setting", icon: Cog6ToothIcon },
+
+  { name: "Ranking", href: "/ranking", icon:PresentationChartBarIcon },
 ];
 </script>

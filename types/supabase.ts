@@ -199,7 +199,15 @@ export interface Database {
       }
     }
     Views: {
-      [_ in never]: never
+      song_play_count: {
+        Row: {
+          clears: number | null
+          fails: number | null
+          level: number | null
+          played: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
