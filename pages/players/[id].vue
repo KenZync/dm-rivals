@@ -197,7 +197,7 @@ const clearOptions = {
   legend: {
     position: "top",
   },
-  tooltip: {
+  // tooltip: {
     // custom: function({series, seriesIndex, dataPointIndex, w}: any) {
     //   return '<div class="bg-black p-5">' +
     //     '<span>' + series[seriesIndex][dataPointIndex] + '</span>' +
@@ -212,7 +212,7 @@ const clearOptions = {
     // });
     // return title + items + "ASDF";
     // },
-  },
+  // },
   theme: {
     mode: "dark",
   },
@@ -227,8 +227,8 @@ const gradeOptions = {
     "#A291FB", //B
     "#E879F9", //C
     "#FF665B", //D
-    "#FF0000", //F
-    "#D3D3D3", //NO PLAY
+    "#D3D3D3", //F
+    "#FFFFFF", //NO PLAY
   ],
   chart: {
     stacked: true,
