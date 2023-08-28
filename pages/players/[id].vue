@@ -111,7 +111,7 @@ const clickChart = (event: MouseEvent, chartContext: any, config: any) => {
   ) {
     showModal.value = true;
     if (mode.value == "Clear") {
-      titleModalLevel.value = "Level " + levelData.value[config.dataPointIndex] + " ";
+      titleModalLevel.value = levelData.value[config.dataPointIndex] + " ";
       titleModalDesc.value = clearData.value[config.seriesIndex].name;
       switch (clearData.value[config.seriesIndex].name) {
         case "Clear":
@@ -128,7 +128,7 @@ const clickChart = (event: MouseEvent, chartContext: any, config: any) => {
           break;
       }
     } else {
-      titleModalLevel.value = "Level " + levelData.value[config.dataPointIndex] + " ";
+      titleModalLevel.value = levelData.value[config.dataPointIndex] + " ";
       titleModalDesc.value = gradeData.value[config.seriesIndex].name;
       switch (gradeData.value[config.seriesIndex].name) {
         case "P Rank":
