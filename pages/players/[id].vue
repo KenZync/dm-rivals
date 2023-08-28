@@ -128,7 +128,7 @@ const clickChart = (event: MouseEvent, chartContext: any, config: any) => {
           break;
       }
     } else {
-      titleModalLevel.value = "Level " + (config.dataPointIndex + 1) + " ";
+      titleModalLevel.value = "Level " + levelData.value[config.dataPointIndex] + " ";
       titleModalDesc.value = gradeData.value[config.seriesIndex].name;
       switch (gradeData.value[config.seriesIndex].name) {
         case "P Rank":
