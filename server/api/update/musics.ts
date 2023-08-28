@@ -46,5 +46,5 @@ export default defineEventHandler(async (event) => {
   if (error) {
     throw createError({ statusMessage: error.message });
   }
-  return data;
+  return data.length;
 });

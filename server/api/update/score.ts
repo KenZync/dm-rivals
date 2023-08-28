@@ -1,6 +1,7 @@
 import { getSongDetail } from "~/server/lib/getSongDetail";
 import { Database } from "~/types/supabase";
 import { serverSupabaseClient } from "#supabase/server";
+import { getPlayerLists } from "~/server/lib/getPlayerLists";
 
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient<Database>(event);
@@ -63,7 +64,27 @@ export default defineEventHandler(async (event) => {
     .upsert(uniqueConvertedScores, { onConflict: "song_id,user_id" })
     .select();
   if (updateScoresError) {
+    // TODO: Please make into function soon
+    const ranking = await getPlayerLists();
+  
+    const players = ranking.map((player) => {
+      return {
+        user_id: player.ID,
+        nickname: player.Nickname,
+        tier: player.Tier,
+        clear: player.Clear,
+      };
+    });
+  
+    const { data, error: playersError } = await client
+      .from("users")
+      .upsert(players).select();
+  
+    if (playersError) {
+      throw createError({ statusMessage: playersError.message });
+    }
     throw createError({ statusMessage: updateScoresError.message });
+
   }
 
   const { data: updateVariable, error: updateVariableError } = await client
