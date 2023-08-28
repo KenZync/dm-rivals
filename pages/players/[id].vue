@@ -34,7 +34,7 @@
               width="100%"
               type="bar"
               height="3000"
-              @click="clickClearChart"
+              @click="clickChart"
             />
           </div>
         </ClientOnly>
@@ -67,7 +67,6 @@
 <script setup lang="ts">
 import { Database } from "~/types/supabase";
 
-
 const route = useRoute();
 const client = useSupabaseClient<Database>();
 const user_id =
@@ -93,16 +92,17 @@ const { data: user } = await useAsyncData("user", async () => {
 });
 
 useHead({
-  title: `${user.value?.nickname}`+" · player info | DMJam Rival System",
-  meta: [{ name: "description", content: "DMJam Rival System » player info » "+  `${user.value?.nickname}`}],
+  title: `${user.value?.nickname}` + " · player info | DMJam Rival System",
+  meta: [
+    {
+      name: "description",
+      content:
+        "DMJam Rival System » player info » " + `${user.value?.nickname}`,
+    },
+  ],
 });
-    
 
-const clickClearChart = (
-  event: MouseEvent,
-  chartContext: { "": any },
-  config: any
-) => {
+const clickChart = (event: MouseEvent, chartContext: any, config: any) => {
   if (
     profile.value &&
     clearData.value &&
@@ -111,7 +111,7 @@ const clickClearChart = (
   ) {
     showModal.value = true;
     if (mode.value == "Clear") {
-      titleModalLevel.value = "Level " + (config.dataPointIndex + 1) + " ";
+      titleModalLevel.value = "Level " + levelData.value[config.dataPointIndex] + " ";
       titleModalDesc.value = clearData.value[config.seriesIndex].name;
       switch (clearData.value[config.seriesIndex].name) {
         case "Clear":
@@ -179,8 +179,6 @@ const { data: profile } = await useAsyncData("profile", async () => {
   return data;
 });
 
-
-
 const clear = () => {
   mode.value = "Clear";
 };
@@ -215,6 +213,14 @@ const clearData = computed(() => {
       }),
     },
   ];
+});
+
+const levelData = computed(() => {
+  if (profile.value) {
+    return profile.value.map((item) => `Level ${item.level}`);
+  }else{
+    return []
+  }
 });
 
 const gradeData = computed(() => {
@@ -300,9 +306,7 @@ const clearOptions = {
     enabled: false,
   },
   xaxis: {
-    categories: profile.value
-      ? profile.value.map((item) => `Level ${item.level}`)
-      : [],
+    categories: levelData.value,
   },
   yaxis: {
     title: {
