@@ -94,7 +94,7 @@ const { data: user } = await useAsyncData("user", async () => {
 
 useHead({
   title: `${user.value?.nickname}`+" · player info | DMJam Rival System",
-  meta: [{ name: "description", content: "DMJam Rival System » player info » KenZ" }],
+  meta: [{ name: "description", content: "DMJam Rival System » player info » "+  `${user.value?.nickname}`}],
 });
     
 
