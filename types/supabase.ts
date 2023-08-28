@@ -15,7 +15,7 @@ export interface Database {
           id: number
         }
         Insert: {
-          grade: string
+          grade?: string
           id?: number
         }
         Update: {
@@ -231,6 +231,48 @@ export interface Database {
       }
     }
     Functions: {
+      get_user_scores_summary: {
+        Args: {
+          input_user_id: number
+        }
+        Returns: {
+          level: number
+          song_count: number
+          clear_count: number
+          fail_count: number
+          no_play_count: number
+          grade_p: number
+          grade_ss: number
+          grade_s: number
+          grade_a: number
+          grade_b: number
+          grade_c: number
+          grade_d: number
+          grade_f: number
+          clear_song_ids: number[]
+          clear_song_titles: string[]
+          fail_song_ids: number[]
+          fail_song_titles: string[]
+          no_play_song_ids: number[]
+          no_play_song_titles: string[]
+          grade_p_song_ids: number[]
+          grade_p_song_titles: string[]
+          grade_ss_song_ids: number[]
+          grade_ss_song_titles: string[]
+          grade_s_song_ids: number[]
+          grade_s_song_titles: string[]
+          grade_a_song_ids: number[]
+          grade_a_song_titles: string[]
+          grade_b_song_ids: number[]
+          grade_b_song_titles: string[]
+          grade_c_song_ids: number[]
+          grade_c_song_titles: string[]
+          grade_d_song_ids: number[]
+          grade_d_song_titles: string[]
+          grade_f_song_ids: number[]
+          grade_f_song_titles: string[]
+        }[]
+      }
       get_user_stats: {
         Args: {
           input_user_id: number

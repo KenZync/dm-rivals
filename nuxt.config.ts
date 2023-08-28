@@ -2,9 +2,13 @@
 export default defineNuxtConfig({
   modules: [
     "@nuxtjs/tailwindcss",
-    '@nuxtjs/supabase'
+    '@nuxtjs/supabase',
+    '@vueuse/nuxt',
   ],
   supabase:{
     redirect: false
-  }
+  },
+  css:[
+    '@/assets/animation.css',
+  ]
 });
