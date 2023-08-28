@@ -67,6 +67,7 @@
 <script setup lang="ts">
 import { Database } from "~/types/supabase";
 
+
 const route = useRoute();
 const client = useSupabaseClient<Database>();
 const user_id =
@@ -81,6 +82,21 @@ const descModal = ref();
 const closeModal = () => {
   showModal.value = false;
 };
+
+const { data: user } = await useAsyncData("user", async () => {
+  const { data, error } = await client
+    .from("users")
+    .select("*")
+    .eq("user_id", user_id)
+    .single();
+  return data;
+});
+
+useHead({
+  title: `${user.value?.nickname}`+" · player info | DMJam Rival System",
+  meta: [{ name: "description", content: "DMJam Rival System » player info » KenZ" }],
+});
+    
 
 const clickClearChart = (
   event: MouseEvent,
@@ -163,14 +179,7 @@ const { data: profile } = await useAsyncData("profile", async () => {
   return data;
 });
 
-const { data: user } = await useAsyncData("user", async () => {
-  const { data, error } = await client
-    .from("users")
-    .select("*")
-    .eq("user_id", user_id)
-    .single();
-  return data;
-});
+
 
 const clear = () => {
   mode.value = "Clear";

@@ -36,8 +36,11 @@
   <script setup lang="ts">
   import { Database } from "~/types/supabase";
   import type { Header } from "vue3-easy-data-table";
-  
   const client = useSupabaseClient<Database>();
+
+  useHead({
+  title: "players · profile | DMJam Rival System",
+});
   
   const { data: musics } = await useAsyncData("musics", async () => {
     const { data } = await client
