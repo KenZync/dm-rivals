@@ -28,3 +28,13 @@ Start the development server on http://localhost:3000
 ```bash
 npm run dev
 ```
+
+## Local Development
+
+If you want to run project by yourself
+
+remove server/api/update folder
+
+remove line '@nuxtjs/supabase' in nuxt.config.js
+
+or setup supabase (get rekt)
