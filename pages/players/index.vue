@@ -21,6 +21,7 @@
           :rows-per-page="15"
           :search-field="searchField"
           :search-value="searchValue"
+          show-index
         >
             <template #item-user_id="{ user_id }">
             <div @click="navigateTo(`players/${user_id}`)" class="font-bold cursor-pointer">{{ user_id }}</div>
@@ -44,7 +45,7 @@
   
   const { data: musics } = await useAsyncData("musics", async () => {
     const { data } = await client
-      .from("users")
+      .from("users_stats")
       .select()
       .order("clear", { ascending: false });
     return data;
@@ -62,7 +63,11 @@
     { text: "User ID", value: "user_id", sortable: true },
     { text: "Nickname", value: "nickname", sortable: true },
     { text: "Tier", value: "tier", sortable: true },
-    { text: "Clear", value: "clear", sortable: true },
+    { text: "Level", value: "clear", sortable: true },
+    { text: "Charts Played", value: "play_count", sortable: true },
+    { text: "Charts Cleared", value: "clear_count", sortable: true },
+    { text: "Charts Failed", value: "fail_count", sortable: true },
+
   ];
   </script>
   
