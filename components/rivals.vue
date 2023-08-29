@@ -54,16 +54,27 @@
       </form>
     </li>
     <li>
-      <button
-        @click="refresh"
+      <div class="flex space-x-2">
+        <button
+        @click="showOnlinePlayers ? refresh(): toggleOnlinePlayers()"
         class="text-stone-200 hover:text-white hover:bg-zinc-800 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full active:bg-zinc-500"
       >
         <ArrowPathIcon class="h-6 w-6 shrink-0" aria-hidden="true" />
-        Refresh Online Players
+        <span v-if="showOnlinePlayers">Refresh Online Players</span>
+        <span v-else>Show Online Players</span>
       </button>
+        <button
+          v-if="showOnlinePlayers"
+          @click="toggleOnlinePlayers"
+          class="flex-grow text-right text-stone-200 hover:text-red-500 hover:bg-zinc-800 p-2 rounded-lg"
+        >
+        <EyeSlashIcon class="h-6 w-6 shrink-0" aria-hidden="true" />
+        </button>
+      </div>
     </li>
     <li>
       <iframe
+        v-if="showOnlinePlayers"
         class="w-64 h-72"
         src="https://dmjam.net/online"
         :key="iframeUpdate"
@@ -74,7 +85,7 @@
 
 <script setup>
 import { UserPlusIcon, CheckIcon } from "@heroicons/vue/20/solid";
-import { TrashIcon } from "@heroicons/vue/24/outline";
+import { TrashIcon, EyeSlashIcon } from "@heroicons/vue/24/outline";
 import { ArrowPathIcon } from "@heroicons/vue/20/solid";
 
 const props = defineProps({
@@ -85,6 +96,8 @@ const addingRival = ref(false);
 const iframeUpdate = ref(true);
 const rivalInput = ref(null);
 const rivals = ref([]);
+
+const showOnlinePlayers=ref(true)
 
 const route = useRoute();
 const user1 = ref(route.query.user1);
@@ -135,5 +148,9 @@ const submitRival = () => {
 
 const refresh = () => {
   iframeUpdate.value = !iframeUpdate.value;
+};
+
+const toggleOnlinePlayers = () => {
+  showOnlinePlayers.value = !showOnlinePlayers.value;
 };
 </script>
