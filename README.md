@@ -39,4 +39,4 @@ remove line '@nuxtjs/supabase' in nuxt.config.js
 
 or setup supabase (get rekt)
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A0A5DDTY1)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/kenzync)

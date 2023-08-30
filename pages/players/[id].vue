@@ -24,7 +24,7 @@
         </button>
       </div>
       <div class="flex w-full pt-4 flex-col md:flex-row">
-        <div v-if="status === 'pending'" class="w-full flex justify-center">
+        <div v-if="status === 'pending' && !showModal" class="w-full flex justify-center">
           <LoadingSpinner />
         </div>
         <ClientOnly v-else>
@@ -47,22 +47,83 @@
     </div>
     <Modal :show="showModal" @cancel="closeModal">
       <template #title
-        >{{ clickedData?.title }}
-        <span
+        >
+        <div class="flex justify-center space-x-2">
+          <div>{{ clickedData?.title }}</div>
+        <div
           class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xl font-medium text-stone-100"
           :class="progressColor(clickedData?.legend)"
-          >{{ clickedData?.legend }}</span
+          >{{ clickedData?.legend }}</div
         >
+        <button
+          @click="refresh()"
+          class="rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2"
+          :disabled="status ==='pending'"
+          >
+          <div v-if="status ==='pending'" class="flex space-x-2">
+          <div
+          
+              class="animate-spin w-5 h-5 border-[3px] border-current border-t-transparent text-blue-600 rounded-full"
+              role="status"
+              aria-label="loading"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
+            <span>Loading...</span>
+          </div>
+          <span v-else>Refresh</span>
+        </button>
+      </div>
       </template>
       <template #description>
-        <div class="max-h-96 overflow-auto">
-          <div v-for="song in clickedData.desc" class="text-left">
-            <NuxtLink
-              :to="`https://dmjam.net/music-scoreboard/${song.id}/2`"
-              target="_blank"
-              >{{ song.title }}</NuxtLink
-            >
-          </div>
+        <div class="max-h-[80vh] overflow-auto">
+          <table
+            class="border border-separate border-spacing-0 border-gray-300 divide-y divide-gray-300 text-stone-200"
+          >
+            <thead :class="progressColor(clickedData?.legend)" class="sticky top-0 bg ">
+              <tr>
+                <th >Title</th>
+                <th >Artist</th>
+                <th >NoteCharter</th>
+                <th >BPM</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template v-for="score in clickedData.desc">
+                <tr class="even:bg-zinc-800 odd:bg-zinc-900">
+                  <td class="text-left border border-gray-300">
+                    <NuxtLink
+                      :to="`https://dmjam.net/music-scoreboard/${score.id}/2`"
+                      target="_blank"
+                      >{{ score.title }}</NuxtLink
+                    >
+                  </td>
+                  <td class="border border-gray-300">
+                    <NuxtLink
+                      :to="`https://dmjam.net/music-scoreboard/${score.id}/2`"
+                      target="_blank"
+                      >{{ score.artist }}</NuxtLink
+                    >
+                  </td>
+                  <td class="border border-gray-300">
+                    <NuxtLink
+                      :to="`https://dmjam.net/music-scoreboard/${score.id}/2`"
+                      target="_blank"
+                      >{{ score.note_charter }}</NuxtLink
+                    >
+                  </td>
+                  <td class="border border-gray-300">
+                  <NuxtLink
+                    :to="`https://dmjam.net/music-scoreboard/${score.id}/2`"
+                    target="_blank"
+                    >{{ score.bpm }}</NuxtLink
+                  >
+                </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+          <!-- </div> -->
         </div>
       </template>
     </Modal>
@@ -95,8 +156,8 @@ const grade = () => {
   mode.value = "Grade";
 };
 
-const { data: test, status: status } = useFetch<PlayerPerformancesByLevel>(
-  "/api/user/" + user_id
+const { data: test, status: status, refresh, pending } = useFetch<PlayerPerformancesByLevel>(
+  "/api/user/" + user_id,{server:false}
 );
 
 const { data: user } = await useAsyncData("user", async () => {

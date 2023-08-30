@@ -13,9 +13,20 @@ export default defineEventHandler(async (event) => {
     .select("id,title,artist,note_charter,level,bpm")
     .order("id", { ascending: false });
 
+
+
+  const musicMap: { [id: number]: SongData } = {};
+  // if (musics !== null) {
+  //   musics.forEach(music => {
+  //         musicMap[music.id] = music;
+  //     });
+  // }
+  
+
   const playerPerformancesByLevel: PlayerPerformancesByLevel = {};
   if (musics) {
     for (const music of musics) {
+      musicMap[music.id] = music;
       if (!playerPerformancesByLevel[music.level]) {
         playerPerformancesByLevel[music.level] = {
           level: music.level,
@@ -67,6 +78,9 @@ export default defineEventHandler(async (event) => {
       playerPerformancesByLevel[music.level].no_play_songs.push({
         id: music.id,
         title: music.title,
+        artist: music.artist,
+        note_charter: music.note_charter,
+        bpm: music.bpm
       });
     }
   }
@@ -90,6 +104,9 @@ export default defineEventHandler(async (event) => {
         playerPerformancesByLevel[score.Level].clear_songs.push({
           id: score.ID,
           title: score.Title,
+          artist: musicMap[score.ID].artist,
+          note_charter: musicMap[score.ID].note_charter,
+          bpm: musicMap[score.ID].bpm
         });
       } else if (score.Progress === "Failed") {
         playerPerformancesByLevel[score.Level].fail_count++;
@@ -104,12 +121,18 @@ export default defineEventHandler(async (event) => {
         playerPerformancesByLevel[score.Level].fail_songs.push({
           id: score.ID,
           title: score.Title,
+          artist: musicMap[score.ID].artist,
+          note_charter: musicMap[score.ID].note_charter,
+          bpm: musicMap[score.ID].bpm
         });
       }
       playerPerformancesByLevel[score.Level].grades[grade].count++;
       playerPerformancesByLevel[score.Level].grades[grade].songs.push({
         id: score.ID,
         title: score.Title,
+        artist: musicMap[score.ID].artist,
+        note_charter: musicMap[score.ID].note_charter,
+        bpm: musicMap[score.ID].bpm
       });
     }
   });

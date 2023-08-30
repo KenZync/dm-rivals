@@ -32,7 +32,7 @@ const cancelEmit = (e:any) =>{
                                 <XMarkIcon class="h-6 w-6 text-white"/>
 							</button>
 						</div>
-						<h3 class="px-4 text-2xl font-bold leading-6"><slot name="title" /></h3>
+						<h3 class="px-4 text-2xl font-bold"><slot name="title" /></h3>
 						<div class="mt-2 px-4 text-lg">
 							<slot name="description" />
 						</div>

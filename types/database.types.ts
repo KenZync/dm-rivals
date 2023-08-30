@@ -32,7 +32,22 @@ declare global {
   export type SongData = {
     id: number;
     title: string;
+    artist: string;
+    note_charter: string;
+    bpm: number;
   };
+
+  export type musicData = {
+    [id: number]: {
+        id: number;
+        title: string;
+        artist: string;
+        note_charter: string;
+        level: number;
+        bpm: number;
+    };
+}[]
+
 
   export type GradeData = {
     count: number;

@@ -21,6 +21,6 @@ export const progressColor = (rank: string) => {
     case "Failed":
       return "bg-red-800";
     default:
-      return "";
+      return "bg-black";
   }
 };
