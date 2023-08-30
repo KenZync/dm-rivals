@@ -22,12 +22,6 @@
         >
           Grade
         </button>
-        <button
-          @click="click"
-          class="mt-4 rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2"
-        >
-          Test
-        </button>
       </div>
       <div class="flex w-full pt-4 flex-col md:flex-row">
         <div v-if="status === 'pending'" class="w-full flex justify-center">
@@ -84,25 +78,26 @@ const client = useSupabaseClient<Database>();
 const user_id =
   typeof route.params.id === "string" ? parseInt(route.params.id, 10) : 0;
 
+const clickedLevel = ref<number>(0);
+const clickedLegends = ref<number>(0);
 const showModal = ref(false);
+const mode = ref("Clear");
 
 const closeModal = () => {
   showModal.value = false;
 };
 
+const clear = () => {
+  mode.value = "Clear";
+};
+
+const grade = () => {
+  mode.value = "Grade";
+};
+
 const { data: test, status: status } = useFetch<PlayerPerformancesByLevel>(
   "/api/user/" + user_id
 );
-
-const click = () => {
-  if (test.value) {
-    console.log(
-      Object.entries(test.value).map(([_, performance]) => {
-        return performance.grades[Grade.SS].count;
-      })
-    );
-  }
-};
 
 const { data: user } = await useAsyncData("user", async () => {
   const { data, error } = await client
@@ -123,9 +118,6 @@ useHead({
     },
   ],
 });
-
-const clickedLevel = ref<number>(0);
-const clickedLegends = ref<number>(0);
 
 const clickChart = (event: MouseEvent, chartContext: any, config: any) => {
   clickedLevel.value = config.dataPointIndex;
@@ -217,16 +209,6 @@ const clickedData = computed(() => {
   }
   return { title, legend, desc };
 });
-
-const clear = () => {
-  mode.value = "Clear";
-};
-
-const grade = () => {
-  mode.value = "Grade";
-};
-
-const mode = ref("Clear");
 
 const clearData = computed(() => {
   if (test.value) {
