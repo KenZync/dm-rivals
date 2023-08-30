@@ -16,7 +16,7 @@ export const progressColor = (rank: string) => {
       return "bg-rose-900";
     case "F Rank":
       return "bg-neutral-400";
-    case "Clear":
+    case "Cleared":
       return "bg-green-800";
     case "Failed":
       return "bg-red-800";

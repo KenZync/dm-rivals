@@ -48,7 +48,7 @@ export default defineEventHandler(async (event) => {
     };
   });
 
-  const uniqueConvertedScores: any[] = [];
+  const uniqueConvertedScores: Score[] = [];
   const seenCombinations = new Set();
 
   convertedScores.forEach((score) => {

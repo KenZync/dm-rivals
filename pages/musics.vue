@@ -39,7 +39,7 @@ const client = useSupabaseClient<Database>();
 const { data: musics } = await useAsyncData("musics", async () => {
   const { data } = await client
     .from("musics")
-    .select()
+    .select("id,title,artist,note_charter,level,bpm")
     .order("level", { ascending: false });
   return data;
 });

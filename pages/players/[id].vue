@@ -10,12 +10,11 @@
       </div>
       <div class="space-x-4">
         <span>Mode: {{ mode }}</span>
-
         <button
           @click="clear"
           class="mt-4 rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2"
         >
-          Lamps
+          Clear
         </button>
         <button
           @click="grade"
@@ -23,9 +22,18 @@
         >
           Grade
         </button>
+        <button
+          @click="click"
+          class="mt-4 rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2"
+        >
+          Test
+        </button>
       </div>
       <div class="flex w-full pt-4 flex-col md:flex-row">
-        <ClientOnly>
+        <div v-if="status === 'pending'" class="w-full flex justify-center">
+          <LoadingSpinner />
+        </div>
+        <ClientOnly v-else>
           <div class="grow">
             <apexchart
               class="flex justify-center"
@@ -37,27 +45,30 @@
               @click="clickChart"
             />
           </div>
+          <template #fallback>
+            <LoadingSpinner />
+          </template>
         </ClientOnly>
       </div>
     </div>
     <Modal :show="showModal" @cancel="closeModal">
-      <!-- <span
-                class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-stone-100"
-                :class="progressColor(score.Clear)"
-                >{{ score.Clear }}</span
-              > -->
-
       <template #title
-        >{{ titleModalLevel }}
+        >{{ clickedData?.title }}
         <span
           class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xl font-medium text-stone-100"
-          :class="progressColor(titleModalDesc)"
-          >{{ titleModalDesc }}</span
+          :class="progressColor(clickedData?.legend)"
+          >{{ clickedData?.legend }}</span
         >
       </template>
       <template #description>
         <div class="max-h-96 overflow-auto">
-          <div v-for="song in descModal" class="text-left">{{ song }}</div>
+          <div v-for="song in clickedData.desc" class="text-left">
+            <NuxtLink
+              :to="`https://dmjam.net/music-scoreboard/${song.id}/2`"
+              target="_blank"
+              >{{ song.title }}</NuxtLink
+            >
+          </div>
         </div>
       </template>
     </Modal>
@@ -66,6 +77,7 @@
 
 <script setup lang="ts">
 import { Database } from "~/types/supabase";
+import { Grade } from "~/types/enum";
 
 const route = useRoute();
 const client = useSupabaseClient<Database>();
@@ -74,12 +86,22 @@ const user_id =
 
 const showModal = ref(false);
 
-const titleModalLevel = ref();
-const titleModalDesc = ref();
-const descModal = ref();
-
 const closeModal = () => {
   showModal.value = false;
+};
+
+const { data: test, status: status } = useFetch<PlayerPerformancesByLevel>(
+  "/api/user/" + user_id
+);
+
+const click = () => {
+  if (test.value) {
+    console.log(
+      Object.entries(test.value).map(([_, performance]) => {
+        return performance.grades[Grade.SS].count;
+      })
+    );
+  }
 };
 
 const { data: user } = await useAsyncData("user", async () => {
@@ -102,81 +124,98 @@ useHead({
   ],
 });
 
+const clickedLevel = ref<number>(0);
+const clickedLegends = ref<number>(0);
+
 const clickChart = (event: MouseEvent, chartContext: any, config: any) => {
+  clickedLevel.value = config.dataPointIndex;
+  clickedLegends.value = config.seriesIndex;
   if (
-    profile.value &&
+    test.value &&
     clearData.value &&
     gradeData.value &&
     config.dataPointIndex > -1
   ) {
     showModal.value = true;
+  }
+};
+
+const clickedData = computed(() => {
+  let title;
+  let legend: string = "";
+  let desc;
+  if (
+    test.value &&
+    clearData.value &&
+    gradeData.value &&
+    clickedLevel.value > -1 &&
+    typeof clickedLevel.value === "number"
+  ) {
+    const level = parseInt(levelIndex.value[clickedLevel.value], 10);
+    title = levelData.value[clickedLevel.value] + " ";
     if (mode.value == "Clear") {
-      titleModalLevel.value = levelData.value[config.dataPointIndex] + " ";
-      titleModalDesc.value = clearData.value[config.seriesIndex].name;
-      switch (clearData.value[config.seriesIndex].name) {
-        case "Clear":
-          descModal.value =
-            profile.value[config.dataPointIndex].clear_song_titles;
+      legend = clearData.value[clickedLegends.value].name;
+      switch (clearData.value[clickedLegends.value].name) {
+        case "Cleared":
+          desc = test.value[level].clear_songs.sort((a, b) => a.id - b.id);
           break;
         case "Failed":
-          descModal.value =
-            profile.value[config.dataPointIndex].fail_song_titles;
+          desc = test.value[level].fail_songs.sort((a, b) => a.id - b.id);
           break;
         case "No Play":
-          descModal.value =
-            profile.value[config.dataPointIndex].no_play_song_titles;
+          desc = test.value[level].no_play_songs.sort((a, b) => a.id - b.id);
           break;
       }
     } else {
-      titleModalLevel.value = levelData.value[config.dataPointIndex] + " ";
-      titleModalDesc.value = gradeData.value[config.seriesIndex].name;
-      switch (gradeData.value[config.seriesIndex].name) {
+      legend = gradeData.value[clickedLegends.value].name;
+      switch (gradeData.value[clickedLegends.value].name) {
         case "P Rank":
-          descModal.value =
-            profile.value[config.dataPointIndex].grade_p_song_titles;
+          desc = test.value[level].grades[Grade.P].songs.sort(
+            (a, b) => a.id - b.id
+          );
           break;
         case "SS Rank":
-          descModal.value =
-            profile.value[config.dataPointIndex].grade_ss_song_titles;
+          desc = test.value[level].grades[Grade.SS].songs.sort(
+            (a, b) => a.id - b.id
+          );
           break;
         case "S Rank":
-          descModal.value =
-            profile.value[config.dataPointIndex].grade_s_song_titles;
+          desc = test.value[level].grades[Grade.S].songs.sort(
+            (a, b) => a.id - b.id
+          );
           break;
         case "A Rank":
-          descModal.value =
-            profile.value[config.dataPointIndex].grade_a_song_titles;
+          desc = test.value[level].grades[Grade.A].songs.sort(
+            (a, b) => a.id - b.id
+          );
           break;
         case "B Rank":
-          descModal.value =
-            profile.value[config.dataPointIndex].grade_b_song_titles;
+          desc = test.value[level].grades[Grade.B].songs.sort(
+            (a, b) => a.id - b.id
+          );
           break;
         case "C Rank":
-          descModal.value =
-            profile.value[config.dataPointIndex].grade_c_song_titles;
+          desc = test.value[level].grades[Grade.C].songs.sort(
+            (a, b) => a.id - b.id
+          );
           break;
         case "D Rank":
-          descModal.value =
-            profile.value[config.dataPointIndex].grade_d_song_titles;
+          desc = test.value[level].grades[Grade.D].songs.sort(
+            (a, b) => a.id - b.id
+          );
           break;
         case "F Rank":
-          descModal.value =
-            profile.value[config.dataPointIndex].grade_f_song_titles;
+          desc = test.value[level].grades[Grade.F].songs.sort(
+            (a, b) => a.id - b.id
+          );
           break;
         case "No Play":
-          descModal.value =
-            profile.value[config.dataPointIndex].no_play_song_titles;
+          desc = test.value[level].no_play_songs.sort((a, b) => a.id - b.id);
           break;
       }
     }
   }
-};
-
-const { data: profile } = await useAsyncData("profile", async () => {
-  const { data, error } = await client.rpc("get_user_scores_summary", {
-    input_user_id: user_id,
-  });
-  return data;
+  return { title, legend, desc };
 });
 
 const clear = () => {
@@ -190,199 +229,203 @@ const grade = () => {
 const mode = ref("Clear");
 
 const clearData = computed(() => {
-  if (!profile.value) {
-    return null;
+  if (test.value) {
+    return [
+      {
+        name: "Cleared",
+        data: Object.entries(test.value).map(([_, performance]) => {
+          return performance.clear_count;
+        }),
+      },
+      {
+        name: "Failed",
+        data: Object.entries(test.value).map(([_, performance]) => {
+          return performance.fail_count;
+        }),
+      },
+      {
+        name: "No Play",
+        data: Object.entries(test.value).map(([_, performance]) => {
+          return performance.no_play_count;
+        }),
+      },
+    ];
   }
-  return [
-    {
-      name: "Clear",
-      data: profile.value.map((item) => {
-        return item.clear_count;
-      }),
-    },
-    {
-      name: "Failed",
-      data: profile.value.map((item) => {
-        return item.fail_count;
-      }),
-    },
-    {
-      name: "No Play",
-      data: profile.value.map((item) => {
-        return item.no_play_count;
-      }),
-    },
-  ];
+});
+
+const levelIndex = computed(() => {
+  if (test.value) {
+    return Object.entries(test.value).map(([level, _]) => {
+      return level;
+    });
+  } else {
+    return [];
+  }
 });
 
 const levelData = computed(() => {
-  if (profile.value) {
-    return profile.value.map((item) => `Level ${item.level}`);
-  }else{
-    return []
+  if (test.value) {
+    return Object.entries(test.value).map(([level, _]) => {
+      return `Level ${level}`;
+    });
+  } else {
+    return [];
   }
 });
 
 const gradeData = computed(() => {
-  if (!profile.value) {
-    return null;
+  if (test.value) {
+    return [
+      {
+        name: "P Rank",
+        data: Object.entries(test.value).map(([_, performance]) => {
+          return performance.grades[Grade.P].count;
+        }),
+      },
+      {
+        name: "SS Rank",
+        data: Object.entries(test.value).map(([_, performance]) => {
+          return performance.grades[Grade.SS].count;
+        }),
+      },
+      {
+        name: "S Rank",
+        data: Object.entries(test.value).map(([_, performance]) => {
+          return performance.grades[Grade.S].count;
+        }),
+      },
+      {
+        name: "A Rank",
+        data: Object.entries(test.value).map(([_, performance]) => {
+          return performance.grades[Grade.A].count;
+        }),
+      },
+      {
+        name: "B Rank",
+        data: Object.entries(test.value).map(([_, performance]) => {
+          return performance.grades[Grade.B].count;
+        }),
+      },
+      {
+        name: "C Rank",
+        data: Object.entries(test.value).map(([_, performance]) => {
+          return performance.grades[Grade.C].count;
+        }),
+      },
+      {
+        name: "D Rank",
+        data: Object.entries(test.value).map(([_, performance]) => {
+          return performance.grades[Grade.D].count;
+        }),
+      },
+      {
+        name: "F Rank",
+        data: Object.entries(test.value).map(([_, performance]) => {
+          return performance.grades[Grade.F].count;
+        }),
+      },
+      {
+        name: "No Play",
+        data: Object.entries(test.value).map(([_, performance]) => {
+          return performance.no_play_count;
+        }),
+      },
+    ];
   }
-  return [
-    {
-      name: "P Rank",
-      data: profile.value.map((item) => {
-        return item.grade_p;
-      }),
-    },
-    {
-      name: "SS Rank",
-      data: profile.value.map((item) => {
-        return item.grade_ss;
-      }),
-    },
-    {
-      name: "S Rank",
-      data: profile.value.map((item) => {
-        return item.grade_s;
-      }),
-    },
-    {
-      name: "A Rank",
-      data: profile.value.map((item) => {
-        return item.grade_a;
-      }),
-    },
-    {
-      name: "B Rank",
-      data: profile.value.map((item) => {
-        return item.grade_b;
-      }),
-    },
-    {
-      name: "C Rank",
-      data: profile.value.map((item) => {
-        return item.grade_c;
-      }),
-    },
-    {
-      name: "D Rank",
-      data: profile.value.map((item) => {
-        return item.grade_d;
-      }),
-    },
-    {
-      name: "F Rank",
-      data: profile.value.map((item) => {
-        return item.grade_f;
-      }),
-    },
-    {
-      name: "No Play",
-      data: profile.value.map((item) => {
-        return item.no_play_count;
-      }),
-    },
-  ];
 });
 
-const clearOptions = {
-  colors: ["#32CD32", "#FF0000", "#D3D3D3"],
-  chart: {
-    stacked: true,
-    stackType: "100%",
-    animations: {
-      enabled: false,
-      dynamicAnimation: {
+const clearOptions = computed(() => {
+  return {
+    colors: ["#32CD32", "#FF0000", "#FFFFFF"],
+    chart: {
+      stacked: true,
+      stackType: "100%",
+      animations: {
         enabled: false,
+        dynamicAnimation: {
+          enabled: false,
+        },
       },
     },
-  },
-  plotOptions: {
-    bar: {
-      horizontal: true,
+    plotOptions: {
+      bar: {
+        horizontal: true,
+      },
     },
-  },
-  dataLabels: {
-    enabled: false,
-  },
-  xaxis: {
-    categories: levelData.value,
-  },
-  yaxis: {
-    title: {
-      text: "Levels",
+    dataLabels: {
+      enabled: false,
     },
-  },
-  legend: {
-    position: "top",
-  },
-  // tooltip: {
-  // custom: function({series, seriesIndex, dataPointIndex, w}: any) {
-  //   return '<div class="bg-black p-5">' +
-  //     '<span>' + series[seriesIndex][dataPointIndex] + '</span>' +
-  //     '</div>'
-  // }
-  // custom: function ({ series, seriesIndex, dataPointIndex, w }: any) {
-  //   return seriesIndex
-  // let title = w.globals.tooltip.tooltipTitle.outerHTML;
-  // let items = "";
-  // w.globals.tooltip.ttItems.forEach((x) => {
-  //   items = items + x.outerHTML;
-  // });
-  // return title + items + "ASDF";
-  // },
-  // },
-  theme: {
-    mode: "dark",
-  },
-};
+    xaxis: {
+      categories: test.value
+        ? Object.entries(test.value).map(([level, _]) => {
+            return `Level ${level}`;
+          })
+        : [],
+    },
+    yaxis: {
+      title: {
+        text: "Levels",
+      },
+    },
+    legend: {
+      position: "top",
+    },
+    theme: {
+      mode: "dark",
+    },
+  };
+});
 
-const gradeOptions = {
-  colors: [
-    "#FFE21F", //P
-    "#FF851B", //SS
-    "#2ECC40", //S
-    "#D9E778", //A
-    "#A291FB", //B
-    "#E879F9", //C
-    "#FF665B", //D
-    "#D3D3D3", //F
-    "#FFFFFF", //NO PLAY
-  ],
-  chart: {
-    stacked: true,
-    stackType: "100%",
-    animations: {
-      enabled: false,
-      dynamicAnimation: {
+const gradeOptions = computed(() => {
+  return {
+    colors: [
+      "#FFE21F", //P
+      "#FF851B", //SS
+      "#2ECC40", //S
+      "#D9E778", //A
+      "#A291FB", //B
+      "#E879F9", //C
+      "#FF665B", //D
+      "#D3D3D3", //F
+      "#FFFFFF", //NO PLAY
+    ],
+    chart: {
+      stacked: true,
+      stackType: "100%",
+      animations: {
         enabled: false,
+        dynamicAnimation: {
+          enabled: false,
+        },
       },
     },
-  },
-  dataLabels: {
-    enabled: false,
-  },
-  plotOptions: {
-    bar: {
-      horizontal: true,
+    dataLabels: {
+      enabled: false,
     },
-  },
-  xaxis: {
-    categories: profile.value
-      ? profile.value.map((item) => `Level ${item.level}`)
-      : [],
-  },
-  yaxis: {
-    type: "numeric",
-    title: {
-      text: "Levels",
+    plotOptions: {
+      bar: {
+        horizontal: true,
+      },
     },
-  },
-  legend: {
-    position: "top",
-  },
-  theme: {
-    mode: "dark",
-  },
-};
+    xaxis: {
+      categories: test.value
+        ? Object.entries(test.value).map(([level, _]) => {
+            return `Level ${level}`;
+          })
+        : [],
+    },
+    yaxis: {
+      type: "numeric",
+      title: {
+        text: "Levels",
+      },
+    },
+    legend: {
+      position: "top",
+    },
+    theme: {
+      mode: "dark",
+    },
+  };
+});
 </script>

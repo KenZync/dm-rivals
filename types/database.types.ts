@@ -1,3 +1,4 @@
+import { Grade } from "./enum";
 import { Database } from "./supabase";
 
 declare global {
@@ -12,5 +13,59 @@ declare global {
     Level: string;
     BPM: string;
   };
+
+  export type Score = {
+    user_id: number;
+    song_id: number;
+    rank: number;
+    cool: number;
+    good: number;
+    bad: number;
+    miss: number;
+    max_combo: number;
+    acc: number;
+    progress: any;
+    clear: boolean;
+    play_time: any;
+  };
+
+  export type SongData = {
+    id: number;
+    title: string;
+  };
+
+  export type GradeData = {
+    count: number;
+    songs: SongData[];
+  };
+
+  export type PlayerPerformance = {
+    level: number;
+    song_count: number;
+    clear_count: number;
+    fail_count: number;
+    no_play_count: number;
+    grades: {
+      [grade in Grade]: GradeData;
+    };
+    clear_songs: SongData[];
+    fail_songs: SongData[];
+    no_play_songs: SongData[];
+  };
+
+  export type ScrapedScore = {
+    ID: number;
+    Title: string;
+    Acc: string;
+    Progress: string;
+    Clear: string;
+    Rank: string;
+    Level: number;
+    PlayTime: string;
+};
+
+export type PlayerPerformancesByLevel = {
+  [level: number]: PlayerPerformance;
+};
 
 }
