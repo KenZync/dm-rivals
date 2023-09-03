@@ -21,10 +21,8 @@
         :rows-per-page="15"
         :search-field="searchField"
         :search-value="searchValue"
+        @click-row="showRow"
       >
-        <template #item-title="{ title, id }">
-          <a :href="`https://dmjam.net/music-scoreboard/${id}`">{{ title }}</a>
-        </template>
       </e-data-table>
     </div>
   </div>
@@ -32,7 +30,7 @@
 
 <script setup lang="ts">
 import { Database } from "~/types/supabase";
-import type { Header } from "vue3-easy-data-table";
+import type { Header, ClickRowArgument } from "vue3-easy-data-table";
 
 const client = useSupabaseClient<Database>();
 
@@ -44,13 +42,7 @@ const { data: musics } = await useAsyncData("musics", async () => {
   return data;
 });
 
-const searchField = [
-  "title",
-  "artist",
-  "note_charter",
-  "level",
-  "bpm",
-];
+const searchField = ["title", "artist", "note_charter", "level", "bpm"];
 const searchValue = ref();
 
 const headers: Header[] = [
@@ -61,6 +53,18 @@ const headers: Header[] = [
   { text: "Level", value: "level", sortable: true },
   { text: "BPM", value: "bpm", sortable: true },
 ];
+
+const showRow = (item: ClickRowArgument) => {
+  console.log(`https://ojn-viewer.vercel.app/?server=dmjam&id=${item.id}`)
+  openExternal(`https://ojn-viewer.vercel.app/?server=dmjam&id=${item.id}`);
+};
+
+function openExternal(endpoint: string) {
+  const link = document.createElement("a");
+  link.href = endpoint;
+  link.target = "_blank";
+  link.click();
+}
 </script>
 
 <style scoped></style>

@@ -82,6 +82,7 @@
           >
             <thead :class="progressColor(clickedData?.legend)" class="sticky top-0 bg ">
               <tr>
+                <th >OJN</th>
                 <th >Title</th>
                 <th >Artist</th>
                 <th >NoteCharter</th>
@@ -91,6 +92,13 @@
             <tbody>
               <template v-for="score in clickedData.desc">
                 <tr class="even:bg-zinc-800 odd:bg-zinc-900">
+                  <td class="text-left border border-gray-300  text-blue-400 underline font-bold">
+                    <NuxtLink
+                      :to="`https://ojn-viewer.vercel.app/?server=dmjam&id=${score.id}`"
+                      target="_blank"
+                      >LINK</NuxtLink
+                    >
+                  </td>
                   <td class="text-left border border-gray-300">
                     <NuxtLink
                       :to="`https://dmjam.net/music-scoreboard/${score.id}/2`"
