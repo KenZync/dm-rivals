@@ -39,15 +39,14 @@ declare global {
 
   export type musicData = {
     [id: number]: {
-        id: number;
-        title: string;
-        artist: string;
-        note_charter: string;
-        level: number;
-        bpm: number;
+      id: number;
+      title: string;
+      artist: string;
+      note_charter: string;
+      level: number;
+      bpm: number;
     };
-}[]
-
+  }[];
 
   export type GradeData = {
     count: number;
@@ -77,10 +76,35 @@ declare global {
     Rank: string;
     Level: number;
     PlayTime: string;
-};
+  };
 
-export type PlayerPerformancesByLevel = {
-  [level: number]: PlayerPerformance;
-};
+  export type PlayerPerformancesByLevel = {
+    [level: number]: PlayerPerformance;
+  };
 
+  export type DetailSongScore = {
+    metadata: {
+      level: string;
+      song: string;
+      artist: string;
+      charter: string;
+      bpm: string;
+      playcount: string;
+    };
+    players: {
+      UserID: string;
+      Name: string;
+      Rank: string;
+      Cool: string;
+      Good: string;
+      Bad: string;
+      Miss: string;
+      MaxCombo: string;
+      Acc: string;
+      Progress: string;
+      Clear: string;
+      PlayTime: string;
+    }[];
+  };
 }
+
