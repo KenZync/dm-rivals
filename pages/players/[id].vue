@@ -94,7 +94,7 @@
                 <tr class="even:bg-zinc-800 odd:bg-zinc-900">
                   <td class="text-left border border-gray-300  text-blue-400 underline font-bold">
                     <NuxtLink
-                      :to="`https://ojn-viewer.vercel.app/?server=dmjam&id=${score.id}`"
+                      :to="`https://ojn-viewer.vercel.app/?server=dmjam&id=${score.id}&player=${user?.nickname}`"
                       target="_blank"
                       >LINK</NuxtLink
                     >
@@ -151,6 +151,8 @@ const clickedLevel = ref<number>(0);
 const clickedLegends = ref<number>(0);
 const showModal = ref(false);
 const mode = ref("Clear");
+
+
 
 const closeModal = () => {
   showModal.value = false;
