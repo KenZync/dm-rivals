@@ -32,6 +32,9 @@
 import { Database } from "~/types/supabase";
 import type { Header, ClickRowArgument } from "vue3-easy-data-table";
 
+const rivalUsers = useRivals();
+const player = usePlayer();
+
 const client = useSupabaseClient<Database>();
 
 const { data: musics } = await useAsyncData("musics", async () => {
@@ -55,8 +58,22 @@ const headers: Header[] = [
 ];
 
 const showRow = (item: ClickRowArgument) => {
-  console.log(`https://ojn-viewer.vercel.app/?server=dmjam&id=${item.id}`)
-  openExternal(`https://ojn-viewer.vercel.app/?server=dmjam&id=${item.id}`);
+  let playerQuery = "";
+  if (player.value) {
+    playerQuery = player.value;
+  }
+  let rivalQuery = rivalUsers.value;
+
+  if (typeof rivalQuery === "string") {
+    rivalQuery = JSON.parse(rivalQuery);
+  }
+
+  if (rivalQuery.length > 0) {
+    playerQuery = playerQuery + "," + rivalQuery.join(",");
+  }
+  openExternal(
+    `https://ojn-viewer.vercel.app/?server=dmjam&id=${item.id}&player=${playerQuery}`
+  );
 };
 
 function openExternal(endpoint: string) {

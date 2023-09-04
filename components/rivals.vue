@@ -103,6 +103,8 @@ const route = useRoute();
 const user1 = ref(route.query.user1);
 const user2 = ref(route.query.user2);
 
+const rivalUsers = useRivals();
+
 watch(
   () => route.query,
   () => {
@@ -115,8 +117,10 @@ onMounted(() => {
   if (localStorage.getItem("rivals")) {
     try {
       rivals.value = JSON.parse(localStorage.getItem("rivals"));
+      rivalUsers.value = rivals.value
     } catch (e) {
       localStorage.removeItem("rivals");
+      rivalUsers.value = null
     }
   }
 });
@@ -128,6 +132,7 @@ const rivalAdd = () => {
 const saveRivals = () => {
   const parsed = JSON.stringify(rivals.value);
   localStorage.setItem("rivals", parsed);
+  rivalUsers.value = parsed
 };
 const deleteRival = (x) => {
   rivals.value.splice(x, 1);
