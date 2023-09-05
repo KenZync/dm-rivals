@@ -49,27 +49,17 @@ export default defineEventHandler(async (event) => {
   let score2;
   let songLists;
 
-  const promises = [];
-
   if (id1) {
-    promises.push(getScore(id1).then(result => {
-      score1 = result;
-    }));
+    score1 = await getScore(id1);
   }
-  
+
   if (id2) {
-    promises.push(getScore(id2).then(result => {
-      score2 = result;
-    }));
+    score2 = await getScore(id2);
   }
-  
+
   if (JSON.parse(query.allSongs?.toString() || "false")) {
-    promises.push(getSongLists().then(result => {
-      songLists = result;
-    }));
+    songLists = await getSongLists();
   }
-  
-  await Promise.all(promises);
 
   const data = await getCompare(score1, score2, id1, id2, songLists);
   return data;
