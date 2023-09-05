@@ -6,12 +6,12 @@ declare global {
     Database["public"]["Tables"][T]["Row"];
 
   export type Song = {
-    ID: string;
+    ID: number;
     Title: string;
     Artist: string;
     NoteCharter: string;
-    Level: string;
-    BPM: string;
+    Level: number;
+    BPM: number;
   };
 
   export type Score = {
@@ -73,9 +73,9 @@ declare global {
     Acc: string;
     Progress: string;
     Clear: string;
-    Rank: string;
+    Rank: number;
     Level: number;
-    PlayTime: string;
+    PlayTime: Date;
   };
 
   export type PlayerPerformancesByLevel = {
@@ -91,20 +91,21 @@ declare global {
       bpm: string;
       playcount: string;
     };
-    players: {
-      UserID: string;
-      Name: string;
-      Rank: string;
-      Cool: string;
-      Good: string;
-      Bad: string;
-      Miss: string;
-      MaxCombo: string;
-      Acc: string;
-      Progress: string;
-      Clear: string;
-      PlayTime: string;
-    }[];
+    players: PlayerScoreDetail[];
+  };
+
+  export type PlayerScoreDetail = {
+    UserID: number;
+    Name: string;
+    Rank: number;
+    Cool: number;
+    Good: number;
+    Bad: number;
+    Miss: number;
+    MaxCombo: number;
+    Acc: number;
+    Progress: string;
+    Clear: string;
+    PlayTime: Date;
   };
 }
-

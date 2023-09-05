@@ -94,7 +94,7 @@
                 <tr class="even:bg-zinc-800 odd:bg-zinc-900">
                   <td class="text-left border border-gray-300  text-blue-400 underline font-bold">
                     <NuxtLink
-                      :to="`https://ojn-viewer.vercel.app/?server=dmjam&id=${score.id}&player=${user?.nickname}`"
+                      :to="`https://ojn.kenzync.dev/?server=dmjam&id=${score.id}&player=${user?.nickname}`"
                       target="_blank"
                       >LINK</NuxtLink
                     >

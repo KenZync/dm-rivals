@@ -6,14 +6,12 @@ import { Grade } from "~/types/enum";
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient<Database>(event);
   const user_id = getRouterParam(event, "user_id");
-  const scrapedScores: ScrapedScore[] = await getScoreV2(user_id);
+  const scrapedScores: ScrapedScore[] = await getScoreV2(user_id || '');
 
   const { data: musics } = await client
     .from("musics")
     .select("id,title,artist,note_charter,level,bpm")
     .order("id", { ascending: false });
-
-
 
   const musicMap: { [id: number]: SongData } = {};
   // if (musics !== null) {
@@ -86,12 +84,12 @@ export default defineEventHandler(async (event) => {
   }
 
   scrapedScores.forEach((score) => {
-    const gradeMatch = score.Clear.match(/([A-Z]+)\sRank/);
+    const gradeMatch = score.Progress.match(/([A-Z]+)\sRank/);
     const grade = gradeMatch
       ? Grade[gradeMatch[1] as keyof typeof Grade]
       : Grade.F;
     if (score.Level > 0) {
-      if (score.Progress === "Cleared") {
+      if (score.Clear === "Cleared") {
         playerPerformancesByLevel[score.Level].clear_count++;
         playerPerformancesByLevel[score.Level].no_play_count--;
 
@@ -108,7 +106,7 @@ export default defineEventHandler(async (event) => {
           note_charter: musicMap[score.ID].note_charter,
           bpm: musicMap[score.ID].bpm
         });
-      } else if (score.Progress === "Failed") {
+      } else if (score.Clear === "Failed") {
         playerPerformancesByLevel[score.Level].fail_count++;
         playerPerformancesByLevel[score.Level].no_play_count--;
 

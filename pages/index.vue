@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto">
-    <form>
+    <form @submit.prevent="getCompare">
       <div class="md:flex md:space-x-2">
         <div>
           <label for="compare1" class="text-md font-medium text-stone-200"
@@ -46,7 +46,7 @@
           </div>
           <div v-else>
             <button
-              @click.prevent="getCompare"
+              type="submit"
               class="mt-1 inline-flex items-center rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               Search / Compare

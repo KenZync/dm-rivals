@@ -1,44 +1,76 @@
-import { getCompare } from "../lib/getCompare"
-import { getID } from "../lib/getID";
-import { getRanking } from "../lib/getRanking";
+import { getCompare } from "../lib/getCompare";
+import { getPlayerLists } from "../lib/getPlayerLists";
 import { getScore } from "../lib/getScore";
 import { getSongLists } from "../lib/getSongLists";
 
-export default defineEventHandler(async (event) =>{
-  const query = getQuery(event)
-  const ranking = await getRanking();
-  const id1 = getID(ranking,query.user1)
-  const id2 = getID(ranking,query.user2)
+export default defineEventHandler(async (event) => {
+  const query: { user1: string; user2: string; allSongs: boolean } =
+    getQuery(event);
 
-  if(!id1 && !id2){
-    throw createError({ statusCode: 404, statusMessage: 'Both Users Not Found. Please Type Correctly' });
+  const players = await getPlayerLists();
+
+  let id1;
+  let id2;
+
+  if (query.user1) {
+    id1 = players.find(
+      (player) => player.Nickname.toLowerCase() === query.user1.toLowerCase()
+    )?.ID;
   }
 
-  if(id2 && !id1 && query.user1){
-    throw createError({ statusCode: 404, statusMessage: 'User 1 Not Found. Please Type Correctly' });
+  if (query.user2) {
+    id2 = players.find(
+      (player) => player.Nickname.toLowerCase() === query.user2.toLowerCase()
+    )?.ID;
   }
 
-  if(id1 && !id2 && query.user2){
-    throw createError({ statusCode: 404, statusMessage: 'User 2 Not Found. Please Type Correctly' });
+  if (!id1 && !id2) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: "Both Users Not Found. Please Type Correctly",
+    });
+  }
+
+  if (id2 && !id1 && query.user1) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: "User 1 Not Found. Please Type Correctly",
+    });
+  }
+
+  if (id1 && !id2 && query.user2) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: "User 2 Not Found. Please Type Correctly",
+    });
   }
 
   let score1;
   let score2;
-
   let songLists;
 
-  if(id1){
-    score1 = await getScore(id1)
-  }
+  const promises = [];
 
-  if(id2){
-    score2 = await getScore(id2)
+  if (id1) {
+    promises.push(getScore(id1).then(result => {
+      score1 = result;
+    }));
   }
-
-  if(JSON.parse(query.allSongs?.toString() || 'false')){
-    songLists = await getSongLists();
+  
+  if (id2) {
+    promises.push(getScore(id2).then(result => {
+      score2 = result;
+    }));
   }
+  
+  if (JSON.parse(query.allSongs?.toString() || "false")) {
+    promises.push(getSongLists().then(result => {
+      songLists = result;
+    }));
+  }
+  
+  await Promise.all(promises);
 
   const data = await getCompare(score1, score2, id1, id2, songLists);
   return data;
-})
+});

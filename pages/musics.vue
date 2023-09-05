@@ -72,7 +72,7 @@ const showRow = (item: ClickRowArgument) => {
     playerQuery = playerQuery + "," + rivalQuery.join(",");
   }
   openExternal(
-    `https://ojn-viewer.vercel.app/?server=dmjam&id=${item.id}&player=${playerQuery}`
+    `https://ojn.kenzync.dev/?server=dmjam&id=${item.id}&player=${playerQuery}`
   );
 };
 

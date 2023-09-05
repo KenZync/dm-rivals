@@ -33,15 +33,15 @@ export default defineEventHandler(async (event) => {
 
   const convertedScores = detail.players.map((score) => {
     return {
-      user_id: parseInt(score.UserID),
+      user_id: score.UserID,
       song_id: musics[now].id,
-      rank: parseInt(score.Rank.slice(1)),
-      cool: parseInt(score.Cool),
-      good: parseInt(score.Good),
-      bad: parseInt(score.Bad),
-      miss: parseInt(score.Miss),
-      max_combo: parseInt(score.MaxCombo),
-      acc: parseFloat(score.Acc),
+      rank: score.Rank,
+      cool: score.Cool,
+      good: score.Good,
+      bad: score.Bad,
+      miss: score.Miss,
+      max_combo: score.MaxCombo,
+      acc: score.Acc,
       progress: score.Progress.slice(0, -5),
       clear: score.Clear === "Cleared" ? true : false,
       play_time: score.PlayTime,

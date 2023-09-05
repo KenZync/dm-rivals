@@ -27,7 +27,7 @@ export const getCompare = async (scoreSet1, scoreSet2, id1, id2, songLists) => {
   return data;
 };
 
-function compareScores(scoreSet1, scoreSet2,songLists) {
+function compareScores(scoreSet1, scoreSet2, songLists) {
   let win = [];
 
   scoreSet1.forEach((score1) => {
@@ -36,9 +36,9 @@ function compareScores(scoreSet1, scoreSet2,songLists) {
       if (score1.ID === score2.ID) {
         found = true;
         if (parseInt(score1.Rank) < parseInt(score2.Rank)) {
-          if(songLists){
-            score1.Win = true
-          }else{
+          if (songLists) {
+            score1.Win = true;
+          } else {
             score1.Rank = score1.Rank + "|" + score2.Rank;
             score1.AccRival = score2.Acc;
             score1.PlayTime2 = score2.PlayTime;

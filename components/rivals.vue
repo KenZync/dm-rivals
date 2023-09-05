@@ -97,7 +97,7 @@ const iframeUpdate = ref(true);
 const rivalInput = ref(null);
 const rivals = ref([]);
 
-const showOnlinePlayers=ref(true)
+const showOnlinePlayers=ref(false)
 
 const route = useRoute();
 const user1 = ref(route.query.user1);

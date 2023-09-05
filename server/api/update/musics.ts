@@ -10,9 +10,9 @@ export default defineEventHandler(async (event) => {
     return {
       title: song.Title,
       artist: song.Artist,
-      bpm: parseFloat(song.BPM),
-      id: parseInt(song.ID),
-      level: parseInt(song.Level),
+      bpm: song.BPM,
+      id: song.ID,
+      level: song.Level,
       note_charter: song.NoteCharter,
       updated_at: new Date().toISOString(),
     };
