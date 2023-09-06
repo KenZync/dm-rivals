@@ -24,7 +24,10 @@
         </button>
       </div>
       <div class="flex w-full pt-4 flex-col md:flex-row">
-        <div v-if="status === 'pending' && !showModal" class="w-full flex justify-center">
+        <div
+          v-if="status === 'pending' && !showModal"
+          class="w-full flex justify-center"
+        >
           <LoadingSpinner />
         </div>
         <ClientOnly v-else>
@@ -46,67 +49,78 @@
       </div>
     </div>
     <Modal :show="showModal" @cancel="closeModal">
-      <template #title
-        >
+      <template #title>
         <div class="flex justify-center space-x-2">
           <div>{{ clickedData?.title }}</div>
-        <div
-          class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xl font-medium text-stone-100"
-          :class="progressColor(clickedData?.legend)"
-          >{{ clickedData?.legend }}</div
-        >
-        <button
-          @click="refresh()"
-          class="rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2"
-          :disabled="status ==='pending'"
-          >
-          <div v-if="status ==='pending'" class="flex space-x-2">
           <div
-          
-              class="animate-spin w-5 h-5 border-[3px] border-current border-t-transparent text-blue-600 rounded-full"
-              role="status"
-              aria-label="loading"
-            >
-              <span class="sr-only">Loading...</span>
-            </div>
-            <span>Loading...</span>
+            class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xl font-medium text-stone-100"
+            :class="progressColor(clickedData?.legend)"
+          >
+            {{ clickedData?.legend }}
           </div>
-          <span v-else>Refresh</span>
-        </button>
-      </div>
+          <button
+            @click="refresh()"
+            class="rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm hover:bg-zinc-600 focus:outline-none focus:ring-2"
+            :disabled="status === 'pending'"
+          >
+            <div v-if="status === 'pending'" class="flex space-x-2">
+              <div
+                class="animate-spin w-5 h-5 border-[3px] border-current border-t-transparent text-blue-600 rounded-full"
+                role="status"
+                aria-label="loading"
+              >
+                <span class="sr-only">Loading...</span>
+              </div>
+              <span>Loading...</span>
+            </div>
+            <span v-else>Refresh</span>
+          </button>
+        </div>
       </template>
       <template #description>
         <div class="max-h-[80vh] overflow-auto">
           <table
             class="border border-separate border-spacing-0 border-gray-300 divide-y divide-gray-300 text-stone-200"
           >
-            <thead :class="progressColor(clickedData?.legend)" class="sticky top-0 bg ">
+            <thead
+              :class="progressColor(clickedData?.legend)"
+              class="sticky top-0 bg"
+            >
               <tr>
-                <th >OJN</th>
-                <th >Title</th>
-                <th >Artist</th>
-                <th >NoteCharter</th>
-                <th >BPM</th>
+                <th class="px-4">OJN</th>
+                <th>Title</th>
+                <th>NoteCharter</th>
+                <th>Artist</th>
+                <th>BPM</th>
               </tr>
             </thead>
             <tbody>
               <template v-for="score in clickedData.desc">
                 <tr class="even:bg-zinc-800 odd:bg-zinc-900">
-                  <td class="text-left border border-gray-300  text-blue-400 underline font-bold">
+                  <td
+                    class="border border-gray-300 text-blue-400 underline font-bold"
+                  >
                     <NuxtLink
                       :to="`https://ojn.kenzync.dev/?server=dmjam&id=${score.id}&player=${user?.nickname}`"
                       target="_blank"
-                      >LINK</NuxtLink
+                      >VIEW</NuxtLink
                     >
                   </td>
-                  <td class="text-left border border-gray-300">
+                  <td class="text-left border border-gray-300 px-2">
                     <NuxtLink
                       :to="`https://dmjam.net/music-scoreboard/${score.id}/2`"
                       target="_blank"
                       >{{ score.title }}</NuxtLink
                     >
                   </td>
-                  <td class="border border-gray-300">
+                  <td class="border border-gray-300 px-2">
+                    <NuxtLink
+                      :to="`https://dmjam.net/music-scoreboard/${score.id}/2`"
+                      target="_blank"
+                      >{{ score.note_charter }}</NuxtLink
+                    >
+                  </td>
+                  <td class="border border-gray-300 px-2">
                     <NuxtLink
                       :to="`https://dmjam.net/music-scoreboard/${score.id}/2`"
                       target="_blank"
@@ -117,16 +131,9 @@
                     <NuxtLink
                       :to="`https://dmjam.net/music-scoreboard/${score.id}/2`"
                       target="_blank"
-                      >{{ score.note_charter }}</NuxtLink
+                      >{{ score.bpm }}</NuxtLink
                     >
                   </td>
-                  <td class="border border-gray-300">
-                  <NuxtLink
-                    :to="`https://dmjam.net/music-scoreboard/${score.id}/2`"
-                    target="_blank"
-                    >{{ score.bpm }}</NuxtLink
-                  >
-                </td>
                 </tr>
               </template>
             </tbody>
@@ -152,8 +159,6 @@ const clickedLegends = ref<number>(0);
 const showModal = ref(false);
 const mode = ref("Clear");
 
-
-
 const closeModal = () => {
   showModal.value = false;
 };
@@ -166,9 +171,14 @@ const grade = () => {
   mode.value = "Grade";
 };
 
-const { data: test, status: status, refresh, pending } = useFetch<PlayerPerformancesByLevel>(
-  "/api/user/" + user_id,{server:false}
-);
+const {
+  data: test,
+  status: status,
+  refresh,
+  pending,
+} = useFetch<PlayerPerformancesByLevel>("/api/user/" + user_id, {
+  server: false,
+});
 
 const { data: user } = await useAsyncData("user", async () => {
   const { data, error } = await client
