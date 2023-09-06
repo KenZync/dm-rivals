@@ -19,8 +19,8 @@
 
 <script setup>
 const props = defineProps({
-  id1: String,
-  id2: String,
+  id1: Number,
+  id2: Number,
   submitted1: String,
   submitted2: String,
   filteredCompareData1: Object,
