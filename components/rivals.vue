@@ -44,6 +44,7 @@
           class="w-full text-stone-200 bg-zinc-700 rounded-md border-gray-600 shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500"
           placeholder="Rival Name"
           v-model="rivalInput"
+          ref="rival"
         />
         <button
           @click.prevent="submitRival"
@@ -96,6 +97,7 @@ const addingRival = ref(false);
 const iframeUpdate = ref(true);
 const rivalInput = ref(null);
 const rivals = ref([]);
+const rival = ref();
 
 const showOnlinePlayers=ref(false)
 
@@ -125,8 +127,10 @@ onMounted(() => {
   }
 });
 
-const rivalAdd = () => {
+const rivalAdd = async() => {
   addingRival.value = true;
+  await nextTick()
+  rival.value.focus()
 };
 
 const saveRivals = () => {

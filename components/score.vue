@@ -125,8 +125,8 @@
 
 <script setup>
 const props = defineProps({
-  userID: String,
-  rivalID: String,
+  userID: Number,
+  rivalID: Number,
   submitted: String,
   filteredCompareData: Object,
   color: String,
