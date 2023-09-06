@@ -88,6 +88,7 @@
           <span class="sr-only">Open sidebar</span>
           <Bars3Icon class="h-5 w-5" aria-hidden="true" />
         </button>
+
         <!-- <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
           <form class="flex flex-1" action="#" method="GET">
             <label for="search-field" class="sr-only">Search</label>
@@ -127,7 +128,7 @@ const playerUser = usePlayer();
 onMounted(() => {
   if (localStorage.getItem("player")) {
     try {
-      playerUser.value = localStorage.getItem("player") || '';
+      playerUser.value = localStorage.getItem("player") || "";
       // playerUser.value = localStorage.getItem("player");
       // playerInput.value = playerUser.value
     } catch (e) {
