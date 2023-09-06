@@ -40,7 +40,7 @@
   const client = useSupabaseClient<Database>();
 
   useHead({
-  title: "players · profile | DMJam Rival System",
+  title: "players · profile | DM Rivals",
 });
   
   const { data: musics } = await useAsyncData("musics", async () => {

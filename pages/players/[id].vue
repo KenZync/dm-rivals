@@ -190,12 +190,12 @@ const { data: user } = await useAsyncData("user", async () => {
 });
 
 useHead({
-  title: `${user.value?.nickname}` + " · player info | DMJam Rival System",
+  title: `${user.value?.nickname}` + " · player info | DM Rivals",
   meta: [
     {
       name: "description",
       content:
-        "DMJam Rival System » player info » " + `${user.value?.nickname}`,
+        "DM Rivals » player info » " + `${user.value?.nickname}`,
     },
   ],
 });

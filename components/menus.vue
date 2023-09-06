@@ -1,7 +1,7 @@
 <template>
   <div class="flex h-16 shrink-0 items-center">
     <img class="h-8 w-auto" src="~/assets/favicon-32x32.png" alt="DMJam" />
-    <div class="pl-8 font-bold text-stone-200">DMJam Rival System</div>
+    <div class="pl-8 font-bold text-stone-200">DM Rivals</div>
   </div>
   <nav class="flex flex-1 flex-col">
     <ul role="list" class="flex flex-1 flex-col gap-y-7">

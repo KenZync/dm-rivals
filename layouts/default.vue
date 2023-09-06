@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 useHead({
-  title: "DMJam Rival System",
+  title: "DM Rivals",
   meta: [{ name: "description", content: "O2Jam score comparison" }],
 });
 </script>

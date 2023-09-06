@@ -3,7 +3,7 @@
     <div class="container mx-auto">
       <div class="pt-8 text-center text-stone-200">
         <!-- <div v-if="user">Welcome {{ user.user_metadata.name }}</div>
-        <div v-else>Welcome to DMJam Rival System by KenZ</div>
+        <div v-else>Welcome to DM Rivals by KenZ</div>
         <button
           v-if="!user"
           @click="signInWithDiscord"

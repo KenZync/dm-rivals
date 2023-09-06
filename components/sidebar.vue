@@ -89,7 +89,7 @@
           <Bars3Icon class="h-5 w-5" aria-hidden="true" />
         </button>
 
-        
+        <slot name="header"></slot>
         <!-- <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
           <form class="flex flex-1" action="#" method="GET">
             <label for="search-field" class="sr-only">Search</label>

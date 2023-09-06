@@ -1,4 +1,4 @@
-# DMJAM-Rival-System
+# DM-RIVALS
 
 1.install dependencies
 

@@ -1,12 +1,12 @@
 <template>
-      <Compare
+      <!-- <Compare
         id1="1001"
         id2="1002"
         submitted1="1111"
         submitted2="1111"
         :filteredCompareData1="win1"
         :filteredCompareData2="win2"
-      />
+      /> -->
       <!-- <main class="lg:pr-96">
         <header
           class="flex items-center justify-between border-b border-white/5 px-4 py-4 sm:px-6 sm:py-6 lg:px-8"
@@ -179,58 +179,58 @@
 </template>
 
 <script setup lang="ts">
-const win1 = ref([
-  {
-    ID: "3280",
-    Title: "MATOI -phase L-AAAAAAAAAAAAAA",
-    Acc: "74.1%",
-    Progress: "Cleared",
-    Clear: "D Rank",
-    Rank: "10|13",
-    Level: "131",
-    PlayTime: "2023-04-03 01:51:24",
-    AccRival: "68.94%",
-    PlayTime2: "2023-04-03 04:58:17",
-  },
-  {
-    ID: "3280",
-    Title: "MATOI -phase L-",
-    Acc: "74.1%",
-    Progress: "Cleared",
-    Clear: "D Rank",
-    Rank: "10|13",
-    Level: "130",
-    PlayTime: "2023-04-03 01:51:24",
-    AccRival: "68.94%",
-    PlayTime2: "2023-04-03 04:58:17",
-  },
-]);
-const win2 = ref([
-  {
-    ID: "3280",
-    Title: "MATOI -phase L-AAAAAAAAAAAAAAAAAAAAAAAAAAA",
-    Acc: "74.1%",
-    Progress: "Cleared",
-    Clear: "D Rank",
-    Rank: "10|13",
-    Level: "131",
-    PlayTime: "2023-04-03 01:51:24",
-    AccRival: "68.94%",
-    PlayTime2: "2023-04-03 04:58:17",
-  },
-  {
-    ID: "3280",
-    Title: "BMATOI -phase L-AAAAAAAAAAAAAAAAAAAAAAAAAAA",
-    Acc: "74.1%",
-    Progress: "Cleared",
-    Clear: "D Rank",
-    Rank: "10|13",
-    Level: "132",
-    PlayTime: "2023-04-03 01:51:24",
-    AccRival: "68.94%",
-    PlayTime2: "2023-04-03 04:58:17",
-  },
-]);
+// const win1 = ref([
+//   {
+//     ID: "3280",
+//     Title: "MATOI -phase L-AAAAAAAAAAAAAA",
+//     Acc: "74.1%",
+//     Progress: "Cleared",
+//     Clear: "D Rank",
+//     Rank: "10|13",
+//     Level: "131",
+//     PlayTime: "2023-04-03 01:51:24",
+//     AccRival: "68.94%",
+//     PlayTime2: "2023-04-03 04:58:17",
+//   },
+//   {
+//     ID: "3280",
+//     Title: "MATOI -phase L-",
+//     Acc: "74.1%",
+//     Progress: "Cleared",
+//     Clear: "D Rank",
+//     Rank: "10|13",
+//     Level: "130",
+//     PlayTime: "2023-04-03 01:51:24",
+//     AccRival: "68.94%",
+//     PlayTime2: "2023-04-03 04:58:17",
+//   },
+// ]);
+// const win2 = ref([
+//   {
+//     ID: "3280",
+//     Title: "MATOI -phase L-AAAAAAAAAAAAAAAAAAAAAAAAAAA",
+//     Acc: "74.1%",
+//     Progress: "Cleared",
+//     Clear: "D Rank",
+//     Rank: "10|13",
+//     Level: "131",
+//     PlayTime: "2023-04-03 01:51:24",
+//     AccRival: "68.94%",
+//     PlayTime2: "2023-04-03 04:58:17",
+//   },
+//   {
+//     ID: "3280",
+//     Title: "BMATOI -phase L-AAAAAAAAAAAAAAAAAAAAAAAAAAA",
+//     Acc: "74.1%",
+//     Progress: "Cleared",
+//     Clear: "D Rank",
+//     Rank: "10|13",
+//     Level: "132",
+//     PlayTime: "2023-04-03 01:51:24",
+//     AccRival: "68.94%",
+//     PlayTime2: "2023-04-03 04:58:17",
+//   },
+// ]);
 
 </script>
 
