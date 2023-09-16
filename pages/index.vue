@@ -417,7 +417,7 @@ const filterData = (data) => {
       return searched;
     } else {
       return searched.filter((score) => {
-        return score.Rank.includes("|");
+        return score.Rank.toString().includes("|");
       });
     }
   }
