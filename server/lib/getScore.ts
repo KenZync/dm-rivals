@@ -21,7 +21,7 @@ export const getScore = async (id: number) => {
     scores.push({
       ID: score.music_code,
       Title: score.music_title,
-      Acc: score.score + "%",
+      Acc: (score.score/ 10000).toFixed(2) + "%",
       Progress: score.progress + " Rank",
       Clear: score.is_cleared_record ? "Cleared" : "Failed",
       Rank: score.record_rank,
