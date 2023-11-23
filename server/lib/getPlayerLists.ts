@@ -1,4 +1,4 @@
-import { PlayerLists } from "~/types/dmjam";
+import type { PlayerLists } from "~/types/dmjam";
 import { Tier } from "~/types/enum";
 
 export const getPlayerLists = async () => {

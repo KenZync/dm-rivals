@@ -1,5 +1,5 @@
 import { serverSupabaseClient } from "#supabase/server";
-import { Database } from "~/types/supabase";
+import type { Database } from "~/types/supabase";
 import { getSongLists } from "~/server/lib/getSongLists";
 
 export default defineEventHandler(async (event) => {
@@ -28,8 +28,8 @@ export default defineEventHandler(async (event) => {
   if (existingMusics !== null) {
     // Identify IDs of songs to be removed
     const songIdsToRemove = existingMusics
-      .filter(existingMusic => !convertedMusics.some(convertedMusic => convertedMusic.id === existingMusic.id))
-      .map(song => song.id);
+      .filter((existingMusic: { id: number; }) => !convertedMusics.some(convertedMusic => convertedMusic.id === existingMusic.id))
+      .map((song: { id: number; }) => song.id);
 
     // Delete songs that need to be removed
     if (songIdsToRemove.length > 0) {

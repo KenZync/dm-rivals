@@ -1,4 +1,4 @@
-import { Database } from "~/types/supabase";
+import type { Database } from "~/types/supabase";
 import { getScoreV2 } from "~/server/lib/getScoreV2";
 import { serverSupabaseClient } from "#supabase/server";
 import { Grade } from "~/types/enum";
@@ -6,7 +6,7 @@ import { Grade } from "~/types/enum";
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient<Database>(event);
   const user_id = getRouterParam(event, "user_id");
-  const scrapedScores: ScrapedScore[] = await getScoreV2(user_id || '');
+  const scrapedScores: ScrapedScore[] = await getScoreV2(user_id || "");
 
   const { data: musics } = await client
     .from("musics")
@@ -19,7 +19,6 @@ export default defineEventHandler(async (event) => {
   //         musicMap[music.id] = music;
   //     });
   // }
-  
 
   const playerPerformancesByLevel: PlayerPerformancesByLevel = {};
   if (musics) {
@@ -78,7 +77,7 @@ export default defineEventHandler(async (event) => {
         title: music.title,
         artist: music.artist,
         note_charter: music.note_charter,
-        bpm: music.bpm
+        bpm: music.bpm,
       });
     }
   }
@@ -104,7 +103,7 @@ export default defineEventHandler(async (event) => {
           title: score.Title,
           artist: musicMap[score.ID].artist,
           note_charter: musicMap[score.ID].note_charter,
-          bpm: musicMap[score.ID].bpm
+          bpm: musicMap[score.ID].bpm,
         });
       } else if (score.Clear === "Failed") {
         playerPerformancesByLevel[score.Level].fail_count++;
@@ -121,7 +120,7 @@ export default defineEventHandler(async (event) => {
           title: score.Title,
           artist: musicMap[score.ID].artist,
           note_charter: musicMap[score.ID].note_charter,
-          bpm: musicMap[score.ID].bpm
+          bpm: musicMap[score.ID].bpm,
         });
       }
       playerPerformancesByLevel[score.Level].grades[grade].count++;
@@ -130,7 +129,7 @@ export default defineEventHandler(async (event) => {
         title: score.Title,
         artist: musicMap[score.ID].artist,
         note_charter: musicMap[score.ID].note_charter,
-        bpm: musicMap[score.ID].bpm
+        bpm: musicMap[score.ID].bpm,
       });
     }
   });

@@ -1,4 +1,4 @@
-import { PlayerScore } from "~/types/dmjam";
+import type { PlayerScore } from "~/types/dmjam";
 
 export const getDetailScore = async (userID: number, songID: string) => {
   const data: PlayerScore[] = await $fetch(

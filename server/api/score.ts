@@ -3,8 +3,8 @@ import { getDetailScore } from "../lib/getDetailScore";
 export default defineEventHandler(async (event) =>{
   const query = getQuery(event)
 
-  const userID = query.userID
-  const songID = query.songID
+  const userID = Number(query.userID)
+  const songID = String(query.songID)
 
   const score = await getDetailScore(userID,songID)
 

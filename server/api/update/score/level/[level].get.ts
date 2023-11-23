@@ -1,5 +1,5 @@
 import { getSongDetail } from "~/server/lib/getSongDetail";
-import { Database } from "~/types/supabase";
+import type { Database } from "~/types/supabase";
 import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusMessage: musicsError.message });
   }
 
-  const musicIds = musics.map((music) => music.id);
+  const musicIds = musics.map((music: { id: number; }) => music.id);
   const musicDetails = await fetchMusicDetailsSequentially(musicIds);
 
   const convertedDetails = musicDetails.map(async (detail, musicIndex) => {

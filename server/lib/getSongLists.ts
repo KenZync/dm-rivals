@@ -1,4 +1,4 @@
-import { MusicLists } from "~/types/dmjam";
+import type { MusicLists } from "~/types/dmjam";
 
 export const getSongLists = async () => {
   const data: MusicLists[] = await $fetch(`https://dmjam.net/api/charts`);

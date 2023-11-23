@@ -146,7 +146,7 @@
 </template>
 
 <script setup lang="ts">
-import { Database } from "~/types/supabase";
+import type { Database } from "~/types/supabase";
 import { Grade } from "~/types/enum";
 
 const route = useRoute();

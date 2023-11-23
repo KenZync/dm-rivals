@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { Database } from "~/types/supabase";
+import type { Database } from "~/types/supabase";
 import type { Header, ClickRowArgument } from "vue3-easy-data-table";
 
 const rivalUsers = useRivals();

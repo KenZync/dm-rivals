@@ -1,5 +1,5 @@
 import { getSongDetail } from "~/server/lib/getSongDetail";
-import { Database } from "~/types/supabase";
+import type { Database } from "~/types/supabase";
 import { serverSupabaseClient } from "#supabase/server";
 import { getPlayerLists } from "~/server/lib/getPlayerLists";
 
@@ -66,7 +66,7 @@ export default defineEventHandler(async (event) => {
   if (updateScoresError) {
     // TODO: Please make into function soon
     const ranking = await getPlayerLists();
-  
+
     const players = ranking.map((player) => {
       return {
         user_id: player.ID,
@@ -75,16 +75,16 @@ export default defineEventHandler(async (event) => {
         clear: player.Clear,
       };
     });
-  
+
     const { data, error: playersError } = await client
       .from("users")
-      .upsert(players).select();
-  
+      .upsert(players)
+      .select();
+
     if (playersError) {
       throw createError({ statusMessage: playersError.message });
     }
     throw createError({ statusMessage: updateScoresError.message });
-
   }
 
   const { data: updateVariable, error: updateVariableError } = await client
@@ -94,5 +94,13 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusMessage: updateVariableError.message });
   }
 
-  return {data: "id:" + musics[variable.update_index].id + " updated " + variable.update_index + "/"+ last};
+  return {
+    data:
+      "id:" +
+      musics[variable.update_index].id +
+      " updated " +
+      variable.update_index +
+      "/" +
+      last,
+  };
 });
