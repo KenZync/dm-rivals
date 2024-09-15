@@ -10,5 +10,8 @@ export default defineNuxtConfig({
   },
   css:[
     '@/assets/animation.css',
-  ]
+  ],
+  runtimeConfig: {
+    nsjamApiBase: process.env.NSJAM_API,
+  }
 });

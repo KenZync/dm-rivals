@@ -1,5 +1,5 @@
 import { Grade } from "./enum";
-import { Database } from "./supabase";
+import type { Database } from "./supabase";
 
 declare global {
   export type Tables<T extends keyof Database["public"]["Tables"]> =
