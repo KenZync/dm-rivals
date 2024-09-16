@@ -17,6 +17,7 @@ export const getNSScore = async (player: string) => {
 
   data.forEach((score) => {
     if (score.song_id == null) return;
+    if (score.difficulty != 2) return;
     scores.push({
       ID: score.song_id,
       Title: score.TITLE,
