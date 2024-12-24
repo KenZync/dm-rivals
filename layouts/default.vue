@@ -13,4 +13,9 @@ useHead({
   meta: [{ name: "description", content: "O2Jam score comparison" }],
 });
 const route = useRoute();
+
+const { $snowFall } = useNuxtApp();
+onMounted(()=>{
+  $snowFall.init()
+})
 </script>
