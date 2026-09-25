@@ -25,10 +25,19 @@
       </div>
       <div class="flex w-full pt-4 flex-col md:flex-row">
         <div
-          v-if="status === 'pending' && !showModal"
+          v-if="!hydrated || (status === 'pending' && !showModal)"
           class="w-full flex justify-center"
         >
           <LoadingSpinner />
+        </div>
+        <div v-else-if="status === 'error' && !showModal" class="w-full text-center">
+          <p>Could not load this player's scores.</p>
+          <button
+            class="mt-4 rounded-md border border-gray-600 bg-zinc-800 px-4 py-2 text-sm text-stone-200 hover:bg-zinc-600"
+            @click="refresh()"
+          >
+            Retry
+          </button>
         </div>
         <ClientOnly v-else>
           <div class="grow">
@@ -148,6 +157,11 @@
 <script setup lang="ts">
 import type { Database } from "~/types/supabase";
 import { Grade } from "~/types/enum";
+import {
+  buildPlayerPerformances,
+  type PlayerMusic,
+  type PlayerScoreRecord,
+} from "~/utils/playerPerformances";
 
 const route = useRoute();
 const client = useSupabaseClient<Database>();
@@ -158,6 +172,10 @@ const clickedLevel = ref<number>(0);
 const clickedLegends = ref<number>(0);
 const showModal = ref(false);
 const mode = ref("Clear");
+const hydrated = ref(false);
+onMounted(() => {
+  hydrated.value = true;
+});
 
 const closeModal = () => {
   showModal.value = false;
@@ -171,16 +189,43 @@ const grade = () => {
   mode.value = "Grade";
 };
 
+const loadMusics = async (): Promise<PlayerMusic[]> => {
+  const musics: PlayerMusic[] = [];
+  const pageSize = 1000;
+
+  for (let offset = 0; ; offset += pageSize) {
+    const { data, error } = await client
+      .from("musics")
+      .select("id,title,artist,note_charter,level,bpm")
+      .order("id", { ascending: true })
+      .range(offset, offset + pageSize - 1);
+    if (error) throw error;
+    musics.push(...(data ?? []));
+    if (!data || data.length < pageSize) break;
+  }
+
+  return musics;
+};
+
 const {
   data: test,
-  status: status,
+  status,
   refresh,
-  pending,
-} = useFetch<PlayerPerformancesByLevel>("/api/user/" + user_id, {
-  server: false,
-});
+} = useAsyncData(
+  `player-performances-${user_id}`,
+  async () => {
+    const [scores, musics] = await Promise.all([
+      $fetch<PlayerScoreRecord[]>(
+        `https://dmjam.net/api/scoreboard/player/${user_id}?gauge_difficulty=2`
+      ),
+      loadMusics(),
+    ]);
+    return buildPlayerPerformances(scores, musics);
+  },
+  { server: false }
+);
 
-const { data: user } = await useAsyncData("user", async () => {
+const { data: user } = await useAsyncData(`user-${user_id}`, async () => {
   const { data, error } = await client
     .from("users")
     .select("*")
